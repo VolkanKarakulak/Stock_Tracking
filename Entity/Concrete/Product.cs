@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity
+namespace Entity.Concrete
 {
     public class Product : BaseEntity
     {
@@ -15,7 +15,7 @@ namespace Entity
         public string Color { get; set; }
         public string Material { get; set; }
         public Category Category { get; set; }
-       
+
 
     }
 }
