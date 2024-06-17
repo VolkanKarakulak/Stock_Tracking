@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Abstract
+namespace Data.Abstract
 {
     public interface IGenericRepository<T> where T : class
     {
@@ -15,7 +15,7 @@ namespace Core.Abstract
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
         Task CreateRangeAsync(IEnumerable<T> entities); // birden fazla kayıt, 
         Task CreateAsync(T entity);
-        Task Update (T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
+        Task UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
         Task DeleteAsync(T entity); // void de olabilir
         Task DeleteRangeAsync(IEnumerable<T> entities);
     }

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{97F40B64-BD75-4D3C-BCA9-70467C4749F0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API", "Web.API\Web.API.csproj", "{34AF65B2-443A-4BBF-BA88-BB4081E3E22A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{8C242A42-0C65-408F-9732-5E0DEC227467}"
@@ -13,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{3836CFF7-C5B9-464C-9290-AD926E1B3001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC", "MVC\MVC.csproj", "{CD97E401-1DD5-434B-809C-99F1C64C168A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC", "MVC\MVC.csproj", "{CD97E401-1DD5-434B-809C-99F1C64C168A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{97F40B64-BD75-4D3C-BCA9-70467C4749F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97F40B64-BD75-4D3C-BCA9-70467C4749F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97F40B64-BD75-4D3C-BCA9-70467C4749F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97F40B64-BD75-4D3C-BCA9-70467C4749F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34AF65B2-443A-4BBF-BA88-BB4081E3E22A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34AF65B2-443A-4BBF-BA88-BB4081E3E22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34AF65B2-443A-4BBF-BA88-BB4081E3E22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
