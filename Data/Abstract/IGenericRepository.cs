@@ -17,6 +17,6 @@ namespace Data.Abstract
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
         Task DeleteAsync(T entity); // void de olabilir
-        Task DeleteRangeAsync(IEnumerable<T> entities);
+        void DeleteRange(IEnumerable<T> entities);
     }
 }

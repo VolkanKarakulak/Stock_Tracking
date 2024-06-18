@@ -34,9 +34,6 @@ namespace Data.Seeds
                  Stock = 5,
                  CreateDate = DateTime.Now,
              });
-             
-             
-            
         }
     }
 }

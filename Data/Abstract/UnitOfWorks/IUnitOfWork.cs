@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.UnitOfWorks
+namespace Data.Abstract.UnitOfWorks
 {
     public interface IUnitOfWork
     {

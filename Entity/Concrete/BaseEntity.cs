@@ -10,6 +10,8 @@ namespace Entity.Concrete
     {
         public int Id { get; set; }
         public string? Description { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
