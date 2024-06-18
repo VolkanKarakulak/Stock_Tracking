@@ -6,6 +6,8 @@ using Data.Concrete.UnitOfWork;
 using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Service.Abstract;
+using Service.Concrete;
+using Service.Mapping;
 using System.Reflection;
 
 namespace Web.API
@@ -25,7 +27,8 @@ namespace Web.API
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            //builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+            builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+            builder.Services.AddAutoMapper(typeof(MapProfile));
 
             builder.Services.AddDbContext<Stock_TrackingDbContext>(options =>
             {
