@@ -1,4 +1,13 @@
 
+using Data.Abstract;
+using Data.Abstract.UnitOfWorks;
+using Data.Concrete;
+using Data.Concrete.UnitOfWork;
+using Data.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Service.Abstract;
+using System.Reflection;
+
 namespace Web.API
 {
     public class Program
@@ -14,24 +23,35 @@ namespace Web.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            //builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+            builder.Services.AddDbContext<Stock_TrackingDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), sqlOptions =>
+                {
+                    sqlOptions.MigrationsAssembly(typeof(Stock_TrackingDbContext).Assembly.GetName().Name);
+                });
+            });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                // Configure the HTTP request pipeline.
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+                app.UseAuthorization();
 
 
-            app.MapControllers();
+                app.MapControllers();
 
-            app.Run();
+                app.Run();
         }
     }
 }
