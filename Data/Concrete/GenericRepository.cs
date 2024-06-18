@@ -29,44 +29,49 @@ namespace Data.Concrete
 
         public async Task CreateAsync(T entity)
         {
-            _dbSet.Add(entity);
-            await _context.SaveChangesAsync();
+            await _dbSet.AddAsync(entity);
+            
         }
 
         public async Task CreateRangeAsync(IEnumerable<T> entities)
         {
 
-            _context.AddRange(entities);
-            await _context.SaveChangesAsync();
+            await _context.AddRangeAsync(entities);
 
         }
 
-        public async Task DeleteAsync(T entity)
+        public void Delete(T entity)
         {
             entity.IsDeleted = true;
-            await _context.SaveChangesAsync();
+            
         }
 
         public void DeleteRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
-            _context.SaveChanges();
+            
         }
 
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetAll()
         {
             return _dbSet.AsNoTracking().AsQueryable();
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            var entity = await _dbSet.FindAsync(id);
+
+            if (entity == null)
+            {
+                throw new Exception("Entity with Id " + id + " not found.");
+            }
+            return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public void Update(T entity)
         {
             _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            
         }
 
         public IQueryable<T> Where(Expression<Func<T, bool>> expression)

@@ -10,12 +10,12 @@ namespace Service.Abstract
     public interface IGenericService<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
-        IQueryable<T> GetAll(Expression<Func<T, bool>> expression); // Task<IEnumerable<T>> GetAllAsync(); de olabilir tüm datayı çeker
+        Task<IEnumerable<T>> GetAllAsync(); // Task<IEnumerable<T>> GetAllAsync(); de olabilir tüm datayı çeker
         IQueryable<T> Where(Expression<Func<T, bool>> expression); // where ile veritabanına yapışacak olan sorgu oluşturuluyor, sorgu yapılmıyor
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
-        Task CreateRangeAsync(IEnumerable<T> entities); // birden fazla kayıt, 
-        Task CreateAsync(T entity);
-        Task Update(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
+        Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities); // birden fazla kayıt, 
+        Task<T> CreateAsync(T entity);
+        Task UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
         Task DeleteAsync(T entity); // void de olabilir
         Task DeleteRangeAsync(IEnumerable<T> entities);
     }
