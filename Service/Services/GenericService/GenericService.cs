@@ -1,14 +1,9 @@
 ﻿using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
-using Service.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Service.Concrete
+
+namespace Service.Services.GenericService
 {
     public class GenericService<T> : IGenericService<T> where T : class
     {
@@ -23,7 +18,7 @@ namespace Service.Concrete
 
         public async Task<bool> AnyAsync(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
-           return await _repository.AnyAsync(expression);
+            return await _repository.AnyAsync(expression);
         }
 
         public async Task<T> CreateAsync(T entity)

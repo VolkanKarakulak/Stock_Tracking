@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using Entity.Concrete;
+using Data.Entities;
 using Service.DTOs.CategoryDtos;
 using Service.DTOs.ProductDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Mapping
 {

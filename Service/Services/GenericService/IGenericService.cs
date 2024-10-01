@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Abstract
+namespace Service.Services.GenericService
 {
     public interface IGenericService<T> where T : class
     {

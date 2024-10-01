@@ -2,9 +2,8 @@ using Data.Contexts;
 using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
-using Service.Abstract;
-using Service.Concrete;
 using Service.Mapping;
+using Service.Services.GenericService;
 using System.Reflection;
 
 namespace Web.API
