@@ -1,5 +1,5 @@
-﻿using Data.Abstract;
-using Data.Abstract.UnitOfWorks;
+﻿using Data.Repositories.GenericRepositories;
+using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Service.Abstract;
 using System;

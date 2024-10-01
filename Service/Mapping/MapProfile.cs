@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Data.DTOs.CategoryDtos;
-using Data.DTOs.ProductDtos;
 using Entity.Concrete;
+using Service.DTOs.CategoryDtos;
+using Service.DTOs.ProductDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

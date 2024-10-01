@@ -1,5 +1,4 @@
-﻿using Data.Abstract;
-using Data.Contexts;
+﻿using Data.Contexts;
 using Entity.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Concrete
+namespace Data.Repositories.GenericRepositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
@@ -24,13 +23,13 @@ namespace Data.Concrete
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
-           return await _dbSet.AnyAsync(expression);
+            return await _dbSet.AnyAsync(expression);
         }
 
         public async Task CreateAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
-            
+
         }
 
         public async Task CreateRangeAsync(IEnumerable<T> entities)
@@ -43,13 +42,13 @@ namespace Data.Concrete
         public void Delete(T entity)
         {
             entity.IsDeleted = true;
-            
+
         }
 
         public void DeleteRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
-            
+
         }
 
         public IQueryable<T> GetAll()
@@ -71,7 +70,7 @@ namespace Data.Concrete
         public void Update(T entity)
         {
             _dbSet.Update(entity);
-            
+
         }
 
         public IQueryable<T> Where(Expression<Func<T, bool>> expression)

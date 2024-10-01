@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Data.DTOs.ProductDtos;
-using Data.DTOs.ResponseDto;
 using Entity.Concrete;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstract;
+using Service.DTOs.ProductDtos;
+using Service.DTOs.ResponseDto;
 
 namespace Web.API.Controllers
 {

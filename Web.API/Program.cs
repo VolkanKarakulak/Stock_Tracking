@@ -1,9 +1,6 @@
-
-using Data.Abstract;
-using Data.Abstract.UnitOfWorks;
-using Data.Concrete;
-using Data.Concrete.UnitOfWork;
 using Data.Contexts;
+using Data.Repositories.GenericRepositories;
+using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Service.Abstract;
 using Service.Concrete;

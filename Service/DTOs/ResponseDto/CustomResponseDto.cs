@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Data.DTOs.ResponseDto
+namespace Service.DTOs.ResponseDto
 {
     public class CustomResponseDto<T>
     {

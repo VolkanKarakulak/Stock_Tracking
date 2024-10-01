@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.DTOs.ResponseDto
+namespace Service.DTOs.ResponseDto
 {
     public class EmptyContentDto
     {

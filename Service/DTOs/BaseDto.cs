@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.DTOs
+namespace Service.DTOs
 {
     public abstract class BaseDto
     {
