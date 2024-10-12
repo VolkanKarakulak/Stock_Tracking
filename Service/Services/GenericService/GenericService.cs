@@ -1,6 +1,7 @@
 ﻿using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 
 namespace Service.Services.GenericService
@@ -52,6 +53,11 @@ namespace Service.Services.GenericService
             return await _repository.GetAll().ToListAsync();
         }
 
+        public IQueryable<T> GetBy(Expression<Func<T, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
@@ -62,9 +68,6 @@ namespace Service.Services.GenericService
             _repository.Update(entity);
             await _unitOfWork.CommitAsync();
         }
-        public IQueryable<T> Where(System.Linq.Expressions.Expression<Func<T, bool>> expression)
-        {
-            return _repository.Where(expression);
-        }
+        
     }
 }

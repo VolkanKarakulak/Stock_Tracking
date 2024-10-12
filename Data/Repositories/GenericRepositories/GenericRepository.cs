@@ -34,6 +34,11 @@ namespace Data.Repositories.GenericRepositories
             await _context.AddRangeAsync(entities);
 
         }
+        public void Update(T entity)
+        {
+            _dbSet.Update(entity);
+
+        }
 
         public void Delete(T entity)
         {
@@ -52,6 +57,11 @@ namespace Data.Repositories.GenericRepositories
             return _dbSet.AsNoTracking().AsQueryable();
         }
 
+        public IQueryable<T> GetBy(Expression<Func<T, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             var entity = await _dbSet.FindAsync(id);
@@ -63,15 +73,11 @@ namespace Data.Repositories.GenericRepositories
             return entity;
         }
 
-        public void Update(T entity)
+        public Task<(int, int, IQueryable<T>)> GetPagedAsync(int pageNumber, int pageSize, bool? isActive)
         {
-            _dbSet.Update(entity);
-
+            throw new NotImplementedException();
         }
 
-        public IQueryable<T> Where(Expression<Func<T, bool>> expression)
-        {
-            return _dbSet.Where(expression);
-        }
+        
     }
 }

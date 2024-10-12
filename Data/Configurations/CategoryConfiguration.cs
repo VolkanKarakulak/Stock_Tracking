@@ -10,7 +10,7 @@ namespace Data.Configurations
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id).UseIdentityColumn(); // sql.server nuget paketinin yüklenmesi gerekiyor bu metodun kullanılabşlmesi için
+            builder.Property(c => c.Id).UseIdentityColumn(); // sql.server nuget paketinin yüklenmesi gerekiyor bu metodun kullanılabilmesi için
             builder.Property(c =>c.Name).IsRequired().HasMaxLength(50);
             builder.Property(c => c.Description).HasMaxLength(500);
 

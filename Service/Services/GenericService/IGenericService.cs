@@ -11,7 +11,7 @@ namespace Service.Services.GenericService
     {
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync(); // Task<IEnumerable<T>> GetAllAsync(); de olabilir tüm datayı çeker
-        IQueryable<T> Where(Expression<Func<T, bool>> expression); // where ile veritabanına yapışacak olan sorgu oluşturuluyor, sorgu yapılmıyor
+        IQueryable<T> GetBy(Expression<Func<T, bool>> expression); // where ile veritabanına yapışacak olan sorgu oluşturuluyor, sorgu yapılmıyor
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities); // birden fazla kayıt, 
         Task<T> CreateAsync(T entity);

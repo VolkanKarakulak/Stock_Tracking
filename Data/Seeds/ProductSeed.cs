@@ -17,7 +17,7 @@ namespace Data.Seeds
                  CategoryId = 1,
                  Price = 3500,
                  Stock = 15,
-                 CreateDate = DateTime.Now,
+                
              },
              new Product
              {
@@ -26,7 +26,7 @@ namespace Data.Seeds
                  CategoryId = 3,
                  Price = 5500,
                  Stock = 5,
-                 CreateDate = DateTime.Now,
+                
              });
         }
     }
