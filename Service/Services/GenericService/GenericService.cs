@@ -17,7 +17,7 @@ namespace Service.Services.GenericService
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> AnyAsync(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
             return await _repository.AnyAsync(expression);
         }

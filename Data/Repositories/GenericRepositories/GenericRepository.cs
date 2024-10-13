@@ -1,7 +1,9 @@
 ﻿using Data.Contexts;
 using Data.Entities;
+using Data.EntityHelper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+
 
 
 namespace Data.Repositories.GenericRepositories
@@ -22,10 +24,11 @@ namespace Data.Repositories.GenericRepositories
             return await _dbSet.AnyAsync(expression);
         }
 
-        public async Task CreateAsync(T entity)
+        public async Task<T?> CreateAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-
+            entity.IsActive = true;
+            var result = await _dbSet.AddAsync(entity);
+            return result.State != EntityState.Added ? null : entity;
         }
 
         public async Task CreateRangeAsync(IEnumerable<T> entities)
@@ -34,21 +37,47 @@ namespace Data.Repositories.GenericRepositories
             await _context.AddRangeAsync(entities);
 
         }
-        public void Update(T entity)
+        public async Task<bool> IsEntityUpdateableAsync(int id)
         {
-            _dbSet.Update(entity);
-
+            return await _dbSet.AnyAsync(x => x.Id == id && !x.IsDeleted);
         }
+        public T Update(T entity)
+        {
+            var entry = _context.Entry(entity);
 
-        public void Delete(T entity)
+            // Eğer entity 'Detached' durumda ise, eski varlığı bul.
+            if (entry.State == EntityState.Detached)
+            {
+                var entityHelper = new EntityHelper<T>(_context);
+
+                var oldEntity = entityHelper.GetOldEntity(entity.Id);
+                if (oldEntity != null)
+                {
+                    entityHelper.UpdateEntityProperties(oldEntity, entity);
+                    return oldEntity; // Güncellenmiş eski varlık döndürülüyor.
+                }
+            }
+            else
+            {
+                // Mevcut varlığı güncelle.
+                _dbSet.Add(entity);
+            }
+
+            return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
+        }
+       
+
+        public bool Delete(T entity)
         {
             entity.IsDeleted = true;
+            return true;
 
         }
 
-        public void DeleteRange(IEnumerable<T> entities)
+        public bool DeleteRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
+            return true;
 
         }
 
