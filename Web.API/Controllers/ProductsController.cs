@@ -55,9 +55,7 @@ namespace Web.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _service.GetByIdAsync(id);
-
-            await _service.DeleteAsync(product);
+            await _service.DeleteAsync(id);
    
             return CreateActionResult(CustomResponseDto<EmptyContentDto>.Success(204));
         }

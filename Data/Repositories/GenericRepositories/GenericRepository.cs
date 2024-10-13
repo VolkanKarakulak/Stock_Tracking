@@ -53,6 +53,7 @@ namespace Data.Repositories.GenericRepositories
                 var oldEntity = entityHelper.GetOldEntity(entity.Id);
                 if (oldEntity != null)
                 {
+                    entry.Property("IsDeleted").CurrentValue = oldEntity.IsDeleted;
                     entityHelper.UpdateEntityProperties(oldEntity, entity);
                     return oldEntity; // Güncellenmiş eski varlık döndürülüyor.
                 }
@@ -67,23 +68,30 @@ namespace Data.Repositories.GenericRepositories
         }
        
 
-        public bool Delete(T entity)
+        public bool Delete(int id)
         {
-            entity.IsDeleted = true;
-            return true;
+            var entity = _dbSet.Find(id);
+            if (entity != null && !entity.IsDeleted)
+            {
+                entity.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+                entity.IsDeleted = true;
+                entity.IsActive = false;
+                return true;
+            }
+            return false;
 
         }
 
         public bool DeleteRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
-            return true;
+            return _context.SaveChanges() > 0;
 
         }
 
-        public IQueryable<T> GetAll()
+        public async Task<IQueryable<T>> GetAllAsync()
         {
-            return _dbSet.AsNoTracking().AsQueryable();
+            return await Task.FromResult(_dbSet.AsNoTracking().AsQueryable());
         }
 
         public IQueryable<T> GetBy(Expression<Func<T, bool>> expression)

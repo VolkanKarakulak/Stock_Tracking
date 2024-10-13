@@ -16,7 +16,7 @@ namespace Service.Services.GenericService
         Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities); // birden fazla kayıt, 
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
-        Task DeleteAsync(T entity); // void de olabilir
+        Task DeleteAsync(int id); // void de olabilir
         Task DeleteRangeAsync(IEnumerable<T> entities);
     }
 }

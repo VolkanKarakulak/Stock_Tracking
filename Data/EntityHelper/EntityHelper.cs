@@ -10,13 +10,13 @@ namespace Data.EntityHelper
 {
     public class EntityHelper<T> where T : BaseEntity
     {
-        private readonly DbSet<T> _dbSet;
         private readonly DbContext _context;
+        private readonly DbSet<T> _dbSet;    
 
         public EntityHelper(DbContext context)
-        {
-            _dbSet = _context.Set<T>();
+        {           
             _context = context;
+            _dbSet = _context.Set<T>();
         }
 
         public T? GetOldEntity(int id)

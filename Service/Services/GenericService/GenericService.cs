@@ -36,10 +36,13 @@ namespace Service.Services.GenericService
             return entities;
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(entity);
-            await _unitOfWork.CommitAsync();
+            var result = _repository.Delete(id);
+            if (result)
+            {
+                await _unitOfWork.CommitAsync();
+            }
         }
 
         public async Task DeleteRangeAsync(IEnumerable<T> entities)
@@ -50,7 +53,8 @@ namespace Service.Services.GenericService
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _repository.GetAll().ToListAsync();
+            var entities = await _repository.GetAllAsync();
+            return entities.ToList();
         }
 
         public IQueryable<T> GetBy(Expression<Func<T, bool>> expression)
