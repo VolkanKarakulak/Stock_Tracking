@@ -15,6 +15,7 @@ namespace Data.Entities
         public string? Color { get; set; }
         public string? Material { get; set; }
         public Category? Category { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
 
 
     }
