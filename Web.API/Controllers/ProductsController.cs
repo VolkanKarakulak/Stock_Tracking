@@ -49,7 +49,7 @@ namespace Web.API.Controllers
         public async Task<IActionResult> Update(ProductUpdateDto productUpdateDto)
         {
             await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));  
-            return CreateActionResult(CustomResponseDto<EmptyContentDto>.Success(204));
+            return CreateActionResult(CustomResponseDto<ProductUpdateDto>.Success(200, productUpdateDto));
         }
 
         [HttpDelete("{id}")]
