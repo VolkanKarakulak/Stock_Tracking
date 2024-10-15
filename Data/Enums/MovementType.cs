@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Enums
 {
-    public enum MovementType
+    public enum MovementType : byte
     {
         In = 1,  // Giriş
         Out = 2 // Çıkış
