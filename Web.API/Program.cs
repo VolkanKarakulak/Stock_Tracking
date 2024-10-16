@@ -3,8 +3,8 @@ using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Service.Mapping;
-using Service.Services.GenericService;
-using System.Reflection;
+using Service.Extensions;
+using Data.Extensions;
 
 namespace Web.API
 {
@@ -20,8 +20,9 @@ namespace Web.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();         
-            builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             builder.Services.AddAutoMapper(typeof(MapProfile));
+            builder.Services.AddServiceExtensions();
+            builder.Services.AddRepositoryExtensions();
 
             builder.Services.AddDbContext<Stock_TrackingDbContext>(options =>
             {

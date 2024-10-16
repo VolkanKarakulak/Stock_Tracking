@@ -12,7 +12,7 @@ namespace Data.Extensions
 {
     public static class RepositoryExtensions
     {
-        public static void AddRepositoryServices(this IServiceCollection services)
+        public static void AddRepositoryExtensions(this IServiceCollection services)
         {
             // Repositories
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

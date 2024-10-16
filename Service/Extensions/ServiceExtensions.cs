@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Service.Services.GenericService;
+using Service.Services.ProductService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Service.Extensions
         { 
 
             service.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+            service.AddScoped<IProductService, ProductService>();
 
         }
 
