@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ResponseDto;
 using Service.Services.GenericService;
+using Service.Services.ProductService;
 
 namespace Web.API.Controllers
 {
@@ -13,8 +14,8 @@ namespace Web.API.Controllers
     public class ProductsController :  CustomBaseController
     {
         private readonly IMapper _mapper;
-        private readonly IGenericService<Product> _service;
-        public ProductsController(IGenericService<Product> service, IMapper mapper)
+        private readonly IProductService _service;
+        public ProductsController(IProductService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;

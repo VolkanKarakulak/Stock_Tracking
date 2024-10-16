@@ -12,9 +12,6 @@ namespace Data.Entities
     {
         public required string Name { get; set; }
 
-        [Length(1, 200)]
-        [Column(TypeName = "nvarchar(200)")]
-
         public ICollection<Product>? Products { get; set; }
     }
 }
