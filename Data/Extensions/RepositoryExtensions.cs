@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Extensions
 {
-    public static class DataRepositoryExtensions
+    public static class RepositoryExtensions
     {
         public static void AddRepositoryServices(this IServiceCollection services)
         {

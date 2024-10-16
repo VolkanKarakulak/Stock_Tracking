@@ -11,9 +11,9 @@ namespace Service.Mapping
     {
         private static readonly Lazy<IMapper> lazy = new Lazy<IMapper>(() =>
         {
-            var config = new MapperConfiguration(cfg =>
+            var config = new MapperConfiguration(mc =>
             {
-                cfg.AddProfile<MapProfile>();
+                mc.AddProfile<MapProfile>();
             });
             return config.CreateMapper();
         });
