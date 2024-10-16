@@ -110,9 +110,23 @@ namespace Data.Repositories.GenericRepositories
             return entity;
         }
 
-        public Task<(int, int, IQueryable<T>)> GetPagedAsync(int pageNumber, int pageSize, bool? isActive)
+        public async Task<(int, int, IQueryable<T>)> GetPagedAsync(int pageNumber, int pageSize)
         {
-            throw new NotImplementedException();
+           int totalCount = await _dbSet.Where(x => !x.IsDeleted).CountAsync();
+           int totalPages = (int)Math.Ceiling((double)totalCount/pageSize);
+
+            if(pageNumber < 1 || pageNumber > totalPages) 
+            { 
+                return(0, 0, Enumerable.Empty<T>().AsQueryable());
+            }
+
+            var paged = await _dbSet
+                .Where(x => !x.IsDeleted)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync();
+            return (totalPages, totalCount, paged.AsQueryable());
         }
 
         

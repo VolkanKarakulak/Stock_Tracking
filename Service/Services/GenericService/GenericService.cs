@@ -1,7 +1,13 @@
-﻿using Data.Repositories.GenericRepositories;
+﻿using AutoMapper.Internal.Mappers;
+using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
+using Service.DTOs.PaginationDto;
+using Service.DTOs.ProductDtos;
+using Service.DTOs.ResponseDto;
+using Service.Mapping;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 
 
 namespace Service.Services.GenericService
@@ -65,6 +71,28 @@ namespace Service.Services.GenericService
         public async Task<T> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task<PagedResponseDto<IEnumerable<T>>> GetPagedAsync(PaginationDto paginationDto)
+        {
+           var paged = await _repository.GetPagedAsync(paginationDto.PageNumber, paginationDto.PageSize);
+
+            //if (!paged.Item3.Any())
+            //{
+            //    throw new PageNotFoundException();
+            //}
+           var mappedItems = ObjectMapper.Mapper.Map<IEnumerable<T>>(paged.Item3);
+           
+
+           var pagedResponse = new PagedResponseDto<IEnumerable<T>>
+           {
+               PagedDto = mappedItems,
+               TotalPages = paged.Item1,
+               PageNumber = paginationDto.PageNumber,
+               TotalCount = paged.Item2
+           };
+
+          return pagedResponse;
         }
 
         public async Task UpdateAsync(T entity)
