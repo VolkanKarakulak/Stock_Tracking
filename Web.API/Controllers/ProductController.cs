@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Service.DTOs.PaginationDto;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ResponseDto;
 using Service.DTOs.ResponseDtos;
@@ -61,6 +62,15 @@ namespace Web.API.Controllers
                     
             return ResponseBuilder.CreateResponse(result, true, "Başarılı");
 
+        }
+
+        [HttpPost]
+        [Route("GetPagedByCategoryId")]
+        public async Task<ResponseDto> Page(int categoryId, PaginationDto paginationDto)
+        {
+            var result = await _service.GetProductsByCategoryIdPagedAsync(categoryId, paginationDto);
+
+            return ResponseBuilder.CreateResponse(result, true, "Başarılı");
         }
     }
     

@@ -1,4 +1,5 @@
 ﻿using Data.Repositories.GenericRepositories;
+using Data.Repositories.ProductRepositories;
 using Data.UnitOfWorks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,6 +20,7 @@ namespace Data.Extensions
 
             // UnitOfWorks
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
     }
 }

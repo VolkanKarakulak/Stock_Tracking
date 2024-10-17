@@ -15,6 +15,8 @@ namespace Service.Mapping
 
 
             CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<CategoryUpdateDto, Category>().ReverseMap();
+            CreateMap<CategoryAddDto, Category>().ReverseMap();
 
         }
     }

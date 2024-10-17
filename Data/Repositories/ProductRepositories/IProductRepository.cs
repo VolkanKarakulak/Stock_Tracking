@@ -10,5 +10,6 @@ namespace Data.Repositories.ProductRepositories
 {
     public interface IProductRepository : IGenericRepository<Product>
     {
+        Task<(int totalpage, int totalcount, IQueryable<Product>)> GetProductByCategoryIdPagedAsync(int categoryId, int pageNumber, int pageSize);
     }
 }

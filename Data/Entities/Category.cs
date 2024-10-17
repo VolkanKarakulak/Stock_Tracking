@@ -13,5 +13,6 @@ namespace Data.Entities
         public required string Name { get; set; }
 
         public ICollection<Product>? Products { get; set; }
+        public ICollection<ProductCategory> CourseCategories { get; set; }
     }
 }

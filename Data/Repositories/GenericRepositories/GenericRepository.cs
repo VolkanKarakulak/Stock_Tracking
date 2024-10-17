@@ -3,6 +3,7 @@ using Data.Entities;
 using Data.EntityHelper;
 using Data.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq.Expressions;
 
 
@@ -99,7 +100,7 @@ namespace Data.Repositories.GenericRepositories
 
         public IQueryable<T> GetBy(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _dbSet.Where(expression);
         }
 
         public async Task<T> GetByIdAsync(int id)
