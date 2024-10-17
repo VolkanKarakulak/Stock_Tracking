@@ -1,14 +1,11 @@
-﻿using AutoMapper.Internal.Mappers;
-using Data.Interceptors;
-using Data.Repositories.GenericRepositories;
+﻿using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
-using Microsoft.EntityFrameworkCore;
+using Service.Exceptions.NotFoundExeptions;
 using Service.DTOs.PaginationDto;
-using Service.DTOs.ProductDtos;
 using Service.DTOs.ResponseDto;
 using Service.Mapping;
 using System.Linq.Expressions;
-using System.Runtime.Serialization;
+
 
 
 namespace Service.Services.GenericService
@@ -44,13 +41,17 @@ namespace Service.Services.GenericService
             return entities;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var result = _repository.Delete(id);
-            if (result)
+            
+            var entity = _repository.Delete(id);
+
+            if (entity)
             {
                 await _unitOfWork.CommitAsync();
+                return true;
             }
+            throw new DataNotFoundException();
         }
 
         public async Task DeleteRangeAsync(IEnumerable<T> entities)
