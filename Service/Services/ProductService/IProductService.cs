@@ -9,6 +9,6 @@ namespace Service.Services.ProductService
 {
     public interface IProductService : IGenericService<Product>
     {
-        Task<PagedResponseDto<IEnumerable<ProductDto>>> GetPagedCategoryAsync(PaginationDto paginationDto);
+        Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto);
     }
 }
