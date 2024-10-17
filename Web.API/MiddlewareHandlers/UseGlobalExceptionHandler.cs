@@ -30,10 +30,19 @@ namespace Web.API.MiddlewareHandlers
                     };
                     context.Response.StatusCode = statusCode;
 
-                    var response = CustomResponseDto<EmptyContentDto>.Failed(statusCode, exceptionFeature.Error.Message);
+                    var response = new ResponseDto()
+                    {
+                        IsSuccess = false,
+                        StatusCode = statusCode,
+                        Message = exceptionFeature.Error.Message,
+                        IsShow = statusCode switch
+                        {
+                            500 => false,
+                            _ => true
+                        }
 
-                    var jsonResponse = JsonSerializer.Serialize(response);
-                    await context.Response.WriteAsync(jsonResponse);
+                    };
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(response));
                 });
             });
         }

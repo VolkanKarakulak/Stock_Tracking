@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Service.Mapping;
 using Service.Extensions;
 using Data.Extensions;
+using Web.API.MiddlewareHandlers;
 
 namespace Web.API
 {
@@ -42,7 +43,7 @@ namespace Web.API
                 }
 
                 app.UseHttpsRedirection();
-
+                app.ConfigureExceptionHandling();
                 app.UseAuthorization();
 
 
