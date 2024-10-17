@@ -11,7 +11,7 @@ namespace Web.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController :  CustomBaseController
+    public class ProductController :  ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IProductService _service;
@@ -23,49 +23,45 @@ namespace Web.API.Controllers
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ResponseDto> GetAll()
         {
             var product = await _service.GetAllAsync();
-            var productsDtos = _mapper.Map<List<ProductDto>>(product.ToList());
+            var productDtos = _mapper.Map<List<ProductDto>>(product.ToList());
             //return Ok(CustomResponseDto<List<ProductDto>>.Success(200, productsDtos));
-            return CreateActionResult(CustomResponseDto<List<ProductDto>>.Success(200, productsDtos));
+            return ResponseBuilder.CreateResponse(productDtos, true, "Başarılı");
         }
-
+    
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ResponseDto> GetById(int id)
         {
             var product = await _service.GetByIdAsync(id);
-            var productsDto = _mapper.Map<ProductDto>(product);
-            return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productsDto));
+            var productDto = _mapper.Map<ProductDto>(product);
+            return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductAddDto productAddDto)
+        public async Task<ResponseDto> Create(ProductAddDto productAddDto)
         {
             var product = await _service.CreateAsync(_mapper.Map<Product>(productAddDto));
             var productDto = _mapper.Map<ProductDto>(product);
-            return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productDto));
+            return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(ProductUpdateDto productUpdateDto)
+        public async Task<ResponseDto> Update(ProductUpdateDto productUpdateDto)
         {
-            await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));  
-            return CreateActionResult(CustomResponseDto<ProductUpdateDto>.Success(200, productUpdateDto));
+            await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));
+            return ResponseBuilder.CreateResponse(productUpdateDto, true, "Başarılı");
         }
 
         [HttpDelete("{id}")]
         public async Task<ResponseDto> Delete(int id)
         {
             var result = await _service.DeleteAsync(id);
+                    
+            return ResponseBuilder.CreateResponse(result, true, "Başarılı");
 
-            return new ResponseDto
-            {
-                Data = result,
-                StatusCode = 204,
-                Message = "Başarılı",
-                IsSuccess = true
-            };
         }
     }
+    
 }
