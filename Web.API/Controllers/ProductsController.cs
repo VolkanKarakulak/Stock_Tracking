@@ -39,11 +39,11 @@ namespace Web.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductDto productDto)
+        public async Task<IActionResult> Create(ProductAddDto productAddDto)
         {
-            var product = await _service.CreateAsync(_mapper.Map<Product>(productDto));
-            var productsDto = _mapper.Map<ProductDto>(product);
-            return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productsDto));
+            var product = await _service.CreateAsync(_mapper.Map<Product>(productAddDto));
+            var productDto = _mapper.Map<ProductDto>(product);
+            return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productDto));
         }
 
         [HttpPut]

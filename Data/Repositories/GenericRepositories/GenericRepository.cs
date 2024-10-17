@@ -1,6 +1,7 @@
 ﻿using Data.Contexts;
 using Data.Entities;
 using Data.EntityHelper;
+using Data.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -26,6 +27,8 @@ namespace Data.Repositories.GenericRepositories
 
         public async Task<T?> CreateAsync(T entity)
         {
+            var behavior = new AddedBehavior();
+            behavior.ApplyBehavior(_context, entity);
             entity.IsActive = true;
             var result = await _dbSet.AddAsync(entity);
             return result.State != EntityState.Added ? null : entity;
