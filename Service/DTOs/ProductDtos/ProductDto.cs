@@ -14,7 +14,7 @@ namespace Service.DTOs.ProductDtos
         public int CategoryId { get; set; }
         public string? Color { get; set; }
         public string? Material { get; set; }
-        public string? Description { get; set; }
+        public string? Description { get; set; } 
 
     }
 }

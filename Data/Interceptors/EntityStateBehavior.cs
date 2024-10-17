@@ -19,7 +19,7 @@ namespace Data.Interceptors
     {
         public void ApplyBehavior(DbContext context, BaseEntity entity)
         {
-            entity.CreatedDate = DateTime.Now;
+            entity.CreatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
             entity.IsActive = true;
             context.Entry(entity).Property(x => x.UpdatedDate).IsModified = false;
         }
@@ -30,7 +30,7 @@ namespace Data.Interceptors
     {
         public void ApplyBehavior(DbContext context, BaseEntity entity)
         {
-            entity.UpdatedDate = DateTime.Now;
+            entity.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
             context.Entry(entity).Property(x => x.CreatedDate).IsModified = false;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper.Internal.Mappers;
+using Data.Interceptors;
 using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace Service.Services.GenericService
 
         public async Task<T> CreateAsync(T entity)
         {
+            
             await _repository.CreateAsync(entity);
             await _unitOfWork.CommitAsync();
             return entity;
