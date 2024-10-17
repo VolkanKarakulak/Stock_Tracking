@@ -1,27 +1,28 @@
 ﻿using AutoMapper;
 using Data.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ResponseDto;
-using Service.Services.GenericService;
+using Service.DTOs.ResponseDtos;
+using Service.Exceptions.NotFoundExeptions;
 using Service.Services.ProductService;
 
 namespace Web.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController :  CustomBaseController
+    public class ProductController :  CustomBaseController
     {
         private readonly IMapper _mapper;
         private readonly IProductService _service;
-        public ProductsController(IProductService service, IMapper mapper)
+        public ProductController(IProductService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
         }
 
         [HttpGet]
+        [Route("all")]
         public async Task<IActionResult> GetAll()
         {
             var product = await _service.GetAllAsync();
@@ -54,13 +55,17 @@ namespace Web.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ResponseDto> Delete(int id)
         {
-            await _service.DeleteAsync(id);
-   
-            return CreateActionResult(CustomResponseDto<EmptyContentDto>.Success(204));
+            var result = await _service.DeleteAsync(id);
+
+            return new ResponseDto
+            {
+                Data = result,
+                StatusCode = 204,
+                Message = "Başarılı",
+                IsSuccess = true
+            };
         }
-
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Service.DTOs.ResponseDto;
+using Service.DTOs.ResponseDtos;
 
 namespace Web.API.Controllers
 {
