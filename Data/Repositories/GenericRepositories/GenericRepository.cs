@@ -35,10 +35,12 @@ namespace Data.Repositories.GenericRepositories
             return result.State != EntityState.Added ? null : entity;
         }
 
-        public async Task CreateRangeAsync(IEnumerable<T> entities)
+        public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
         {
 
             await _context.AddRangeAsync(entities);
+
+            return entities;
 
         }
         public async Task<bool> IsEntityUpdateableAsync(int id)

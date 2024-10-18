@@ -48,6 +48,15 @@ namespace Web.API.Controllers
             return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
         }
 
+        [HttpPost]
+        [Route("CreateRange")]
+        public async Task<ResponseDto> CreateRange(IEnumerable<ProductAddDto> productAddDtos)
+        {
+            var product = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<Product>>(productAddDtos));
+            var productDto = _mapper.Map<IEnumerable<ProductDto>>(product);
+            return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
+        }
+
         [HttpPut]
         public async Task<ResponseDto> Update(ProductUpdateDto productUpdateDto)
         {
