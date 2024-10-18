@@ -10,7 +10,7 @@ namespace Data.Repositories.GenericRepositories
         Task<IQueryable<T>> GetAllAsync();
         IQueryable<T> GetBy(Expression<Func<T, bool>> expression); // where ile veritabanına yapılacak olan sorgu oluşturuluyor, sorgu yapılmıyor
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
-        Task CreateRangeAsync(IEnumerable<T> entities);
+        Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities);
         Task<T?> CreateAsync(T entity);
         T Update(T entity); 
         Task<bool> IsEntityUpdateableAsync(int id);
