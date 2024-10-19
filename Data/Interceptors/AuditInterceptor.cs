@@ -26,11 +26,12 @@ namespace Data.Interceptors
 
             foreach (var entry in context.ChangeTracker.Entries().ToList())
             {
-                if (entry.Entity is not IEnumerable<BaseEntity> entity) continue;
+                if (entry.Entity is not BaseEntity entity) continue;
 
                 if (Behaviors.TryGetValue(entry.State, out var behavior))
                 {
                     behavior.ApplyBehavior(context, entity);
+               
                 }
             }
 
