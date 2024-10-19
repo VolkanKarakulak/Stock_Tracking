@@ -11,27 +11,35 @@ namespace Data.Interceptors
     // IEntityStateBehavior interface tanımı
     public interface IEntityStateBehavior
     {
-        void ApplyBehavior(DbContext context, BaseEntity entity);
+        void ApplyBehavior(DbContext context, IEnumerable<BaseEntity> entities);
     }
 
     // AddedBehavior sınıfı, IEntityStateBehavior'u implement eder
     public class AddedBehavior : IEntityStateBehavior
     {
-        public void ApplyBehavior(DbContext context, BaseEntity entity)
+        public void ApplyBehavior(DbContext context, IEnumerable<BaseEntity> entity)
         {
-            entity.CreatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
-            entity.IsActive = true;
-            context.Entry(entity).Property(x => x.UpdatedDate).IsModified = false;
+            foreach(var item in entity)
+            {
+                item.CreatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+                item.IsActive = true;
+                context.Entry(item).Property(x => x.UpdatedDate).IsModified = false;
+            }
+           
         }
     }
 
     // ModifiedBehavior sınıfı, IEntityStateBehavior'u implement eder
     public class ModifiedBehavior : IEntityStateBehavior
     {
-        public void ApplyBehavior(DbContext context, BaseEntity entity)
+        public void ApplyBehavior(DbContext context, IEnumerable<BaseEntity> entity)
         {
-            entity.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
-            context.Entry(entity).Property(x => x.CreatedDate).IsModified = false;
+            foreach(var item in entity)
+            {
+                item.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+                context.Entry(item).Property(x => x.CreatedDate).IsModified = false;
+            }
+            
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Data.Repositories.GenericRepositories
         public async Task<T?> CreateAsync(T entity)
         {
             var behavior = new AddedBehavior();
-            behavior.ApplyBehavior(_context, entity);
+            behavior.ApplyBehavior(_context, new List<T> { entity });
             entity.IsActive = true;
             var result = await _dbSet.AddAsync(entity);
             return result.State != EntityState.Added ? null : entity;
@@ -37,7 +37,13 @@ namespace Data.Repositories.GenericRepositories
 
         public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
         {
+            var behavior = new AddedBehavior();
 
+            behavior.ApplyBehavior(_context, entities);
+            foreach (var item in entities)
+            {
+                item.IsActive = true;
+            }
             await _context.AddRangeAsync(entities);
 
             return entities;
