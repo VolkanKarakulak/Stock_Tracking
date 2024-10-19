@@ -65,6 +65,8 @@ namespace Data.Repositories.GenericRepositories
                 var oldEntity = entityHelper.GetOldEntity(entity.Id);
                 if (oldEntity != null)
                 {
+                    var behavior = new ModifiedBehavior();
+                    behavior.ApplyBehavior(_context, entity);
                     entry.Property("IsDeleted").CurrentValue = oldEntity.IsDeleted;
                     entityHelper.UpdateEntityProperties(oldEntity, entity);
                     return oldEntity; // Güncellenmiş eski varlık döndürülüyor.
