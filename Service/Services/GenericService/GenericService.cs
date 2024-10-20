@@ -80,11 +80,11 @@ namespace Service.Services.GenericService
         {
            var paged = await _repository.GetPagedAsync(paginationDto.PageNumber, paginationDto.PageSize);
 
-            //if (!paged.Item3.Any())
-            //{
-            //    throw new PageNotFoundException();
-            //}
-           var mappedItems = ObjectMapper.Mapper.Map<IEnumerable<T>>(paged.Item3);
+            if (!paged.Item3.Any())
+            {
+                throw new PageNotFoundException();
+            }
+            var mappedItems = ObjectMapper.Mapper.Map<IEnumerable<T>>(paged.Item3);
            
 
            var pagedResponse = new PagedResponseDto<IEnumerable<T>>
