@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.DTOs.PaginationDto;
 using Service.DTOs.ProductDtos;
@@ -7,6 +8,7 @@ using Service.DTOs.ResponseDto;
 using Service.DTOs.ResponseDtos;
 using Service.Exceptions.NotFoundExeptions;
 using Service.Services.ProductService;
+using System.Linq.Expressions;
 
 namespace Web.API.Controllers
 {
@@ -67,19 +69,44 @@ namespace Web.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ResponseDto> Delete(int id)
         {
-            var result = await _service.DeleteAsync(id);
+            var data = await _service.DeleteAsync(id);
                     
-            return ResponseBuilder.CreateResponse(result, true, "Başarılı");
+            return ResponseBuilder.CreateResponse(data, true, "Başarılı");
 
+        }
+
+        [HttpPost]
+        [Route("DeleteRange")]
+        public async Task<ActionResult> DeleteRangeAsync([FromBody] IEnumerable<int> productIds)
+        {
+            int deletedCount = 0;
+            foreach (var id in productIds)
+            {
+                if (await _service.DeleteAsync(id))
+                {
+                    deletedCount++;
+                }
+            }
+            return Ok($"{deletedCount} öğe silindi.");
+        }
+
+
+        [HttpPost]
+        [Route("GetPaged")]
+        public async Task<ResponseDto> Page(PaginationDto paginationDto)
+        {
+            var data = await _service.GetPagedAsync(paginationDto);
+
+            return ResponseBuilder.CreateResponse(data, true, "Başarılı");
         }
 
         [HttpPost]
         [Route("GetPagedByCategoryId")]
         public async Task<ResponseDto> Page(int categoryId, PaginationDto paginationDto)
         {
-            var result = await _service.GetProductsByCategoryIdPagedAsync(categoryId, paginationDto);
+            var data = await _service.GetProductsByCategoryIdPagedAsync(categoryId, paginationDto);
 
-            return ResponseBuilder.CreateResponse(result, true, "Başarılı");
+            return ResponseBuilder.CreateResponse(data, true, "Başarılı");
         }
     }
     

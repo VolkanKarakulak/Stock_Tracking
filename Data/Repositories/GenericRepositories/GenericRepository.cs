@@ -142,7 +142,6 @@ namespace Data.Repositories.GenericRepositories
                 .ToListAsync();
             return (totalPages, totalCount, paged.AsQueryable());
         }
-
         
     }
 }
