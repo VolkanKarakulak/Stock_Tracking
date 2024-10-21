@@ -44,10 +44,12 @@ namespace Data.Repositories.ProductRepositories
             return _repository.Delete(id);
         }
 
-        public bool DeleteRange(IEnumerable<Product> entities)
-        {
-            return _repository.DeleteRange(entities);
-        }
+        //public bool DeleteRange(IEnumerable<int> entityIds)
+        //{
+            
+        //    return _repository.DeleteRange(entityIds);
+ 
+        //}
 
         public async Task<IQueryable<Product>> GetAllAsync()
         {

@@ -15,7 +15,7 @@ namespace Data.Repositories.GenericRepositories
         T Update(T entity); 
         Task<bool> IsEntityUpdateableAsync(int id);
         bool Delete(int id); 
-        bool DeleteRange(IEnumerable<T> entities);
+        //bool DeleteRange(IEnumerable<int> entityIds);
         Task<(int, int, IQueryable<T>)> GetPagedAsync(int pageNumber, int pageSize);
     }
 }
