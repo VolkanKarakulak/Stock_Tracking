@@ -37,42 +37,42 @@ namespace Data.Repositories.CategoryRepositories
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            return _repository.Delete(id);
         }
 
-        public bool DeleteRange(IEnumerable<Category> entities)
-        {
-            throw new NotImplementedException();
-        }
+        //public bool DeleteRange(IEnumerable<int> entityIds)
+        //{
+        //   return _repository.DeleteRange(entityIds);
+        //}
 
-        public Task<IQueryable<Category>> GetAllAsync()
+        public async Task<IQueryable<Category>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _repository.GetAllAsync();
         }
 
         public IQueryable<Category> GetBy(Expression<Func<Category, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _repository.GetBy(expression);
         }
 
-        public Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.GetByIdAsync(id);
         }
 
-        public Task<(int, int, IQueryable<Category>)> GetPagedAsync(int pageNumber, int pageSize)
+        public async Task<(int, int, IQueryable<Category>)> GetPagedAsync(int pageNumber, int pageSize)
         {
-            throw new NotImplementedException();
+            return await _repository.GetPagedAsync(pageNumber, pageSize);
         }
 
-        public Task<bool> IsEntityUpdateableAsync(int id)
+        public async Task<bool> IsEntityUpdateableAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.IsEntityUpdateableAsync(id);
         }
 
         public Category Update(Category entity)
         {
-            throw new NotImplementedException();
+           return _repository.Update(entity);
         }
     }
 }

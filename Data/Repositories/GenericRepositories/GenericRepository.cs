@@ -96,12 +96,21 @@ namespace Data.Repositories.GenericRepositories
 
         }
 
-        public bool DeleteRange(IEnumerable<T> entities)
-        {
-            _dbSet.RemoveRange(entities);
-            return _context.SaveChanges() > 0;
+        //public bool DeleteRange(IEnumerable<int> entityIds)
+        //{
 
-        }
+        //    foreach (var Id in entityIds)
+        //    {
+        //        var propertyInfo = Id.GetType().GetProperty("IsActive");
+
+        //        if(propertyInfo != null)
+        //        {
+        //            propertyInfo.SetValue(Id, false);
+        //        }
+        //    }
+        //    return _context.SaveChanges() > 0;
+
+        //}
 
         public async Task<IQueryable<T>> GetAllAsync()
         {

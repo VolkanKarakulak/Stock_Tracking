@@ -54,11 +54,15 @@ namespace Service.Services.GenericService
             throw new DataNotFoundException();
         }
 
-        public async Task DeleteRangeAsync(IEnumerable<T> entities)
-        {
-            _repository.DeleteRange(entities);
-            await _unitOfWork.CommitAsync();
-        }
+        //public async Task DeleteRangeAsync(IEnumerable<int> entityIds)
+        //{
+        //    foreach (var entityId in entityIds) 
+        //    {
+        //        _repository.Delete(entityId);
+        //    }
+            
+        //    await _unitOfWork.CommitAsync();
+        //}
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {

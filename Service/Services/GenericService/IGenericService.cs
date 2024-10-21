@@ -14,7 +14,7 @@ namespace Service.Services.GenericService
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
         Task<bool> DeleteAsync(int id); // void de olabilir
-        Task DeleteRangeAsync(IEnumerable<T> entities);
+        //Task DeleteRangeAsync(IEnumerable<int> entityIds);
         Task<PagedResponseDto<IEnumerable<T>>> GetPagedAsync(PaginationDto paginationDto);
     }
 }

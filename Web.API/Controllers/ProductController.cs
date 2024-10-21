@@ -77,10 +77,10 @@ namespace Web.API.Controllers
 
         [HttpPost]
         [Route("DeleteRange")]
-        public async Task<ActionResult> DeleteRangeAsync([FromBody] IEnumerable<int> productIds)
+        public async Task<ActionResult> DeleteRange([FromBody] IEnumerable<int> entityIds)
         {
             int deletedCount = 0;
-            foreach (var id in productIds)
+            foreach (var id in entityIds)
             {
                 if (await _service.DeleteAsync(id))
                 {
