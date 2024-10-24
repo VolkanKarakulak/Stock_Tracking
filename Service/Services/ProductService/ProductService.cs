@@ -20,7 +20,7 @@ namespace Service.Services.ProductService
         
         private readonly IProductRepository _repository;
         private readonly IGenericRepository<Category> _categoryRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork; 
 
 
         public ProductService(IProductRepository repository, IGenericRepository<Category> categoryRepository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
