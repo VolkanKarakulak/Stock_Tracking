@@ -104,8 +104,30 @@ namespace Service.Services.GenericService
 
         public async Task UpdateAsync(T entity)
         {
-            _repository.Update(entity);
-            await _unitOfWork.CommitAsync();
+            // "Id" property'sine ulaşma
+            var idProperty = entity.GetType().GetProperty("Id");
+
+            if (idProperty != null)
+            {
+                // "Id" property'sinin değerini alıyoruz
+                var entityId = (int)idProperty.GetValue(entity);
+
+                // isEntityExist kontrolü
+                var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
+
+                if (isEntityExist)
+                {
+                    // Eğer entity güncellenebilir durumdaysa update işlemini yap
+                    _repository.Update(entity);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+            else
+            {
+                // Eğer "Id" property yoksa uygun bir hata fırlatabilirsiniz.
+                throw new DataNotFoundException();
+            }
+
         }
         
     }
