@@ -109,26 +109,32 @@ namespace Service.Services.GenericService
 
             if (idProperty != null)
             {
-                // "Id" property'sinin değerini alıyoruz
-                var entityId = (int)idProperty.GetValue(entity);
+                // "Id" property'sinin değerini alıyoruz ve null olup olmadığını kontrol ediyoruz
+                var entityIdValue = idProperty.GetValue(entity);
 
-                // isEntityExist kontrolü
-                var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
-
-                if (isEntityExist)
+                if (entityIdValue != null && entityIdValue is int entityId)
                 {
-                    // Eğer entity güncellenebilir durumdaysa update işlemini yap
-                    _repository.Update(entity);
-                    await _unitOfWork.CommitAsync();
+                    // isEntityExist kontrolü
+                    var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
+
+                    if (isEntityExist)
+                    {
+                        // Eğer entity güncellenebilir durumdaysa update işlemini yap
+                        _repository.Update(entity);
+                        await _unitOfWork.CommitAsync();
+                    }
+                }
+                else
+                {
+                    throw new DataNotFoundException();
                 }
             }
             else
-            {
-                // Eğer "Id" property yoksa uygun bir hata fırlatabilirsiniz.
-                throw new DataNotFoundException();
+            {               
+                throw new InvalidOperationException();
             }
-
         }
-        
+
+
     }
 }
