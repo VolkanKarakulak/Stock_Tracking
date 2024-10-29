@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +10,19 @@ namespace Data.Entities
 {
     public class Customer : BaseEntity
     {
-        public int Id { get; set; }
-        public string Name { get; set; } 
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public ICollection<Order> Orders { get; set; } 
+        [Length(1, 50)]
+        [Column(TypeName = "nvarchar(50)")]
+        public string Name { get; set; } = default!;
+
+        [Phone]
+        [Length(1, 30)]
+        [Column(TypeName = "nvarchar(30)")]
+        public string PhoneNumber { get; set; } = default!;
+
+        [EmailAddress]
+        [Length(1, 100)]
+        [Column(TypeName = "nvarchar(100)")]
+        public string Email { get; set; } = default!;
+        public ICollection<Order>? Orders { get; set; } 
     }
 }
