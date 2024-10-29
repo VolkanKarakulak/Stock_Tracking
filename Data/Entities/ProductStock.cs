@@ -8,10 +8,9 @@ namespace Data.Entities
 {
     public class ProductStock : BaseEntity
     {
-        public int ProductId { get; set; } // Ürün ID'si
-        public Product Product { get; set; } // Ürün ile ilişki
-
-        public int Quantity { get; set; } // Mevcut stok miktarı
-        public DateTime LastUpdated { get; set; } // Son güncelleme tarihi
+        public int ProductId { get; set; } 
+        public Product? Product { get; set; } 
+        public int? Quantity { get; set; } 
+        public DateTime LastUpdated { get; set; } 
     }
 }
