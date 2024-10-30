@@ -26,7 +26,7 @@ namespace Service.Services.GenericService
             return await _repository.AnyAsync(expression);
         }
 
-        public async Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
             
             await _repository.CreateAsync(entity);

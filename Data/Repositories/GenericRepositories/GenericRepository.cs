@@ -13,7 +13,7 @@ namespace Data.Repositories.GenericRepositories
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         protected readonly Stock_TrackingDbContext _context;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public GenericRepository(Stock_TrackingDbContext context)
         {
@@ -26,7 +26,7 @@ namespace Data.Repositories.GenericRepositories
             return await _dbSet.AnyAsync(expression);
         }
 
-        public async Task<T?> CreateAsync(T entity)
+        public virtual async Task<T?> CreateAsync(T entity)
         {
             var behavior = new AddedBehavior();
             behavior.ApplyBehavior(_context,  entity );
