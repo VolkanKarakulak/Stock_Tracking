@@ -1,6 +1,7 @@
 ﻿using Data.Contexts;
 using Data.Entities;
 using Data.Repositories.GenericRepositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,66 +11,58 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories.ProductStockRepositories
 {
-    public class ProductStockRepository : IProductStockRepository
+    public class ProductStockRepository : GenericRepository<ProductStock>, IProductStockRepository
     {
-        private readonly IGenericRepository<ProductStock> _repository;
-        private readonly Stock_TrackingDbContext _context;
+        private readonly IGenericRepository<Product> _productRepository;
 
-        public ProductStockRepository(IGenericRepository<ProductStock> repository, Stock_TrackingDbContext context)
+        public ProductStockRepository(Stock_TrackingDbContext context, IGenericRepository<Product> productRepository) : base(context)
         {
-            _repository = repository;
-            _context = context;
-
-        }
-        public async Task<bool> AnyAsync(Expression<Func<ProductStock, bool>> expression)
-        {
-            return await _repository.AnyAsync(expression); 
+            _productRepository = productRepository;
         }
 
-        public async Task<ProductStock?> CreateAsync(ProductStock entity)
+
+        public override async Task<ProductStock?> CreateAsync(ProductStock entity)
         {
-           return await _repository.CreateAsync(entity);
+            // Öncelikle belirtilen ürün ID'sine sahip mevcut stok kaydını alıyoruz
+            var existingStock = await _dbSet.FirstOrDefaultAsync(ps => ps.ProductId == entity.ProductId);
+
+            // Ürünü al
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == entity.ProductId);
+
+            if (existingStock != null)
+            {
+                // Eğer stok zaten varsa, mevcut miktara yeni miktarı ekleyin
+                existingStock.Quantity += entity.Quantity;
+
+                // Ürün stok miktarını güncelle
+                if (product != null)
+                {
+                    product.Stock = existingStock.Quantity; // Güncellenmiş stok miktarını ata
+                    _context.Entry(product).State = EntityState.Modified; // Ürün kaydını güncelle
+                }
+
+                // Stok kaydını güncelleyin
+                _context.Entry(existingStock).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return existingStock; // Güncellenmiş stok kaydını döndür
+            }
+            else
+            {
+                // Eğer stok kaydı yoksa, yeni bir stok ekleyin
+                entity.IsActive = true;
+                await _dbSet.AddAsync(entity);
+
+                // Ürün stok miktarını güncelle
+                if (product != null)
+                {
+                    product.Stock = entity.Quantity; // Yeni stok miktarını ata
+                    _context.Entry(product).State = EntityState.Modified; // Ürün kaydını 
+                }
+                await _context.SaveChangesAsync();
+                return entity; // Yeni eklenmiş stok kaydını döndür
+            }
+
         }
 
-        public async Task<IEnumerable<ProductStock>> CreateRangeAsync(IEnumerable<ProductStock> entities)
-        {
-            await _repository.CreateRangeAsync(entities);
-            return entities;
-        }
-
-        public bool Delete(int id)
-        {
-            return _repository.Delete(id);
-        }
-
-        public async Task<IQueryable<ProductStock>> GetAllAsync()
-        {
-            return await _repository.GetAllAsync();
-        }
-
-        public IQueryable<ProductStock> GetBy(Expression<Func<ProductStock, bool>> expression)
-        {
-            return _repository.GetBy(expression);
-        }
-
-        public async Task<ProductStock> GetByIdAsync(int id)
-        {
-            return await _repository.GetByIdAsync(id);
-        }
-
-        public async Task<(int, int, IQueryable<ProductStock>)> GetPagedAsync(int pageNumber, int pageSize)
-        {
-            return await _repository.GetPagedAsync(pageNumber, pageSize);
-        }
-
-        public async Task<bool> IsEntityUpdateableAsync(int id)
-        {
-            return await _repository.IsEntityUpdateableAsync(id);
-        }
-
-        public ProductStock Update(ProductStock entity)
-        {
-            return _repository.Update(entity);
-        }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Service.DTOs.CategoryDtos;
 using Service.DTOs.PaginationDto;
 using Service.DTOs.ProductDtos;
+using Service.DTOs.ProductStockDtos;
 using Service.DTOs.ResponseDto;
 using Service.Exceptions.NotFoundExeptions;
 using Service.Mapping;
@@ -39,7 +40,7 @@ namespace Service.Services.ProductService
             var (totalPages, totalCount, courses) = await _repository.GetProductByCategoryIdPagedAsync(categoryId, paginationDto.PageNumber, paginationDto.PageSize);
 
             var productList = ObjectMapper.Mapper.Map<IEnumerable<ProductDto>>(courses);
-            var categoryDto = ObjectMapper.Mapper.Map<CategoryDto>(categoryExist);
+            var categoryDto = ObjectMapper.Mapper.Map<ProductStockDto>(categoryExist);
 
 
             var pagedResponseDto = GeneratePagedResponseModel(

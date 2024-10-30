@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.Repositories.GenericRepositories;
+using Data.Repositories.ProductStockRepositories;
 using Data.UnitOfWorks;
 using Service.Services.GenericService;
 using System;
@@ -12,8 +13,15 @@ namespace Service.Services.ProductStockService
 {
     public class ProductStockService : GenericService<ProductStock>, IProductStockService
     {
-        public ProductStockService(IGenericRepository<ProductStock> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        private readonly IProductStockRepository _productStockRepository;
+        public ProductStockService(IProductStockRepository repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
+            _productStockRepository = repository; // Özel repository'i kullanıyoruz
+        }
+        public override async Task<ProductStock?> CreateAsync(ProductStock entity)
+        {
+            // Stok ekleme işlemini repository üzerinden yapıyoruz
+            return await _productStockRepository.CreateAsync(entity);
         }
     }
 }
