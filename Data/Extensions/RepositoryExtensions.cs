@@ -1,6 +1,8 @@
-﻿using Data.Repositories.CategoryRepositories;
+﻿using Data.Entities;
+using Data.Repositories.CategoryRepositories;
 using Data.Repositories.GenericRepositories;
 using Data.Repositories.ProductRepositories;
+using Data.Repositories.ProductStockRepositories;
 using Data.UnitOfWorks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,6 +25,7 @@ namespace Data.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductStockRepository, ProductStockRepository>();
         }
     }
 }

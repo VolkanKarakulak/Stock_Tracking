@@ -2,6 +2,7 @@
 using Service.Services.CategoryService;
 using Service.Services.GenericService;
 using Service.Services.ProductService;
+using Service.Services.ProductStockService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Service.Extensions
             service.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             service.AddScoped<IProductService, ProductService>();
             service.AddScoped<ICategoryService, CategoryService>();
+            service.AddScoped<IProductStockService, ProductStockService>();
 
         }
 
