@@ -102,7 +102,7 @@ namespace Service.Services.GenericService
           return pagedResponse;
         }
 
-        public async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity)
         {
             // "Id" property'sine ulaşma
             var idProperty = entity.GetType().GetProperty("Id");
