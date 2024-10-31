@@ -119,6 +119,8 @@ namespace Data.Repositories.ProductRepositories
 
         public Product Update(Product entity)
         {
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChangesAsync();
             return _repository.Update(entity);
         }
     }
