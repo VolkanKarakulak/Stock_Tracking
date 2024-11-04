@@ -26,12 +26,13 @@ namespace Data.Repositories.GenericRepositories
             return await _dbSet.AnyAsync(expression);
         }
 
-        public virtual async Task<T?> CreateAsync(T entity)
+        public async Task<T?> CreateAsync(T entity)
         {
             var behavior = new AddedBehavior();
             behavior.ApplyBehavior(_context,  entity );
             entity.IsActive = true;
             var result = await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return result.State != EntityState.Added ? null : entity;
         }
 

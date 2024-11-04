@@ -10,5 +10,6 @@ namespace Data.Repositories.ProductStockRepositories
 {
     public interface IProductStockRepository : IGenericRepository<ProductStock>
     {
+   
     }
 }

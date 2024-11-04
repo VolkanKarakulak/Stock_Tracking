@@ -18,18 +18,20 @@ namespace Service.Services.ProductStockService
     public class ProductStockService : GenericService<ProductStock>, IProductStockService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IGenericRepository<ProductStock> _genericRepository;
         private readonly IProductStockRepository _productStockRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public ProductStockService(IProductRepository productRepository,IProductStockRepository productStockRepository, IUnitOfWork unitOfWork) : base(productStockRepository,unitOfWork)
+        public ProductStockService(IProductRepository productRepository, IGenericRepository<ProductStock> genericRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository) : base(genericRepository, unitOfWork)
         {
             _productRepository = productRepository;
-            _productStockRepository = productStockRepository;
+            _genericRepository = genericRepository;
             _unitOfWork = unitOfWork;
+            _productStockRepository = productStockRepository;
         }
-        public override async Task<ProductStock?> CreateAsync(ProductStock entity) 
+        public override async Task<ProductStock> CreateAsync(ProductStock entity) 
         {
      
-            var existingStock = await _productStockRepository.GetBy(p => p.ProductId == entity.ProductId).FirstOrDefaultAsync();
+            var existingStock = await _genericRepository.GetBy(p => p.ProductId == entity.ProductId).FirstOrDefaultAsync();
 
             // Ürün stok güncelleme işlemi
             var product = await _productRepository.GetByIdAsync(entity.ProductId);
@@ -42,22 +44,21 @@ namespace Service.Services.ProductStockService
             if (existingStock != null)
             {
                 existingStock.Quantity += entity.Quantity;
-                product.Stock = existingStock.Quantity;
-                _productStockRepository.CreateAsync(existingStock);
+                product.Stock = existingStock.Quantity;               
+                await _productStockRepository.CreateAsync(existingStock);
                 _productRepository.Update(product);
                 
                 return existingStock;
-
             }
             
-
             else
             {
                
-                await _productStockRepository.CreateAsync(entity);
+                await _genericRepository.CreateAsync(entity);
                 product.Stock = entity.Quantity;
+                _productRepository.Update(product);
             }
-            _productRepository.Update(product);
+          
             
             
             return entity; // Güncellenmiş veya yeni eklenmiş stok kaydını döndür
