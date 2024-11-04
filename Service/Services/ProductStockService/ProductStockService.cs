@@ -52,16 +52,39 @@ namespace Service.Services.ProductStockService
             }
             
             else
-            {
-               
+            {              
                 await _genericRepository.CreateAsync(entity);
                 product.Stock = entity.Quantity;
                 _productRepository.Update(product);
             }
-          
-            
             
             return entity; // Güncellenmiş veya yeni eklenmiş stok kaydını döndür
         }
+
+        public override async Task<ProductStock> UpdateAsync(ProductStock entity)
+        {
+            // Ürünü ve stok kaydını al
+            var product = await _productRepository.GetBy(p => p.Id == entity.ProductId).FirstOrDefaultAsync();
+            var productStock = await _genericRepository.GetBy(p => p.ProductId == entity.ProductId).FirstOrDefaultAsync();
+
+            // Ürün veya stok bulunamazsa hata fırlat
+            if (product == null || productStock == null)
+            {
+                throw new DataNotFoundException();
+            }
+
+            // Stok ve ürün miktarlarını güncelle
+            productStock.Quantity = entity.Quantity;
+            product.Stock = productStock.Quantity;
+
+            // Değişiklikleri kaydet
+            _productStockRepository.Update(productStock);
+            _productRepository.Update(product);
+
+
+            return productStock; // Güncellenmiş stok kaydını döndür
+        }
+
+
     }
 }

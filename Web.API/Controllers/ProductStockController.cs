@@ -49,9 +49,9 @@ namespace Web.API.Controllers
 
         [HttpPost]
         [Route("CreateRange")]
-        public async Task<ResponseDto> CreateRange(IEnumerable<ProductStockAddDto> productStockAddDtos)
+        public async Task<ResponseDto> CreateRange(IEnumerable<ProductStockAddDto> productStockAddDto)
         {
-            var productStock = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<ProductStock>>(productStockAddDtos));
+            var productStock = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<ProductStock>>(productStockAddDto));
             var productStockDto = _mapper.Map<IEnumerable<ProductStockDto>>(productStock);
             return ResponseBuilder.CreateResponse(productStockDto, true, "Başarılı");
         }

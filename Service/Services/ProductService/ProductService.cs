@@ -20,7 +20,7 @@ namespace Service.Services.ProductService
     {
         
         private readonly IProductRepository _repository;
-        private readonly IGenericRepository<Category> _categoryRepository;
+        private readonly IGenericRepository<Category> _genericRepository;
         private readonly IUnitOfWork _unitOfWork; 
 
 
@@ -28,12 +28,12 @@ namespace Service.Services.ProductService
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
-            _categoryRepository = categoryRepository;
+            _genericRepository = categoryRepository;
         }
 
         public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto)
         {
-            var categoryExist = await _categoryRepository
+            var categoryExist = await _genericRepository
                .GetBy(x => x.Id == categoryId && !x.IsDeleted && x.IsActive)
                .FirstOrDefaultAsync() ?? throw new PageNotFoundException();
 

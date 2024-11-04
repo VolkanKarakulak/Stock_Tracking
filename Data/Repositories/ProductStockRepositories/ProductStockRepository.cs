@@ -36,8 +36,18 @@ namespace Data.Repositories.ProductStockRepositories
             await _context.SaveChangesAsync();
             return entity; // Güncellenmiş stok kaydını döndür
             
-           
+        }
 
+        public async Task<bool> IsEntityUpdateableAsync(int id)
+        {
+            return await _repository.IsEntityUpdateableAsync(id);
+        }
+
+        public ProductStock Update(ProductStock entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChangesAsync();
+            return entity;
         }
 
         public Task<IEnumerable<ProductStock>> CreateRangeAsync(IEnumerable<ProductStock> entities)
@@ -70,14 +80,6 @@ namespace Data.Repositories.ProductStockRepositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsEntityUpdateableAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ProductStock Update(ProductStock entity)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
