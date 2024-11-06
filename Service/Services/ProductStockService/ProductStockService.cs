@@ -43,7 +43,6 @@ namespace Service.Services.ProductStockService
             {
                 throw new DataNotFoundException();
             }
-
             if (existingStock != null)
             {
                 existingStock.Quantity += entity.Quantity;
@@ -52,8 +51,7 @@ namespace Service.Services.ProductStockService
                 await _productRepository.UpdateAsync(product);
                 
                 return existingStock;
-            }
-            
+            }           
             else
             {              
                 await _genericRepository.CreateAsync(entity);
@@ -61,52 +59,50 @@ namespace Service.Services.ProductStockService
                 await _productRepository.UpdateAsync(product);
             }
             
-            return entity; // Güncellenmiş veya yeni eklenmiş stok kaydını döndür
+            return entity; 
         }
 
         public override async Task<ProductStock> UpdateAsync(ProductStock entity)
         {
             // Ürünü ve stok kaydını al
-            var product = await _productRepository.GetBy(p => p.Id == entity.ProductId).AsNoTracking().FirstOrDefaultAsync();
-            var productStock = await _productStockRepository.GetBy(p => p.ProductId == entity.ProductId).AsNoTracking().FirstOrDefaultAsync();
+            var product = await _productRepository.GetBy(p => p.Id == entity.ProductId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            var productStock = await _productStockRepository.GetBy(p => p.ProductId == entity.ProductId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
 
             // Ürün bulunamazsa hata fırlat
             if (product == null)
             {
                 throw new DataNotFoundException();
             }
+                
+            // ProductStockUpdateDto'ya haritalama yap
+            var productStockDto = ObjectMapper.Mapper.Map<ProductStockUpdateDto>(entity);
 
-            // Stok kaydı varsa güncelle
             if (productStock != null)
             {
-                var productStockMap = ObjectMapper.Mapper.Map<ProductStockUpdateDto>(entity);
-                var newProductStock = ObjectMapper.Mapper.Map<ProductStock>(productStockMap);
-                var result = await _productStockRepository.UpdateAsync(newProductStock);
+                // Mevcut productStock ve product üzerinde güncellemeleri yap
+                ObjectMapper.Mapper.Map(productStockDto, productStock);
+                ObjectMapper.Mapper.Map(productStockDto, product);
 
-
-                //var productStockResult = ObjectMapper.Mapper.Map<ProductStock>(productStockMap);
-                ObjectMapper.Mapper.Map(productStockMap, product);
-
-                await _productRepository.UpdateAsync(product);
-                //await _unitOfWork.CommitAsync();
-                return result; // Güncellenmiş stok kaydını döndür
+                await _productStockRepository.UpdateAsync(productStock);
             }
             else
             {
-                // Stok kaydı yoksa yeni bir stok kaydı oluştur
-                var newProductStock = ObjectMapper.Mapper.Map<ProductStock>(entity);
-                await _genericRepository.CreateAsync(newProductStock);
-
-                // Ürünün yeni stok miktarını ayarla
-                product.Stock = entity.Quantity;
-                await _productRepository.UpdateAsync(product);
-
-                await _unitOfWork.CommitAsync();
-                return newProductStock; // Yeni stok kaydını döndür
+                // Yeni bir stok kaydı oluştur
+                productStock = ObjectMapper.Mapper.Map<ProductStock>(productStockDto);
+                await _genericRepository.CreateAsync(productStock);
+                ObjectMapper.Mapper.Map(productStockDto, product);
             }
+
+            // Ürünü güncelle
+            await _productRepository.UpdateAsync(product);
+
+            return productStock;
         }
-
-
 
     }
 }
