@@ -18,6 +18,7 @@ namespace Data.Entities
         [Column(TypeName = "decimal(15,2)")]
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
+        public int? ProductStockId { get; set; }
 
         [Length(1, 30)]
         [Column(TypeName = "nvarchar(30)")]
@@ -26,6 +27,7 @@ namespace Data.Entities
         [Length(1, 50)]
         [Column(TypeName = "nvarchar(50)")]
         public string? Material { get; set; }
+        public ProductStock? ProductStock { get; set; }
         public Category? Category { get; set; }
         public ICollection<OrderItem>? OrderItems { get; set; }
         public ICollection<ProductCategory>? CourseCategories { get; set; }

@@ -16,6 +16,11 @@ namespace Data.Configurations
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.CategoryId);
 
+            builder
+                .HasOne(p => p.ProductStock)
+                .WithOne(ps => ps.Product)
+                .HasForeignKey<ProductStock>(ps => ps.ProductId);
+
             //builder.ToTable("Products");
         }
     }

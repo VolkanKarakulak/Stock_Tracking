@@ -4,6 +4,7 @@ using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(Stock_TrackingDbContext))]
-    partial class Stock_TrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241106135420_addProductStokRefInProductEntt")]
+    partial class addProductStokRefInProductEntt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,7 +236,7 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(15,2)");
 
-                    b.Property<int?>("ProductStockId")
+                    b.Property<int>("ProductStockId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Stock")
@@ -262,6 +265,7 @@ namespace Data.Migrations
                             IsDeleted = false,
                             Name = "Yamaha Piyano",
                             Price = 3500m,
+                            ProductStockId = 0,
                             Stock = 15
                         },
                         new
@@ -272,6 +276,7 @@ namespace Data.Migrations
                             IsDeleted = false,
                             Name = "Roland Bateri",
                             Price = 5500m,
+                            ProductStockId = 0,
                             Stock = 5
                         });
                 });

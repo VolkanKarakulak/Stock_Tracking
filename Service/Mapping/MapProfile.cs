@@ -32,6 +32,19 @@ namespace Service.Mapping
                 .ForMember(k => k.IsActive, l => l.MapFrom(m => m.IsActive))
                 .ForMember(k => k.Id, l => l.MapFrom(m => m.ProductId)) 
                 .ReverseMap();
+
+            // ProductStock'tan Product'a mapleme
+            CreateMap<ProductStock, Product>()
+                .ForMember(dest => dest.Stock, opt => opt.MapFrom(src => src.Quantity)) // Product'ın Stock alanına ProductStock'tan Quantity'yi atıyoruz
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Product'ın Id'sini maplemiyoruz
+
+            // Product'tan ProductStock'a mapleme
+            CreateMap<Product, ProductStock>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id)) // ProductStock'un ProductId alanını Product'ın Id'si ile eşleştiriyoruz
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // ProductStock'un kendi Id'sini maplemiyoruz
+
+
         }
     }
 }
