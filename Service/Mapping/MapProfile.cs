@@ -20,9 +20,9 @@ namespace Service.Mapping
 
             CreateMap<ProductStockDto, ProductStock>().ReverseMap();
             CreateMap<ProductStockUpdateDto, ProductStock>()
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive)) // IsActive özelliğini eşleştir
-                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity)) // Quantity özelliğini eşleştir
-                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+                .ForMember(k => k.IsActive, l => l.MapFrom(m => m.IsActive)) // IsActive özelliğini eşleştir
+                .ForMember(k => k.Quantity, l => l.MapFrom(m => m.Quantity)) // Quantity özelliğini eşleştir
+                .ForMember(k => k.ProductId, l => l.MapFrom(m => m.ProductId))
                 .ReverseMap(); 
 
             CreateMap<ProductStockAddDto, ProductStock>().ReverseMap();
