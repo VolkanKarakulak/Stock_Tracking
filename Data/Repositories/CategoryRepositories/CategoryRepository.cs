@@ -70,9 +70,9 @@ namespace Data.Repositories.CategoryRepositories
             return await _repository.IsEntityUpdateableAsync(id);
         }
 
-        public Category Update(Category entity)
+        public async Task<Category> UpdateAsync(Category entity)
         {
-           return _repository.Update(entity);
+           return await _repository.UpdateAsync(entity);
         }
     }
 }

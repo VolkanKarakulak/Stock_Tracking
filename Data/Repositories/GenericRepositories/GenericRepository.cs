@@ -54,7 +54,7 @@ namespace Data.Repositories.GenericRepositories
         {
             return await _dbSet.AnyAsync(x => x.Id == id && !x.IsDeleted);
         }
-        public T Update(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             var entry = _context.Entry(entity);
 

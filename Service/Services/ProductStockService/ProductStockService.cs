@@ -1,4 +1,6 @@
-﻿using Data.Entities;
+﻿using AutoMapper;
+using AutoMapper.Internal.Mappers;
+using Data.Entities;
 using Data.Repositories.GenericRepositories;
 using Data.Repositories.ProductRepositories;
 using Data.Repositories.ProductStockRepositories;
@@ -6,6 +8,7 @@ using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Service.DTOs.ProductStockDtos;
 using Service.Exceptions.NotFoundExeptions;
+using Service.Mapping;
 using Service.Services.GenericService;
 using System;
 using System.Collections.Generic;
@@ -46,7 +49,7 @@ namespace Service.Services.ProductStockService
                 existingStock.Quantity += entity.Quantity;
                 product.Stock = existingStock.Quantity;               
                 await _productStockRepository.CreateAsync(existingStock);
-                _productRepository.Update(product);
+                await _productRepository.UpdateAsync(product);
                 
                 return existingStock;
             }
@@ -55,7 +58,7 @@ namespace Service.Services.ProductStockService
             {              
                 await _genericRepository.CreateAsync(entity);
                 product.Stock = entity.Quantity;
-                _productRepository.Update(product);
+                await _productRepository.UpdateAsync(product);
             }
             
             return entity; // Güncellenmiş veya yeni eklenmiş stok kaydını döndür
@@ -64,26 +67,45 @@ namespace Service.Services.ProductStockService
         public override async Task<ProductStock> UpdateAsync(ProductStock entity)
         {
             // Ürünü ve stok kaydını al
-            var product = await _productRepository.GetBy(p => p.Id == entity.ProductId).FirstOrDefaultAsync();
-            var productStock = await _genericRepository.GetBy(p => p.ProductId == entity.ProductId).FirstOrDefaultAsync();
+            var product = await _productRepository.GetBy(p => p.Id == entity.ProductId).AsNoTracking().FirstOrDefaultAsync();
+            var productStock = await _productStockRepository.GetBy(p => p.ProductId == entity.ProductId).AsNoTracking().FirstOrDefaultAsync();
 
-            // Ürün veya stok bulunamazsa hata fırlat
-            if (product == null || productStock == null)
+            // Ürün bulunamazsa hata fırlat
+            if (product == null)
             {
                 throw new DataNotFoundException();
             }
 
-            // Stok ve ürün miktarlarını güncelle
-            productStock.Quantity = entity.Quantity;
-            product.Stock = productStock.Quantity;
+            // Stok kaydı varsa güncelle
+            if (productStock != null)
+            {
+                var productStockMap = ObjectMapper.Mapper.Map<ProductStockUpdateDto>(entity);
+                var newProductStock = ObjectMapper.Mapper.Map<ProductStock>(productStockMap);
+                var result = await _productStockRepository.UpdateAsync(newProductStock);
 
-            // Değişiklikleri kaydet
-            _productStockRepository.Update(productStock);
-            _productRepository.Update(product);
 
+                //var productStockResult = ObjectMapper.Mapper.Map<ProductStock>(productStockMap);
+                ObjectMapper.Mapper.Map(productStockMap, product);
 
-            return productStock; // Güncellenmiş stok kaydını döndür
+                await _productRepository.UpdateAsync(product);
+                //await _unitOfWork.CommitAsync();
+                return result; // Güncellenmiş stok kaydını döndür
+            }
+            else
+            {
+                // Stok kaydı yoksa yeni bir stok kaydı oluştur
+                var newProductStock = ObjectMapper.Mapper.Map<ProductStock>(entity);
+                await _genericRepository.CreateAsync(newProductStock);
+
+                // Ürünün yeni stok miktarını ayarla
+                product.Stock = entity.Quantity;
+                await _productRepository.UpdateAsync(product);
+
+                await _unitOfWork.CommitAsync();
+                return newProductStock; // Yeni stok kaydını döndür
+            }
         }
+
 
 
     }

@@ -117,11 +117,11 @@ namespace Data.Repositories.ProductRepositories
             return await _repository.IsEntityUpdateableAsync(id);
         }
 
-        public Product Update(Product entity)
+        public async Task<Product> UpdateAsync(Product entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChangesAsync();
-            return _repository.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
     }
 }

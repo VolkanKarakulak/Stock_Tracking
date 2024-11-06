@@ -5,6 +5,8 @@ using Service.DTOs.PaginationDto;
 using Service.DTOs.ResponseDto;
 using Service.Mapping;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+
 
 
 
@@ -102,38 +104,39 @@ namespace Service.Services.GenericService
           return pagedResponse;
         }
 
-        public virtual async Task UpdateAsync(T entity)
+        public virtual async Task<T> UpdateAsync(T entity)
         {
             // "Id" property'sine ulaşma
             var idProperty = entity.GetType().GetProperty("Id");
 
-            if (idProperty != null)
+            if (idProperty == null)
             {
-                // "Id" property'sinin değerini alıyoruz ve null olup olmadığını kontrol ediyoruz
-                var entityIdValue = idProperty.GetValue(entity);
-
-                if (entityIdValue != null && entityIdValue is int entityId)
-                {
-                    // isEntityExist kontrolü
-                    var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
-
-                    if (isEntityExist)
-                    {
-                        // Eğer entity güncellenebilir durumdaysa update işlemini yap
-                        _repository.Update(entity);
-                        await _unitOfWork.CommitAsync();
-                    }
-                }
-                else
-                {
-                    throw new DataNotFoundException();
-                }
+                throw new InvalidOperationException("Entity does not have an Id property.");
             }
-            else
-            {               
-                throw new InvalidOperationException();
+
+            // "Id" property'sinin değerini alıyoruz ve null olup olmadığını kontrol ediyoruz
+            var entityIdValue = idProperty.GetValue(entity);
+
+            if (entityIdValue == null || !(entityIdValue is int entityId))
+            {
+                throw new DataNotFoundException();
             }
+
+            // isEntityExist kontrolü
+            var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
+
+            if (!isEntityExist)
+            {
+                throw new DataNotFoundException();
+            }
+
+            // Eğer entity güncellenebilir durumdaysa update işlemini yap
+            await _repository.UpdateAsync(entity);
+            await _unitOfWork.CommitAsync();
+
+            return entity;
         }
+
 
 
     }

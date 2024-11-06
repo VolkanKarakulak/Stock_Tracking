@@ -9,7 +9,8 @@ namespace Service.DTOs.ProductStockDtos
 {
     public class ProductStockUpdateDto
     {
-        public int ProductId { get; set; }
+        public int Id { get; set; }
+        public int? ProductId { get; set; }
         public bool IsActive { get; set; }
         public int? Quantity { get; set; }
 

@@ -43,10 +43,10 @@ namespace Data.Repositories.ProductStockRepositories
             return await _repository.IsEntityUpdateableAsync(id);
         }
 
-        public ProductStock Update(ProductStock entity)
+        public async Task<ProductStock> UpdateAsync(ProductStock entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChangesAsync();
+             _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -67,8 +67,9 @@ namespace Data.Repositories.ProductStockRepositories
 
         public IQueryable<ProductStock> GetBy(Expression<Func<ProductStock, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _repository.GetBy(expression);
         }
+
 
         public Task<ProductStock> GetByIdAsync(int id)
         {

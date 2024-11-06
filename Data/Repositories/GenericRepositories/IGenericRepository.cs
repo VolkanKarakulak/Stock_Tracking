@@ -12,7 +12,7 @@ namespace Data.Repositories.GenericRepositories
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities);
         Task<T?> CreateAsync(T entity);
-        T Update(T entity); 
+        Task<T> UpdateAsync(T entity); 
         Task<bool> IsEntityUpdateableAsync(int id);
         bool Delete(int id); 
         //bool DeleteRange(IEnumerable<int> entityIds);

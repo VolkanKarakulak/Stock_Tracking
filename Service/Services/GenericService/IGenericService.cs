@@ -12,7 +12,7 @@ namespace Service.Services.GenericService
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities); // birden fazla kayıt, 
         Task<T> CreateAsync(T entity);
-        Task UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
+        Task<T> UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
         Task<bool> DeleteAsync(int id); // void de olabilir
         //Task DeleteRangeAsync(IEnumerable<int> entityIds);
         Task<PagedResponseDto<IEnumerable<T>>> GetPagedAsync(PaginationDto paginationDto);
