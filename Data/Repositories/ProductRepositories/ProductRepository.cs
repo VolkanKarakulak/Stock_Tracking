@@ -30,7 +30,9 @@ namespace Data.Repositories.ProductRepositories
 
         public async Task<Product?> CreateAsync(Product entity)
         {
-            return await _repository.CreateAsync(entity);
+            _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task<IEnumerable<Product>> CreateRangeAsync(IEnumerable<Product> entities)

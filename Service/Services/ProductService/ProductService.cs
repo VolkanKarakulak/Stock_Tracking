@@ -1,7 +1,9 @@
-﻿using AutoMapper.Internal.Mappers;
+﻿using AutoMapper;
+using AutoMapper.Internal.Mappers;
 using Data.Entities;
 using Data.Repositories.GenericRepositories;
 using Data.Repositories.ProductRepositories;
+using Data.Repositories.ProductStockRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Service.DTOs.CategoryDtos;
@@ -9,6 +11,7 @@ using Service.DTOs.PaginationDto;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ProductStockDtos;
 using Service.DTOs.ResponseDto;
+using Service.Exceptions;
 using Service.Exceptions.NotFoundExeptions;
 using Service.Mapping;
 using Service.Services.GenericService;
@@ -21,14 +24,34 @@ namespace Service.Services.ProductService
         
         private readonly IProductRepository _repository;
         private readonly IGenericRepository<Category> _genericRepository;
-        private readonly IUnitOfWork _unitOfWork; 
+        private readonly IProductStockRepository _productStockRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public ProductService(IProductRepository repository, IGenericRepository<Category> categoryRepository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        public ProductService(IProductRepository repository, IGenericRepository<Category> categoryRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository) : base(repository, unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _genericRepository = categoryRepository;
+            _productStockRepository = productStockRepository;
+        }
+
+        public override async Task<Product> CreateAsync(Product product)
+        {
+            var result = await _repository.CreateAsync(product);  
+
+            if (result != null)
+            {
+                var productStock = ObjectMapper.Mapper.Map<ProductStock>(product);
+                //productStock.ProductId = product.Id;
+                await _productStockRepository.CreateAsync(productStock);
+                return result;
+            }
+            else
+            {
+                throw new DataCreateFailedException();
+            }
+            
         }
 
         public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto)
