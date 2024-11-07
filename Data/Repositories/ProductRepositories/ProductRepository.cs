@@ -20,7 +20,6 @@ namespace Data.Repositories.ProductRepositories
         {
             _repository = repository;
             _context = context;
-
         }
 
         public async Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
@@ -30,9 +29,7 @@ namespace Data.Repositories.ProductRepositories
 
         public async Task<Product?> CreateAsync(Product entity)
         {
-            _context.Entry(entity).State = EntityState.Added;
-            await _context.SaveChangesAsync();
-            return entity;
+           return await _repository.CreateAsync(entity);
         }
 
         public async Task<IEnumerable<Product>> CreateRangeAsync(IEnumerable<Product> entities)

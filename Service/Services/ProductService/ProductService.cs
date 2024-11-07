@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Internal.Mappers;
 using Data.Entities;
+using Data.Repositories.CategoryRepositories;
 using Data.Repositories.GenericRepositories;
 using Data.Repositories.ProductRepositories;
 using Data.Repositories.ProductStockRepositories;
@@ -22,23 +23,24 @@ namespace Service.Services.ProductService
     public class ProductService : GenericService<Product>, IProductService
     {
         
-        private readonly IProductRepository _repository;
-        private readonly IGenericRepository<Category> _genericRepository;
-        private readonly IProductStockRepository _productStockRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IGenericRepository<ProductStock> _productStockRepository;      
         private readonly IUnitOfWork _unitOfWork;
 
 
-        public ProductService(IProductRepository repository, IGenericRepository<Category> categoryRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository) : base(repository, unitOfWork)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IGenericRepository<ProductStock> productStockRepository) : base(productRepository, unitOfWork)
         {
-            _repository = repository;
+           
             _unitOfWork = unitOfWork;
-            _genericRepository = categoryRepository;
+            _categoryRepository = categoryRepository;
             _productStockRepository = productStockRepository;
+            _productRepository = productRepository;
         }
 
         public override async Task<Product> CreateAsync(Product product)
         {
-            var result = await _repository.CreateAsync(product);  
+            var result = await _productRepository.CreateAsync(product);  
 
             if (result != null)
             {
@@ -56,11 +58,11 @@ namespace Service.Services.ProductService
 
         public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto)
         {
-            var categoryExist = await _genericRepository
+            var categoryExist = await _categoryRepository
                .GetBy(x => x.Id == categoryId && !x.IsDeleted && x.IsActive)
                .FirstOrDefaultAsync() ?? throw new PageNotFoundException();
 
-            var (totalPages, totalCount, courses) = await _repository.GetProductByCategoryIdPagedAsync(categoryId, paginationDto.PageNumber, paginationDto.PageSize);
+            var (totalPages, totalCount, courses) = await _productRepository.GetProductByCategoryIdPagedAsync(categoryId, paginationDto.PageNumber, paginationDto.PageSize);
 
             var productList = ObjectMapper.Mapper.Map<IEnumerable<ProductDto>>(courses);
             var categoryDto = ObjectMapper.Mapper.Map<ProductStockDto>(categoryExist);

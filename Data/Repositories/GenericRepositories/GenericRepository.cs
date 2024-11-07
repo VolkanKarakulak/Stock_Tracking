@@ -29,11 +29,15 @@ namespace Data.Repositories.GenericRepositories
         public async Task<T?> CreateAsync(T entity)
         {
             var behavior = new AddedBehavior();
-            behavior.ApplyBehavior(_context,  entity );
+            behavior.ApplyBehavior(_context, entity);
             entity.IsActive = true;
-            var result = await _dbSet.AddAsync(entity);
+
+            // Entity'yi ekle
+            await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return result.State != EntityState.Added ? null : entity;
+
+            // `SaveChangesAsync` sonrasında durum `Unchanged` olarak görünür
+            return _context.Entry(entity).State == EntityState.Unchanged ? entity : null;
         }
 
         public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
@@ -70,6 +74,7 @@ namespace Data.Repositories.GenericRepositories
                     behavior.ApplyBehavior(_context, entity);
                     entry.Property("IsDeleted").CurrentValue = oldEntity.IsDeleted;
                     entityHelper.UpdateEntityProperties(oldEntity, entity);
+                    await _context.SaveChangesAsync(); // Kalkabilir
                     return oldEntity; // Güncellenmiş eski varlık döndürülüyor.
                 }
             }
@@ -79,6 +84,7 @@ namespace Data.Repositories.GenericRepositories
                 _dbSet.Add(entity);
             }
 
+            await _context.SaveChangesAsync(); // kalkabilir 
             return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
         }
        
