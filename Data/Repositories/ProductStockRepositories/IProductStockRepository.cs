@@ -10,6 +10,6 @@ namespace Data.Repositories.ProductStockRepositories
 {
     public interface IProductStockRepository : IGenericRepository<ProductStock>
     {
-   
+        Task<ProductStock?> StateChangeAsync(ProductStock entity);
     }
 }

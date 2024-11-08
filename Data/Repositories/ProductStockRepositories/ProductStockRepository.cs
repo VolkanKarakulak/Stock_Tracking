@@ -32,10 +32,17 @@ namespace Data.Repositories.ProductStockRepositories
         public async Task<ProductStock?> CreateAsync(ProductStock entity)
         {
            
+            return await _repository.CreateAsync(entity);
+            
+        }
+
+        public async Task<ProductStock?> StateChangeAsync(ProductStock entity)
+        {
+
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return entity; // Güncellenmiş stok kaydını döndür
-            
+
         }
 
         public async Task<bool> IsEntityUpdateableAsync(int id)

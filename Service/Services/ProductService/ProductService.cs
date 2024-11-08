@@ -25,11 +25,11 @@ namespace Service.Services.ProductService
         
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IGenericRepository<ProductStock> _productStockRepository;      
+        private readonly IProductStockRepository _productStockRepository;      
         private readonly IUnitOfWork _unitOfWork;
 
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IGenericRepository<ProductStock> productStockRepository) : base(productRepository, unitOfWork)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository) : base(productRepository, unitOfWork)
         {
            
             _unitOfWork = unitOfWork;
@@ -54,6 +54,11 @@ namespace Service.Services.ProductService
                 throw new DataCreateFailedException();
             }
             
+        }
+
+        public override async Task<Product> UpdateAsync(Product product)
+        {
+            return await _productRepository.UpdateAsync(product);
         }
 
         public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto)
