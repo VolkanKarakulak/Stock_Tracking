@@ -137,7 +137,5 @@ namespace Service.Services.GenericService
             return entity;
         }
 
-
-
     }
 }
