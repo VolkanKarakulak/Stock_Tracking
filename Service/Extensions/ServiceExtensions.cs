@@ -17,7 +17,7 @@ namespace Service.Extensions
         public static void AddServiceExtensions(this IServiceCollection service) 
         { 
 
-            service.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+            service.AddScoped(typeof(IGenericService<,>), typeof(GenericService<,>));
             service.AddScoped<IProductService, ProductService>();
             service.AddScoped<ICategoryService, CategoryService>();
             service.AddScoped<IProductStockService, ProductStockService>();

@@ -1,4 +1,5 @@
 ﻿using Data.Entities;
+using Service.DTOs.ProductStockDtos;
 using Service.Services.GenericService;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Service.Services.ProductStockService
 {
-    public interface IProductStockService : IGenericService<ProductStock>
+    public interface IProductStockService : IGenericService<ProductStock, ProductStockDto>
     {
+        Task<ProductStockDto> CreateProductStockAsync(ProductStockAddDto entity);
     }
 }

@@ -18,23 +18,24 @@ using System.Threading.Tasks;
 
 namespace Service.Services.ProductStockService
 {
-    public class ProductStockService : GenericService<ProductStock>, IProductStockService
+    public class ProductStockService : GenericService<ProductStock, ProductStockDto>, IProductStockService
     {
         private readonly IProductRepository _productRepository;
         private readonly IProductStockRepository _productStockRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public ProductStockService(IProductRepository productRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository) : base(productStockRepository, unitOfWork)
+        private readonly IMapper _mapper;
+        public ProductStockService(IProductRepository productRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository, IMapper mapper) : base(productStockRepository, unitOfWork, mapper)
         {
-            _productRepository = productRepository;
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _productRepository = productRepository;
             _productStockRepository = productStockRepository;
+                 
         }
-        public override async Task<ProductStock> CreateAsync(ProductStock entity) 
+        public async Task<ProductStockDto> CreateProductStockAsync(ProductStockAddDto entity)
         {
-     
             var existingStock = await _productStockRepository.GetBy(p => p.ProductId == entity.ProductId).FirstOrDefaultAsync();
 
-            // Ürün stok güncelleme işlemi
             var product = await _productRepository.GetByIdAsync(entity.ProductId);
 
             if (product == null)
@@ -44,63 +45,67 @@ namespace Service.Services.ProductStockService
             if (existingStock != null)
             {
                 existingStock.Quantity += entity.Quantity;
-                product.Stock = existingStock.Quantity;               
+                product.Stock = existingStock.Quantity;
                 await _productStockRepository.StateChangeAsync(existingStock);
                 await _productRepository.UpdateAsync(product);
-                
-                return existingStock;
-            }           
+
+                return _mapper.Map<ProductStockDto>(existingStock);
+            }
             else
-            {              
-                await _productStockRepository.CreateAsync(entity);
-                product.Stock = entity.Quantity;
+            {                
+                product.Stock += entity.Quantity;
                 await _productRepository.UpdateAsync(product);
+                entity.Quantity = product.Stock;
+                //var addProductStock = _mapper.Map<ProductStock>(product);
+                //await _productStockRepository.CreateAsync(addProductStock);
+                var productStock = _mapper.Map<ProductStock>(entity);
+                var result = await _productStockRepository.CreateAsync(productStock);
+                return _mapper.Map<ProductStockDto>(result);
             }
-            
-            return entity; 
         }
 
-        public override async Task<ProductStock> UpdateAsync(ProductStock entity)
-        {
-            // Ürünü ve stok kaydını al
-            var product = await _productRepository.GetBy(p => p.Id == entity.ProductId)
-                .AsNoTracking()
-                .FirstOrDefaultAsync();
 
-            var productStock = await _productStockRepository.GetBy(p => p.ProductId == entity.ProductId)
-                .AsNoTracking()
-                .FirstOrDefaultAsync();
+        //public override async Task<ProductStock> UpdateAsync(ProductStock entity)
+        //{
+        //    // Ürünü ve stok kaydını al
+        //    var product = await _productRepository.GetBy(p => p.Id == entity.ProductId)
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync();
 
-            // Ürün bulunamazsa hata fırlat
-            if (product == null)
-            {
-                throw new DataNotFoundException();
-            }
+        //    var productStock = await _productStockRepository.GetBy(p => p.ProductId == entity.ProductId)
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync();
+
+        //    // Ürün bulunamazsa hata fırlat
+        //    if (product == null)
+        //    {
+        //        throw new DataNotFoundException();
+        //    }
                 
-            // ProductStockUpdateDto'ya haritalama yap
-            var productStockDto = ObjectMapper.Mapper.Map<ProductStockUpdateDto>(entity);
+        //    // ProductStockUpdateDto'ya haritalama yap
+        //    var productStockDto = ObjectMapper.Mapper.Map<ProductStockUpdateDto>(entity);
 
-            if (productStock != null)
-            {
-                // Mevcut productStock ve product üzerinde güncellemeleri yap
-                ObjectMapper.Mapper.Map(productStockDto, productStock);
-                ObjectMapper.Mapper.Map(productStockDto, product);
+        //    if (productStock != null)
+        //    {
+        //        // Mevcut productStock ve product üzerinde güncellemeleri yap
+        //        ObjectMapper.Mapper.Map(productStockDto, productStock);
+        //        ObjectMapper.Mapper.Map(productStockDto, product);
 
-                await _productStockRepository.UpdateAsync(productStock);
-            }
-            else
-            {
-                // Yeni bir stok kaydı oluştur
-                productStock = ObjectMapper.Mapper.Map<ProductStock>(productStockDto);
-                await _productStockRepository.CreateAsync(productStock);
-                ObjectMapper.Mapper.Map(productStockDto, product);
-            }
+        //        await _productStockRepository.UpdateAsync(productStock);
+        //    }
+        //    else
+        //    {
+        //        // Yeni bir stok kaydı oluştur
+        //        productStock = ObjectMapper.Mapper.Map<ProductStock>(productStockDto);
+        //        await _productStockRepository.CreateAsync(productStock);
+        //        ObjectMapper.Mapper.Map(productStockDto, product);
+        //    }
 
-            // Ürünü güncelle
-            await _productRepository.UpdateAsync(product);
+        //    // Ürünü güncelle
+        //    await _productRepository.UpdateAsync(product);
 
-            return productStock;
-        }
+        //    return productStock;
+        //}
 
     }
 }

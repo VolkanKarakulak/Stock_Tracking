@@ -20,46 +20,48 @@ using Service.Services.GenericService;
 
 namespace Service.Services.ProductService
 {
-    public class ProductService : GenericService<Product>, IProductService
+    public class ProductService : GenericService<Product, ProductDto>, IProductService
     {
         
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IProductStockRepository _productStockRepository;      
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository) : base(productRepository, unitOfWork)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository, IMapper mapper) : base(productRepository, unitOfWork, mapper)
         {
-           
+
             _unitOfWork = unitOfWork;
             _categoryRepository = categoryRepository;
             _productStockRepository = productStockRepository;
             _productRepository = productRepository;
+            _mapper = mapper;
         }
 
-        public override async Task<Product> CreateAsync(Product product)
-        {
-            var result = await _productRepository.CreateAsync(product);  
+        //public override async Task<Product> CreateAsync(Product product)
+        //{
+        //    var result = await _productRepository.CreateAsync(product);  
 
-            if (result != null)
-            {
-                var productStock = ObjectMapper.Mapper.Map<ProductStock>(product);
-                //productStock.ProductId = product.Id;
-                await _productStockRepository.CreateAsync(productStock);
-                return result;
-            }
-            else
-            {
-                throw new DataCreateFailedException();
-            }
+        //    if (result != null)
+        //    {
+        //        var productStock = ObjectMapper.Mapper.Map<ProductStock>(product);
+        //        //productStock.ProductId = product.Id;
+        //        await _productStockRepository.CreateAsync(productStock);
+        //        return result;
+        //    }
+        //    else
+        //    {
+        //        throw new DataCreateFailedException();
+        //    }
             
-        }
+        //}
 
-        public override async Task<Product> UpdateAsync(Product product)
-        {
-            return await _productRepository.UpdateAsync(product);
-        }
+        //public override async Task<Product> UpdateAsync(Product product)
+        //{
+        //    return await _productRepository.UpdateAsync(product);
+        //}
 
         public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto)
         {

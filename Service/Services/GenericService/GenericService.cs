@@ -1,51 +1,51 @@
-﻿using Data.Repositories.GenericRepositories;
+﻿using AutoMapper;
+using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
-using Service.Exceptions.NotFoundExeptions;
 using Service.DTOs.PaginationDto;
 using Service.DTOs.ResponseDto;
-using Service.Mapping;
+using Service.Exceptions.NotFoundExeptions;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-
-
-
 
 namespace Service.Services.GenericService
 {
-    public class GenericService<T> : IGenericService<T> where T : class
+    public class GenericService<TEntity, TDto> : IGenericService<TEntity, TDto>
+        where TEntity : class
+        where TDto : class
     {
-        private readonly IGenericRepository<T> _repository;
+        private readonly IGenericRepository<TEntity> _repository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GenericService(IGenericRepository<T> repository, IUnitOfWork unitOfWork)
+        public GenericService(IGenericRepository<TEntity> repository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression)
         {
             return await _repository.AnyAsync(expression);
         }
 
-        public virtual async Task<T> CreateAsync(T entity)
+        public virtual async Task<TDto> CreateAsync(TDto dto)
         {
-            
+            var entity = _mapper.Map<TEntity>(dto);
             await _repository.CreateAsync(entity);
             await _unitOfWork.CommitAsync();
-            return entity;
+            return _mapper.Map<TDto>(entity);
         }
 
-        public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
+        public async Task<IEnumerable<TDto>> CreateRangeAsync(IEnumerable<TDto> dtos)
         {
+            var entities = _mapper.Map<IEnumerable<TEntity>>(dtos);
             await _repository.CreateRangeAsync(entities);
             await _unitOfWork.CommitAsync();
-            return entities;
+            return _mapper.Map<IEnumerable<TDto>>(entities);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            
             var entity = _repository.Delete(id);
 
             if (entity)
@@ -56,56 +56,51 @@ namespace Service.Services.GenericService
             throw new DataNotFoundException();
         }
 
-        //public async Task DeleteRangeAsync(IEnumerable<int> entityIds)
-        //{
-        //    foreach (var entityId in entityIds) 
-        //    {
-        //        _repository.Delete(entityId);
-        //    }
-            
-        //    await _unitOfWork.CommitAsync();
-        //}
-
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<TDto>> GetAllAsync()
         {
             var entities = await _repository.GetAllAsync();
-            return entities.ToList();
+            return _mapper.Map<IEnumerable<TDto>>(entities);
         }
 
-        public IQueryable<T> GetBy(Expression<Func<T, bool>> expression)
+        public IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> expression)
         {
-            throw new NotImplementedException();
+            // Burada doğrudan IQueryable döndürüyoruz
+            return _repository.GetBy(expression);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<TDto> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null) throw new DataNotFoundException();
+            return _mapper.Map<TDto>(entity);
         }
 
-        public async Task<PagedResponseDto<IEnumerable<T>>> GetPagedAsync(PaginationDto paginationDto)
+        public async Task<PagedResponseDto<IEnumerable<TDto>>> GetPagedAsync(PaginationDto paginationDto)
         {
-           var paged = await _repository.GetPagedAsync(paginationDto.PageNumber, paginationDto.PageSize);
+            var paged = await _repository.GetPagedAsync(paginationDto.PageNumber, paginationDto.PageSize);
 
             if (!paged.Item3.Any())
             {
                 throw new PageNotFoundException();
             }
-            var mappedItems = ObjectMapper.Mapper.Map<IEnumerable<T>>(paged.Item3);
-           
 
-           var pagedResponse = new PagedResponseDto<IEnumerable<T>>
-           {
-               PagedDto = mappedItems,
-               TotalPages = paged.Item1,
-               PageNumber = paginationDto.PageNumber,
-               TotalCount = paged.Item2
-           };
+            var mappedItems = _mapper.Map<IEnumerable<TDto>>(paged.Item3);
 
-          return pagedResponse;
+            var pagedResponse = new PagedResponseDto<IEnumerable<TDto>>
+            {
+                PagedDto = mappedItems,
+                TotalPages = paged.Item1,
+                PageNumber = paginationDto.PageNumber,
+                TotalCount = paged.Item2
+            };
+
+            return pagedResponse;
         }
 
-        public virtual async Task<T> UpdateAsync(T entity)
+        public virtual async Task<TDto> UpdateAsync(TDto dto)
         {
+            var entity = _mapper.Map<TEntity>(dto);
+
             // "Id" property'sine ulaşma
             var idProperty = entity.GetType().GetProperty("Id");
 
@@ -134,8 +129,8 @@ namespace Service.Services.GenericService
             await _repository.UpdateAsync(entity);
             await _unitOfWork.CommitAsync();
 
-            return entity;
+            return _mapper.Map<TDto>(entity);
         }
-
     }
 }
+

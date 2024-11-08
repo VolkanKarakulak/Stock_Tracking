@@ -4,17 +4,19 @@ using System.Linq.Expressions;
 
 namespace Service.Services.GenericService
 {
-    public interface IGenericService<T> where T : class
+    public interface IGenericService<TEntity, TDto>
+        where TEntity : class
+        where TDto : class
     {
-        Task<T> GetByIdAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync(); // Task<IEnumerable<T>> GetAllAsync(); de olabilir tüm datayı çeker
-        IQueryable<T> GetBy(Expression<Func<T, bool>> expression); // where ile veritabanına yapılacak olan sorgu oluşturuluyor, sorgu yapılmıyor
-        Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
-        Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities); // birden fazla kayıt, 
-        Task<T> CreateAsync(T entity);
-        Task<T> UpdateAsync(T entity); //void de olabilir, çünkü update/delete uzun süren işlemler değil
-        Task<bool> DeleteAsync(int id); // void de olabilir
-        //Task DeleteRangeAsync(IEnumerable<int> entityIds);
-        Task<PagedResponseDto<IEnumerable<T>>> GetPagedAsync(PaginationDto paginationDto);
+        Task<TDto> GetByIdAsync(int id); // Dönüş tipi DTO oldu
+        Task<IEnumerable<TDto>> GetAllAsync(); // Tüm veriyi DTO listesi olarak döndürür
+        IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> expression); // Filtreleme için IQueryable olarak döndürür
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression); // Varlık mevcut mu kontrolü
+        Task<IEnumerable<TDto>> CreateRangeAsync(IEnumerable<TDto> dtos); // Birden fazla DTO oluşturur
+        Task<TDto> CreateAsync(TDto dto); // Tek bir DTO oluşturur
+        Task<TDto> UpdateAsync(TDto dto); // DTO güncelleme
+        Task<bool> DeleteAsync(int id); // Silme işlemi, başarılıysa true döner
+
+        Task<PagedResponseDto<IEnumerable<TDto>>> GetPagedAsync(PaginationDto paginationDto); // Sayfalama desteği
     }
 }

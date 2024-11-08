@@ -7,7 +7,7 @@ using Service.Services.GenericService;
 
 namespace Service.Services.ProductService
 {
-    public interface IProductService : IGenericService<Product>
+    public interface IProductService : IGenericService<Product, ProductDto>
     {
         Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto);
     }
