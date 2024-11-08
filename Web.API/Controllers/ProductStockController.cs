@@ -22,6 +22,7 @@ namespace Web.API.Controllers
             _mapper = mapper;
             _service = service;
         }
+
         [HttpGet]
         [Route("all")]
         public async Task<ResponseDto> GetAll()
@@ -42,26 +43,26 @@ namespace Web.API.Controllers
         [HttpPost]
         public async Task<ResponseDto> Create(ProductStockAddDto productStockAddDto)
         {
-            var productStock = await _service.CreateAsync(_mapper.Map<ProductStock>(productStockAddDto));
-            var productStockDto = _mapper.Map<ProductStockDto>(productStock);
+            var productStockDto = await _service.CreateProductStockAsync(productStockAddDto);
             return ResponseBuilder.CreateResponse(productStockDto, true, "Başarılı");
         }
 
-        [HttpPost]
-        [Route("CreateRange")]
-        public async Task<ResponseDto> CreateRange(IEnumerable<ProductStockAddDto> productStockAddDto)
-        {
-            var productStock = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<ProductStock>>(productStockAddDto));
-            var productStockDto = _mapper.Map<IEnumerable<ProductStockDto>>(productStock);
-            return ResponseBuilder.CreateResponse(productStockDto, true, "Başarılı");
-        }
 
-        [HttpPut]
-        public async Task<ResponseDto> Update(ProductStockUpdateDto productStockUpdateDto)
-        {
-            await _service.UpdateAsync(_mapper.Map<ProductStock>(productStockUpdateDto));
-            return ResponseBuilder.CreateResponse(productStockUpdateDto, true, "Başarılı");
-        }
+        //[HttpPost]
+        //[Route("CreateRange")]
+        //public async Task<ResponseDto> CreateRange(IEnumerable<ProductStockAddDto> productStockAddDto)
+        //{
+        //    var productStock = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<ProductStock>>(productStockAddDto));
+        //    var productStockDto = _mapper.Map<IEnumerable<ProductStockDto>>(productStock);
+        //    return ResponseBuilder.CreateResponse(productStockDto, true, "Başarılı");
+        //}
+
+        //[HttpPut]
+        //public async Task<ResponseDto> Update(ProductStockUpdateDto productStockUpdateDto)
+        //{
+        //    await _service.UpdateAsync(_mapper.Map<ProductStock>(productStockUpdateDto));
+        //    return ResponseBuilder.CreateResponse(productStockUpdateDto, true, "Başarılı");
+        //}
 
         [HttpDelete("{id}")]
         public async Task<ResponseDto> Delete(int id)

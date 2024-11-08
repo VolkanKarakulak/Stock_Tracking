@@ -25,7 +25,10 @@ namespace Service.Mapping
                 .ForMember(k => k.ProductId, l => l.MapFrom(m => m.ProductId))
                 .ReverseMap(); 
 
-            CreateMap<ProductStockAddDto, ProductStock>().ReverseMap();
+            CreateMap<ProductStockAddDto, ProductStock>()
+                .ForMember(k => k.Quantity, l => l.MapFrom(m => m.Quantity)) // Product tablosundaki Stock alanına Quantity'yi atıyoruz
+                .ForMember(k => k.ProductId, l => l.MapFrom(m => m.ProductId))
+                .ReverseMap().ReverseMap();
 
             CreateMap<ProductStockUpdateDto, Product>()
                 .ForMember(k => k.Stock, l => l.MapFrom(m => m.Quantity)) // Product tablosundaki Stock alanına Quantity'yi atıyoruz

@@ -1,6 +1,8 @@
-﻿using Data.Entities;
+﻿using AutoMapper;
+using Data.Entities;
 using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
+using Service.DTOs.CategoryDtos;
 using Service.DTOs.PaginationDto;
 using Service.DTOs.ResponseDto;
 using Service.Services.GenericService;
@@ -13,9 +15,9 @@ using System.Threading.Tasks;
 
 namespace Service.Services.CategoryService
 {
-    public class CategoryService : GenericService<Category>, ICategoryService
+    public class CategoryService : GenericService<Category, CategoryDto>, ICategoryService
     {
-        public CategoryService(IGenericRepository<Category> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        public CategoryService(IGenericRepository<Category> repository, IUnitOfWork unitOfWork, IMapper mapper) : base(repository, unitOfWork, mapper)
         {
         }
     }
