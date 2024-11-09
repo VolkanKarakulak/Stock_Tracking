@@ -71,7 +71,7 @@ namespace Data.Repositories.ProductStockRepositories
                         behavior.ApplyBehavior(_context, entity);
 
                         entityHelper.UpdateEntityProperties(oldEntity, entity);
-                        await _context.SaveChangesAsync();
+                        //await _context.SaveChangesAsync();
                         return oldEntity;
                     }
                 }
@@ -81,7 +81,7 @@ namespace Data.Repositories.ProductStockRepositories
                     _dbSet.Add(entity);
                 }
 
-                await _context.SaveChangesAsync(); // kalkabilir 
+                //await _context.SaveChangesAsync(); // kalkabilir 
                 return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
             }
         

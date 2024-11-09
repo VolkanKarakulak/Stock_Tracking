@@ -47,7 +47,7 @@ namespace Service.Services.ProductStockService
                 product.Stock = existingStock.Quantity;
                 await _productStockRepository.StateChangeAsync(existingStock);
                 await _productRepository.UpdateAsync(product);
-
+                await _unitOfWork.CommitAsync();
                 return _mapper.Map<ProductStockDto>(existingStock);
             }
             else
@@ -59,6 +59,7 @@ namespace Service.Services.ProductStockService
                 //await _productStockRepository.CreateAsync(addProductStock);
                 var productStock = _mapper.Map<ProductStock>(entity);
                 var result = await _productStockRepository.CreateAsync(productStock);
+                await _unitOfWork.CommitAsync();
                 return _mapper.Map<ProductStockDto>(result);
             }
         }
@@ -85,15 +86,18 @@ namespace Service.Services.ProductStockService
                 _mapper.Map(entity, product);
 
                 await _productStockRepository.UpdateAsync(productStock);
+                await _unitOfWork.CommitAsync();    
             }
             else
             {
                 productStock = _mapper.Map<ProductStock>(entity);
                 await _productStockRepository.CreateAsync(productStock);
+                await _unitOfWork.CommitAsync();
                 //_mapper.Map(entity, product);
             }
 
             await _productRepository.UpdateAsync(product);
+            await _unitOfWork.CommitAsync();
             var productStockDto = _mapper.Map<ProductStockDto>(productStock);
             return productStockDto;
         }

@@ -34,7 +34,7 @@ namespace Data.Repositories.GenericRepositories
 
             // Entity'yi ekle
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             // `SaveChangesAsync` sonrasında durum `Unchanged` olarak görünür
             return _context.Entry(entity).State == EntityState.Unchanged ? entity : null;
@@ -74,7 +74,7 @@ namespace Data.Repositories.GenericRepositories
                     behavior.ApplyBehavior(_context, entity);
                     entry.Property("IsDeleted").CurrentValue = oldEntity.IsDeleted;
                     entityHelper.UpdateEntityProperties(oldEntity, entity);
-                    await _context.SaveChangesAsync(); // Kalkabilir
+                    //await _context.SaveChangesAsync(); // Kalkabilir
                     return oldEntity; 
                 }
             }
@@ -84,7 +84,7 @@ namespace Data.Repositories.GenericRepositories
                 _dbSet.Add(entity);
             }
 
-            await _context.SaveChangesAsync(); // kalkabilir 
+            //await _context.SaveChangesAsync(); // kalkabilir 
             return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
         }
        
