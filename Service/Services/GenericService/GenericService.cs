@@ -100,8 +100,6 @@ namespace Service.Services.GenericService
         public virtual async Task<TDto> UpdateAsync(TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
-
-            // "Id" property'sine ulaşma
             var idProperty = entity.GetType().GetProperty("Id");
 
             if (idProperty == null)
@@ -117,7 +115,6 @@ namespace Service.Services.GenericService
                 throw new DataNotFoundException();
             }
 
-            // isEntityExist kontrolü
             var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
 
             if (!isEntityExist)

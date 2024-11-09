@@ -18,11 +18,15 @@ namespace Service.Mapping
             CreateMap<CategoryUpdateDto, Category>().ReverseMap();
             CreateMap<CategoryAddDto, Category>().ReverseMap();
 
-            CreateMap<ProductStockDto, ProductStock>().ReverseMap();
+            CreateMap<ProductStockDto, ProductStock>()
+                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore()) // Ignore CreatedDate during mapping
+                .ReverseMap();
+
             CreateMap<ProductStockUpdateDto, ProductStock>()
                 .ForMember(k => k.IsActive, l => l.MapFrom(m => m.IsActive)) // IsActive özelliğini eşleştir
                 .ForMember(k => k.Quantity, l => l.MapFrom(m => m.Quantity)) // Quantity özelliğini eşleştir
                 .ForMember(k => k.ProductId, l => l.MapFrom(m => m.ProductId))
+                .ForMember(k => k.CreatedDate, opt => opt.Ignore())
                 .ReverseMap(); 
 
             CreateMap<ProductStockAddDto, ProductStock>()
@@ -33,6 +37,7 @@ namespace Service.Mapping
             CreateMap<ProductStockUpdateDto, Product>()
                 .ForMember(k => k.Stock, l => l.MapFrom(m => m.Quantity)) // Product tablosundaki Stock alanına Quantity'yi atıyoruz
                 .ForMember(k => k.IsActive, l => l.MapFrom(m => m.IsActive))
+                .ForMember(k => k.CreatedDate, opt => opt.Ignore())
                 .ForMember(k => k.Id, l => l.MapFrom(m => m.ProductId)) 
                 .ReverseMap();
 
