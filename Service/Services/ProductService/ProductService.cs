@@ -1,20 +1,15 @@
 ﻿using AutoMapper;
-using AutoMapper.Internal.Mappers;
 using Data.Entities;
 using Data.Repositories.CategoryRepositories;
-using Data.Repositories.GenericRepositories;
 using Data.Repositories.ProductRepositories;
 using Data.Repositories.ProductStockRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
-using Service.DTOs.CategoryDtos;
 using Service.DTOs.PaginationDto;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ProductStockDtos;
 using Service.DTOs.ResponseDto;
-using Service.Exceptions;
 using Service.Exceptions.NotFoundExeptions;
-using Service.Mapping;
 using Service.Services.GenericService;
 
 
@@ -71,8 +66,8 @@ namespace Service.Services.ProductService
 
             var (totalPages, totalCount, courses) = await _productRepository.GetProductByCategoryIdPagedAsync(categoryId, paginationDto.PageNumber, paginationDto.PageSize);
 
-            var productList = ObjectMapper.Mapper.Map<IEnumerable<ProductDto>>(courses);
-            var categoryDto = ObjectMapper.Mapper.Map<ProductStockDto>(categoryExist);
+            var productList = _mapper.Map<IEnumerable<ProductDto>>(courses);
+            var categoryDto = _mapper.Map<ProductStockDto>(categoryExist);
 
 
             var pagedResponseDto = GeneratePagedResponseModel(

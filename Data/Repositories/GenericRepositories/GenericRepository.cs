@@ -58,7 +58,7 @@ namespace Data.Repositories.GenericRepositories
         {
             return await _dbSet.AnyAsync(x => x.Id == id && !x.IsDeleted);
         }
-        public async Task<T> UpdateAsync(T entity)
+        public virtual async Task<T> UpdateAsync(T entity)
         {
             var entry = _context.Entry(entity);
 
@@ -75,7 +75,7 @@ namespace Data.Repositories.GenericRepositories
                     entry.Property("IsDeleted").CurrentValue = oldEntity.IsDeleted;
                     entityHelper.UpdateEntityProperties(oldEntity, entity);
                     await _context.SaveChangesAsync(); // Kalkabilir
-                    return oldEntity; // Güncellenmiş eski varlık döndürülüyor.
+                    return oldEntity; 
                 }
             }
             else

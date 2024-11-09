@@ -13,6 +13,10 @@ namespace Data.Interceptors
     {
         void ApplyBehavior(DbContext context, BaseEntity entities);
     }
+    public interface IEntityStateBehavior<T> where T : class
+    {
+        void ApplyBehavior(DbContext context, T entity);
+    }
 
     // AddedBehavior sınıfı, IEntityStateBehavior'u implement eder
     public class AddedBehavior : IEntityStateBehavior
@@ -41,11 +45,16 @@ namespace Data.Interceptors
     {
         public void ApplyBehavior(DbContext context, BaseEntity entity)
         {
-            
-                entity.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
-                context.Entry(entity).Property(x => x.CreatedDate).IsModified = false;
-            
-            
+            entity.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+            context.Entry(entity).Property(x => x.CreatedDate).IsModified = false;
+
+        }
+        public class UpdatedBehavior : IEntityStateBehavior<ProductStock>
+        {
+            public void ApplyBehavior(DbContext context, ProductStock entity)
+            {
+                entity.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));                
+            }
         }
     }
 }

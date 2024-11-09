@@ -12,5 +12,6 @@ namespace Service.Services.ProductStockService
     public interface IProductStockService : IGenericService<ProductStock, ProductStockDto>
     {
         Task<ProductStockDto> CreateProductStockAsync(ProductStockAddDto entity);
+        Task<ProductStockDto> UpdateProductStockAsync(ProductStockUpdateDto entity);
     }
 }

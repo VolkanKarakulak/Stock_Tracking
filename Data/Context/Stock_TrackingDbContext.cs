@@ -26,6 +26,18 @@ namespace Data.Contexts
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            modelBuilder.Entity<ProductStock>()
+                .Ignore(ps => ps.Description)
+                .Ignore(ps => ps.IsDeleted)
+                .Ignore(ps => ps.CreatedDate);
+
+            //modelBuilder.Entity<ProductStock>()
+            //    .Property(p => p.UpdatedDate)
+            //    .HasColumnName("UpdatedDate");
+
+            //modelBuilder.Entity<ProductStock>()
+            //    .Property(p => p.IsActive)
+            //    .HasColumnName("IsActive");
 
             base.OnModelCreating(modelBuilder);
         }
