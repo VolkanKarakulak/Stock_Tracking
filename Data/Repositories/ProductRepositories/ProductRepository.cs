@@ -1,5 +1,7 @@
 ﻿using Data.Contexts;
 using Data.Entities;
+using Data.EntityHelper;
+using Data.Interceptors;
 using Data.Repositories.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Data.Interceptors.ModifiedBehavior;
 
 namespace Data.Repositories.ProductRepositories
 {
@@ -15,11 +18,13 @@ namespace Data.Repositories.ProductRepositories
     {
         private readonly IGenericRepository<Product> _repository;
         private readonly Stock_TrackingDbContext _context;
+        protected readonly DbSet<Product> _dbSet;
 
         public ProductRepository(IGenericRepository<Product> repository, Stock_TrackingDbContext context)
         {
             _repository = repository;
             _context = context;
+            _dbSet = _context.Set<Product>();
         }
 
         public async Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
@@ -118,9 +123,35 @@ namespace Data.Repositories.ProductRepositories
 
         public async Task<Product> UpdateAsync(Product entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return entity;
+            {
+                var entry = _context.Entry(entity);
+
+                // Eğer entity 'Detached' durumda ise, eski varlığı bul.
+                if (entry.State == EntityState.Detached)
+                {
+                    var entityHelper = new EntityHelper<Product>(_context);
+
+                    var oldEntity = entityHelper.GetOldEntity(entity.Id);
+                    if (oldEntity != null)
+                    {
+                        var behavior = new ModifiedBehavior();
+                        behavior.ApplyBehavior(_context, entity);
+
+                        entityHelper.UpdateEntityProperties(oldEntity, entity);
+                        //await _context.SaveChangesAsync();
+                        return oldEntity;
+                    }
+                }
+                else
+                {
+                    // Mevcut varlığı güncelle.
+                    _dbSet.Add(entity);
+                }
+
+                //await _context.SaveChangesAsync(); // kalkabilir 
+                return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
+            }
+
         }
     }
 }

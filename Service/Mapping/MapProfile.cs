@@ -27,7 +27,15 @@ namespace Service.Mapping
                 .ForMember(k => k.Quantity, l => l.MapFrom(m => m.Quantity)) // Quantity özelliğini eşleştir
                 .ForMember(k => k.ProductId, l => l.MapFrom(m => m.ProductId))
                 .ForMember(k => k.CreatedDate, opt => opt.Ignore())
-                .ReverseMap(); 
+                .ReverseMap();
+
+            CreateMap<ProductStock, ProductUpdateDto>()
+                .ForMember(k => k.Id, l => l.MapFrom(m => m.ProductId))
+                .ForMember(k => k.ProductStockId, l => l.MapFrom(m => m.Id))                
+                .ForMember(k => k.IsActive, l => l.MapFrom(m => m.IsActive))
+                .ForMember(k => k.Description, opt => opt.Ignore())
+                .ForMember(k => k.Stock, l => l.MapFrom(m => m.Quantity))
+                .ReverseMap();
 
             CreateMap<ProductStockAddDto, ProductStock>()
                 .ForMember(k => k.Quantity, l => l.MapFrom(m => m.Quantity)) // Product tablosundaki Stock alanına Quantity'yi atıyoruz
@@ -57,6 +65,10 @@ namespace Service.Mapping
                 .ForMember(k => k.ProductId, l => l.MapFrom(m => m.Id)) // ProductStock'un ProductId alanını Product'ın Id'si ile eşleştiriyoruz
                 .ForMember(k => k.Quantity, l => l.MapFrom(m => m.Stock))
                 .ForMember(k => k.Id, l => l.Ignore()); // ProductStock'un kendi Id'sini maplemiyoruz
+
+            CreateMap<ProductStock, ProductDto>().ReverseMap();
+              
+
 
         }
     }

@@ -11,7 +11,7 @@ namespace Service.Services.ProductService
     public interface IProductService : IGenericService<Product, ProductDto>
     {
         Task<ProductDto> CreateProductAsync(ProductAddDto entity);
-        //Task<ProductStockDto> UpdateProductStockAsync(ProductStockUpdateDto entity);
+        Task<ProductDto> UpdateProductAsync(ProductUpdateDto entity);
         Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto);
     }
 }

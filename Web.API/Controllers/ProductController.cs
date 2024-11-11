@@ -58,12 +58,12 @@ namespace Web.API.Controllers
         //    return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
         //}
 
-        //[HttpPut]
-        //public async Task<ResponseDto> Update(ProductUpdateDto productUpdateDto)
-        //{
-        //    await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));
-        //    return ResponseBuilder.CreateResponse(productUpdateDto, true, "Başarılı");
-        //}
+        [HttpPut]
+        public async Task<ResponseDto> Update(ProductUpdateDto productUpdateDto)
+        {
+            var productDto = await _service.UpdateProductAsync(productUpdateDto);
+            return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
+        }
 
         [HttpDelete("{id}")]
         public async Task<ResponseDto> Delete(int id)
