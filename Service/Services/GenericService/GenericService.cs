@@ -44,6 +44,38 @@ namespace Service.Services.GenericService
             return _mapper.Map<IEnumerable<TDto>>(entities);
         }
 
+        public virtual async Task<TDto> UpdateAsync(TDto dto)
+        {
+            var entity = _mapper.Map<TEntity>(dto);
+            var idProperty = entity.GetType().GetProperty("Id");
+
+            if (idProperty == null)
+            {
+                throw new InvalidOperationException("Entity does not have an Id property.");
+            }
+
+            // "Id" property'sinin değerini alıyoruz ve null olup olmadığını kontrol ediyoruz
+            var entityIdValue = idProperty.GetValue(entity);
+
+            if (entityIdValue == null || !(entityIdValue is int entityId))
+            {
+                throw new DataNotFoundException();
+            }
+
+            var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
+
+            if (!isEntityExist)
+            {
+                throw new DataNotFoundException();
+            }
+
+            // Eğer entity güncellenebilir durumdaysa update işlemini yap
+            await _repository.UpdateAsync(entity);
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<TDto>(entity);
+        }
+
         public async Task<bool> DeleteAsync(int id)
         {
             var entity = _repository.Delete(id);
@@ -95,38 +127,6 @@ namespace Service.Services.GenericService
             };
 
             return pagedResponse;
-        }
-
-        public virtual async Task<TDto> UpdateAsync(TDto dto)
-        {
-            var entity = _mapper.Map<TEntity>(dto);
-            var idProperty = entity.GetType().GetProperty("Id");
-
-            if (idProperty == null)
-            {
-                throw new InvalidOperationException("Entity does not have an Id property.");
-            }
-
-            // "Id" property'sinin değerini alıyoruz ve null olup olmadığını kontrol ediyoruz
-            var entityIdValue = idProperty.GetValue(entity);
-
-            if (entityIdValue == null || !(entityIdValue is int entityId))
-            {
-                throw new DataNotFoundException();
-            }
-
-            var isEntityExist = await _repository.IsEntityUpdateableAsync(entityId);
-
-            if (!isEntityExist)
-            {
-                throw new DataNotFoundException();
-            }
-
-            // Eğer entity güncellenebilir durumdaysa update işlemini yap
-            await _repository.UpdateAsync(entity);
-            await _unitOfWork.CommitAsync();
-
-            return _mapper.Map<TDto>(entity);
         }
     }
 }

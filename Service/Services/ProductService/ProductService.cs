@@ -57,10 +57,60 @@ namespace Service.Services.ProductService
 
         }
 
-        //public async Task<ProductDto> UpdateProductAsync(ProductUpdateDto entity)
-        //{
-        //    return await _productRepository.UpdateAsync(product);
-        //}
+        public async Task<ProductDto> UpdateProductAsync(ProductUpdateDto entity)
+        {
+            var isUpdateableProduct = await _productRepository.IsEntityUpdateableAsync(entity.Id);
+
+            var product = await _productRepository.GetBy(p => p.Id == entity.Id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            if (product == null)
+            {
+                throw new DataNotFoundException();
+            }
+
+            var productStock = await _productStockRepository.GetBy(p => p.Id == entity.ProductStockId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+
+            if (productStock != null)
+            {
+                _mapper.Map(entity, productStock);
+                _mapper.Map(entity, product);
+
+                await _productStockRepository.UpdateAsync(productStock);
+                await _unitOfWork.CommitAsync();
+            }
+            else
+            {
+                productStock = _mapper.Map<ProductStock>(entity);
+                await _productStockRepository.CreateAsync(productStock);
+                await _unitOfWork.CommitAsync();
+                //_mapper.Map(entity, product);
+            }
+
+            //if (isUpdateableProduct)
+            //{
+            //    var product = _mapper.Map<Product>(entity);
+            //    await _productRepository.UpdateAsync(product);            
+
+            //    var productStock = _mapper.Map<ProductStock>(entity);
+            //    await _productStockRepository.UpdateAsync(productStock);
+            //    await _unitOfWork.CommitAsync();
+
+            //    var productDto = _mapper.Map<ProductDto>(product);
+            //    return productDto;
+
+            //}
+
+            await _productRepository.UpdateAsync(product);
+            await _unitOfWork.CommitAsync();
+            var productDto = _mapper.Map<ProductDto>(product);
+            return productDto;
+
+        }
 
         public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto)
         {
