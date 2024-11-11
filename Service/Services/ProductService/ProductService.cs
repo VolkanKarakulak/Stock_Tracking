@@ -9,6 +9,7 @@ using Service.DTOs.PaginationDto;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ProductStockDtos;
 using Service.DTOs.ResponseDto;
+using Service.Exceptions;
 using Service.Exceptions.NotFoundExeptions;
 using Service.Services.GenericService;
 
@@ -35,25 +36,28 @@ namespace Service.Services.ProductService
             _mapper = mapper;
         }
 
-        //public override async Task<Product> CreateAsync(Product product)
-        //{
-        //    var result = await _productRepository.CreateAsync(product);  
+        public async Task<ProductDto> CreateProductAsync(ProductAddDto entity)
+        {
+            var product = _mapper.Map<Product>(entity);
+            var productCreateResult = await _productRepository.CreateAsync(product);
+            await _unitOfWork.CommitAsync();
+            if (productCreateResult != null)
+            {
+                var productStock = _mapper.Map<ProductStock>(entity);
+                productStock.ProductId = product.Id;
+                await _productStockRepository.CreateAsync(productStock);
+                await _unitOfWork.CommitAsync();
+                var result = _mapper.Map<ProductDto>(productCreateResult);
+                return result;
+            }
+            else
+            {
+                throw new DataCreateFailedException();
+            }
 
-        //    if (result != null)
-        //    {
-        //        var productStock = ObjectMapper.Mapper.Map<ProductStock>(product);
-        //        //productStock.ProductId = product.Id;
-        //        await _productStockRepository.CreateAsync(productStock);
-        //        return result;
-        //    }
-        //    else
-        //    {
-        //        throw new DataCreateFailedException();
-        //    }
-            
-        //}
+        }
 
-        //public override async Task<Product> UpdateAsync(Product product)
+        //public async Task<ProductDto> UpdateProductAsync(ProductUpdateDto entity)
         //{
         //    return await _productRepository.UpdateAsync(product);
         //}

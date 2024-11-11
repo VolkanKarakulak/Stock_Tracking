@@ -40,6 +40,11 @@ namespace Service.Mapping
                 .ForMember(k => k.CreatedDate, opt => opt.Ignore())
                 .ForMember(k => k.Id, l => l.MapFrom(m => m.ProductId)) 
                 .ReverseMap();
+            
+            CreateMap<ProductAddDto, ProductStock>()
+                .ForMember(k => k.Quantity, l => l.MapFrom(m => m.Stock)) // Product tablosundaki Stock alanına Quantity'yi atıyoruz
+                .ForMember(k => k.CreatedDate, opt => opt.Ignore()) 
+                .ReverseMap();
 
             // ProductStock'tan Product'a mapleme
             CreateMap<ProductStock, Product>()

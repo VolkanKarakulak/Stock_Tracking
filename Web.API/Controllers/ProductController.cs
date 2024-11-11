@@ -42,13 +42,12 @@ namespace Web.API.Controllers
             return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
         }
 
-        //[HttpPost]
-        //public async Task<ResponseDto> Create(ProductAddDto productAddDto)
-        //{
-        //    var product = await _service.CreateAsync(_mapper.Map<Product>(productAddDto));
-        //    var productDto = _mapper.Map<ProductDto>(product);
-        //    return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
-        //}
+        [HttpPost]
+        public async Task<ResponseDto> Create(ProductAddDto productAddDto)
+        {
+            var productDto = await _service.CreateProductAsync(productAddDto);
+            return ResponseBuilder.CreateResponse(productDto, true, "Başarılı");
+        }
 
         //[HttpPost]
         //[Route("CreateRange")]
