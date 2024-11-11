@@ -37,7 +37,7 @@ namespace Data.Repositories.GenericRepositories
             //await _context.SaveChangesAsync();
 
             // `SaveChangesAsync` sonrasında durum `Unchanged` olarak görünür
-            return _context.Entry(entity).State == EntityState.Unchanged ? entity : null;
+            return _context.Entry(entity).State == EntityState.Added ? entity : null;
         }
 
         public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
