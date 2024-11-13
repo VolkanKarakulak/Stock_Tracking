@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Kursis.Data.Configurations
 {
-    internal class CourseCategoryConfiguration : IEntityTypeConfiguration<ProductCategory>
+    internal class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCategory>
     {
         public void Configure(EntityTypeBuilder<ProductCategory> builder)
         {
@@ -13,12 +13,12 @@ namespace Kursis.Data.Configurations
 
 
             builder.HasOne(cc => cc.Category)
-                   .WithMany(c => c.CourseCategories)
+                   .WithMany(c => c.ProductCategories)
                    .HasForeignKey(cc => cc.CategoryId);
 
 
             builder.HasOne(cc => cc.Product)
-                   .WithMany(c => c.CourseCategories)
+                   .WithMany(c => c.ProductCategories)
                    .HasForeignKey(cc => cc.ProductId);
 
         }
