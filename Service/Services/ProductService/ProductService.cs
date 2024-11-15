@@ -41,12 +41,15 @@ namespace Service.Services.ProductService
             var product = _mapper.Map<Product>(entity);
             var productCreateResult = await _productRepository.CreateAsync(product);
             await _unitOfWork.CommitAsync();
+
             if (productCreateResult != null)
             {
-                var productStock = _mapper.Map<ProductStock>(entity);
+                var productStock = _mapper.Map<ProductStock>(product);
                 productStock.ProductId = product.Id;
-                await _productStockRepository.CreateAsync(productStock);
+                var createdProductStock = await _productStockRepository.CreateAsync(productStock);
                 await _unitOfWork.CommitAsync();
+
+                            
                 var result = _mapper.Map<ProductDto>(productCreateResult);
                 return result;
             }
@@ -62,7 +65,6 @@ namespace Service.Services.ProductService
             var isUpdateableProduct = await _productRepository.IsEntityUpdateableAsync(entity.Id);
 
             var product = await _productRepository.GetBy(p => p.Id == entity.Id)
-                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             if (product == null)
@@ -70,15 +72,20 @@ namespace Service.Services.ProductService
                 throw new DataNotFoundException();
             }
 
-            var productStock = await _productStockRepository.GetBy(p => p.Id == entity.ProductStockId)
+            _mapper.Map(entity, product);
+
+            await _productRepository.UpdateAsync(product);
+            await _unitOfWork.CommitAsync();
+
+            var productStock = await _productStockRepository.GetBy(p => p.Id == product.Id)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
 
 
             if (productStock != null)
             {
-                _mapper.Map(entity, productStock);
-                _mapper.Map(entity, product);
+                _mapper.Map(product, productStock);
+                
 
                 await _productStockRepository.UpdateAsync(productStock);
                 await _unitOfWork.CommitAsync();
@@ -87,6 +94,11 @@ namespace Service.Services.ProductService
             {
                 productStock = _mapper.Map<ProductStock>(entity);
                 await _productStockRepository.CreateAsync(productStock);
+                var productStockResult = await _productStockRepository.GetBy(p => p.ProductId == productStock.ProductId)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
+
+                _mapper.Map(productStockResult, product);
                 await _unitOfWork.CommitAsync();
                 //_mapper.Map(entity, product);
             }
@@ -105,7 +117,7 @@ namespace Service.Services.ProductService
 
             //}
 
-            await _productRepository.UpdateAsync(product);
+            
             await _unitOfWork.CommitAsync();
             var productDto = _mapper.Map<ProductDto>(product);
             return productDto;

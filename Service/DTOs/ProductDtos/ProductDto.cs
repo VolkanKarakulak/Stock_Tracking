@@ -15,6 +15,7 @@ namespace Service.DTOs.ProductDtos
         public string? Color { get; set; }
         public string? Material { get; set; }
         public string? Description { get; set; } 
+        public int? ProductStockId { get; set; }
 
     }
 }
