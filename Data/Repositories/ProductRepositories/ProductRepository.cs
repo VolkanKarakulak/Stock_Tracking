@@ -77,7 +77,7 @@ namespace Data.Repositories.ProductRepositories
 
         public async Task<(int totalpage, int totalcount, IQueryable<Product>)> GetProductByCategoryIdPagedAsync(int categoryId, int pageNumber, int pageSize)
         {
-            var categoryExists = await _context.ProductCategory
+            var categoryExists = await _context.ProductCategories
 
                .AsNoTracking()
                .AnyAsync(x => x.CategoryId == categoryId && x.Category.IsActive && !x.Category.IsDeleted);
@@ -87,7 +87,7 @@ namespace Data.Repositories.ProductRepositories
                 return (0, 0, Enumerable.Empty<Product>().AsQueryable());
             }
 
-            var totalCount = await _context.ProductCategory
+            var totalCount = await _context.ProductCategories
                 .AsNoTracking()
                 .Where(x => x.CategoryId == categoryId && x.Category.IsActive && !x.Category.IsDeleted)
                 .Select(x => x.Product)
@@ -101,7 +101,7 @@ namespace Data.Repositories.ProductRepositories
                 return (0, 0, Enumerable.Empty<Product>().AsQueryable());
             }
 
-            var pagedCourses = await _context.ProductCategory
+            var pagedCourses = await _context.ProductCategories
                 .AsNoTracking()
                 .Where(x => x.CategoryId == categoryId && x.Category.IsActive && !x.Category.IsDeleted)
                 .Include(x => x.Product)

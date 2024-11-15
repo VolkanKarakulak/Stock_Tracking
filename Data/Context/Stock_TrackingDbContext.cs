@@ -19,7 +19,7 @@ namespace Data.Contexts
         public DbSet<ProductStock> ProductStocks { get; set; }
         public DbSet<StockMovement> StockMovements { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<ProductCategory> ProductCategory { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
