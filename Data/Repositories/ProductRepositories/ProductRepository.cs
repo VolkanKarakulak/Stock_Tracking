@@ -127,7 +127,7 @@ namespace Data.Repositories.ProductRepositories
                 var entry = _context.Entry(entity);
 
                 // Eğer entity 'Detached' durumda ise, eski varlığı bul.
-                if (entry.State == EntityState.Detached)
+                if (entry.State == EntityState.Detached || entry.State == EntityState.Modified)
                 {
                     var entityHelper = new EntityHelper<Product>(_context);
 
