@@ -12,11 +12,6 @@ namespace Data.Configurations
             builder.Property(x => x.Id).UseIdentityColumn();          
 
             builder
-                .HasOne(x => x.Category)
-                .WithMany(x => x.Products)
-                .HasForeignKey(x => x.CategoryId);
-
-            builder
                 .HasOne(p => p.ProductStock)
                 .WithOne(ps => ps.Product)
                 .HasForeignKey<ProductStock>(ps => ps.ProductId);

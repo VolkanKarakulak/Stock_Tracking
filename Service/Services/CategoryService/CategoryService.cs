@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Entities;
+using Data.Repositories.CategoryRepositories;
 using Data.Repositories.GenericRepositories;
 using Data.UnitOfWorks;
 using Service.DTOs.CategoryDtos;
@@ -17,8 +18,26 @@ namespace Service.Services.CategoryService
 {
     public class CategoryService : GenericService<Category, CategoryDto>, ICategoryService
     {
-        public CategoryService(IGenericRepository<Category> repository, IUnitOfWork unitOfWork, IMapper mapper) : base(repository, unitOfWork, mapper)
+        private readonly IMapper _mapper;
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryService(IGenericRepository<Category> repository, IUnitOfWork unitOfWork, IMapper mapper, ICategoryRepository categoryRepository) : base(repository, unitOfWork, mapper)
         {
+            _mapper = mapper;
+            _categoryRepository = categoryRepository;
+        }
+
+        //public async Task<CategoryDto> CreateCategoryAsync(CategoryAddDto entity)
+        //{
+        //    var category = _mapper.Map<Category>(entity);
+        //    var categoryCreateResult = _categoryRepository.CreateAsync(category);
+
+
+
+        //}
+
+        public async Task<CategoryDto> UpdateCategoryAsync(CategoryUpdateDto entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

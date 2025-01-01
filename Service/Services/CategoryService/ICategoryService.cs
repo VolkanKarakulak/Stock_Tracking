@@ -11,5 +11,7 @@ namespace Service.Services.CategoryService
 {
     public interface ICategoryService : IGenericService<Category, CategoryDto>
     {
+        //Task<CategoryDto> CreateCategoryAsync(CategoryAddDto entity);
+        //Task<CategoryDto> UpdateCategoryAsync(CategoryUpdateDto entity);
     }
 }

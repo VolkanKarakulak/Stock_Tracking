@@ -17,8 +17,7 @@ namespace Data.Entities
 
         [Column(TypeName = "decimal(15,2)")]
         public decimal Price { get; set; }
-        public int CategoryId { get; set; }
-
+    
         [Length(1, 30)]
         [Column(TypeName = "nvarchar(30)")]
         public string? Color { get; set; }
