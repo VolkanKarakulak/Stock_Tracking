@@ -13,8 +13,7 @@ namespace Data.Seeds
              new Product
              {
                  Id = 1,
-                 Name = "Yamaha Piyano",
-                 CategoryId = 1,
+                 Name = "Yamaha Piyano",                
                  Price = 3500,
                  Stock = 15,
                 
@@ -22,8 +21,7 @@ namespace Data.Seeds
              new Product
              {
                  Id = 2,
-                 Name = "Roland Bateri",
-                 CategoryId = 3,
+                 Name = "Roland Bateri",               
                  Price = 5500,
                  Stock = 5,
                 

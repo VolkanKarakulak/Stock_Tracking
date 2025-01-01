@@ -31,6 +31,7 @@ namespace Web.API
                 {
                     sqlOptions.MigrationsAssembly(typeof(Stock_TrackingDbContext).Assembly.GetName().Name);
                 });
+
             });
 
             var app = builder.Build();

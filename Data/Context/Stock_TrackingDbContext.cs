@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace Data.Contexts
@@ -38,8 +39,7 @@ namespace Data.Contexts
             //modelBuilder.Entity<ProductStock>()
             //    .Property(p => p.IsActive)
             //    .HasColumnName("IsActive");
-
-            base.OnModelCreating(modelBuilder);
+;
         }
     }
 }

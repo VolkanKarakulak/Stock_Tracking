@@ -39,6 +39,16 @@ namespace Service.Services.ProductService
         public async Task<ProductDto> CreateProductAsync(ProductAddDto entity)
         {
             var product = _mapper.Map<Product>(entity);
+
+            var categories = await _categoryRepository.GetByIdsAsync(entity.CategoryIds);
+
+            product.ProductCategories = categories.Select(category => new ProductCategory
+            {
+                Product = product,
+                Category = category
+            }).ToList();
+
+
             var productCreateResult = await _productRepository.CreateAsync(product);
             await _unitOfWork.CommitAsync();
 
