@@ -71,8 +71,7 @@ namespace Service.Services.ProductService
                 productStock.ProductId = product.Id;
                 var createdProductStock = await _productStockRepository.CreateAsync(productStock);
                 await _unitOfWork.CommitAsync();
-
-                            
+                           
                 var result = _mapper.Map<ProductDto>(productCreateResult);
                 return result;
             }
@@ -80,7 +79,6 @@ namespace Service.Services.ProductService
             {
                 throw new DataCreateFailedException();
             }
-
         }
 
         public async Task<ProductDto> UpdateProductAsync(ProductUpdateDto entity)
@@ -129,7 +127,6 @@ namespace Service.Services.ProductService
             await _unitOfWork.CommitAsync();
             var productDto = _mapper.Map<ProductDto>(product);
             return productDto;
-
         }
 
         public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto)
@@ -145,12 +142,12 @@ namespace Service.Services.ProductService
 
 
             var pagedResponseDto = GeneratePagedResponseModel(
-                    categoryId,
-                    paginationDto,
-                    totalPages,
-                    totalCount,
-                    productList // Sadece ürün listesini döndürüyoruz
-                );
+                categoryId,
+                paginationDto,
+                totalPages,
+                totalCount,
+                productList // Sadece ürün listesini döndürüyoruz
+        );
 
             return pagedResponseDto;
         }
