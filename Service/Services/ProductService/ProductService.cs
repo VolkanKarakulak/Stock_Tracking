@@ -39,13 +39,22 @@ namespace Service.Services.ProductService
         public async Task<ProductDto> CreateProductAsync(ProductAddDto entity)
         {
             var product = _mapper.Map<Product>(entity);
+            if (product == null)
+            {
+                throw new ArgumentNullException(nameof(product), "Product nesnesi null olamaz.");
+            }
 
             var categories = await _categoryRepository.GetByIdsAsync(entity.CategoryIds);
+            if (categories == null)
+            {
+                throw new ArgumentNullException(nameof(categories), "Categories koleksiyonu null olamaz.");
+            }
+            // Eğer ProductCategories null ise, yeni bir liste başlatıyoruz
+            product.ProductCategories ??= new List<ProductCategory>();
 
             product.ProductCategories = categories.Select(category => new ProductCategory
             {
-                Product = product,
-                Category = category
+                CategoryId = category.Id
             }).ToList();
 
 
@@ -55,6 +64,10 @@ namespace Service.Services.ProductService
             if (productCreateResult != null)
             {
                 var productStock = _mapper.Map<ProductStock>(product);
+                if (productStock == null)
+                {
+                    throw new Exception("Mapping işlemi sırasında productStock nesnesi oluşturulamadı.");
+                }
                 productStock.ProductId = product.Id;
                 var createdProductStock = await _productStockRepository.CreateAsync(productStock);
                 await _unitOfWork.CommitAsync();

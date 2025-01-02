@@ -14,6 +14,7 @@ namespace Service.Mapping
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
             CreateMap<ProductAddDto, Product>().ReverseMap();
 
+
             CreateMap<CategoryDto, Category>().ReverseMap();
             CreateMap<CategoryUpdateDto, Category>().ReverseMap();
             CreateMap<CategoryAddDto, Category>().ReverseMap();
@@ -66,6 +67,7 @@ namespace Service.Mapping
                 .ForMember(k => k.Id, l => l.Ignore()) // ProductStock'un kendi Id'sini maplemiyoruz
                 .ForMember(k => k.Description, l => l.Ignore()) 
                 .ForMember(k => k.CreatedDate, l => l.Ignore()) 
+                .ForMember(k => k.UpdatedDate, l => l.Ignore()) 
                 .ForMember(k => k.IsDeleted, l => l.Ignore());
 
 

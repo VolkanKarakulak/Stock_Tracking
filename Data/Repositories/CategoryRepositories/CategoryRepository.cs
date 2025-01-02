@@ -18,7 +18,7 @@ namespace Data.Repositories.CategoryRepositories
         private readonly Stock_TrackingDbContext _context;
         protected readonly DbSet<Category> _dbSet;
 
-        public CategoryRepository(IGenericRepository<Category> repository, Stock_TrackingDbContext context = null)
+        public CategoryRepository(IGenericRepository<Category> repository, Stock_TrackingDbContext context)
         {
             _repository = repository;
             _context = context;

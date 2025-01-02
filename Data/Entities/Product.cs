@@ -26,7 +26,7 @@ namespace Data.Entities
         [Column(TypeName = "nvarchar(50)")]
         public string? Material { get; set; }
         public ProductStock? ProductStock { get; set; }
-        public Category? Category { get; set; }
+    
         public ICollection<OrderItem>? OrderItems { get; set; }
         public ICollection<ProductCategory>? ProductCategories { get; set; }
 
