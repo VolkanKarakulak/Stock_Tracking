@@ -4,6 +4,7 @@ using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(Stock_TrackingDbContext))]
-    partial class Stock_TrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250105110759_addingNewPropertyOrder")]
+    partial class addingNewPropertyOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,6 +167,9 @@ namespace Data.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Priority")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("StaffId")
                         .HasColumnType("int");
 
@@ -190,7 +196,7 @@ namespace Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Data.Entities.OrderDetail", b =>
+            modelBuilder.Entity("Data.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,7 +237,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Data.Entities.Product", b =>
@@ -502,7 +508,7 @@ namespace Data.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Data.Entities.OrderDetail", b =>
+            modelBuilder.Entity("Data.Entities.OrderItem", b =>
                 {
                     b.HasOne("Data.Entities.Order", "Order")
                         .WithMany("OrderItems")

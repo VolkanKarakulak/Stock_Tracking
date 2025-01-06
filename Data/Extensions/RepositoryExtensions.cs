@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
 using Data.Repositories.CategoryRepositories;
 using Data.Repositories.GenericRepositories;
+using Data.Repositories.OrderRepositories;
 using Data.Repositories.ProductRepositories;
 using Data.Repositories.ProductStockRepositories;
 using Data.UnitOfWorks;
@@ -26,6 +27,7 @@ namespace Data.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductStockRepository, ProductStockRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
     }
 }
