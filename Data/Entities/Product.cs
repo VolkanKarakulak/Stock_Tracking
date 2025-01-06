@@ -27,7 +27,7 @@ namespace Data.Entities
         public string? Material { get; set; }
         public ProductStock? ProductStock { get; set; }
     
-        public ICollection<OrderItem>? OrderItems { get; set; }
+        public ICollection<OrderDetail>? OrderItems { get; set; }
         public ICollection<ProductCategory>? ProductCategories { get; set; }
 
 

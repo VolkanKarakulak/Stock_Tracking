@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public class OrderItem : BaseEntity
+    public class OrderDetail : BaseEntity
     {      
         public int ProductId { get; set; }
         public Product? Product { get; set; }
@@ -16,7 +16,7 @@ namespace Data.Entities
         public Order? Order { get; set; }
 
         [Range(1, 10000)]
-        public int Quantity { get; set; } // Üründen kaç adet alındı
+        public int Quantity { get; set; } // Ürünlerden kaç adet alındı
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal UnitPrice { get; set; } // O sırada birim fiyat
