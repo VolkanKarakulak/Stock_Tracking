@@ -1,4 +1,5 @@
 ﻿using Data.Entities;
+using Service.DTOs.OrderDtos;
 using Service.Services.GenericService;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Service.Services.OrderService
 {
-	public class IOrderService : IGenericService<Order, OrderDto>
+	public interface IOrderService : IGenericService<Order, OrderDto>
 	{
 	}
 }

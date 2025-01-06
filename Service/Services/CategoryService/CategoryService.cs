@@ -33,11 +33,6 @@ namespace Service.Services.CategoryService
 
 
 
-        //}
-
-        public async Task<CategoryDto> UpdateCategoryAsync(CategoryUpdateDto entity)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

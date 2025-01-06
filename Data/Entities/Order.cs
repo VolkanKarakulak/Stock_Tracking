@@ -23,6 +23,6 @@ namespace Data.Entities
 		public decimal TaxAmount { get; set; } // vergi miktarı
 		public int? StaffId { get; set; }
 		public string? TrackingNumber { get; set; }
-		public ICollection<OrderDetail>? OrderItems { get; set; }
+		public ICollection<OrderDetail>? OrderDetails { get; set; }
 	}
 }
