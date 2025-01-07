@@ -11,5 +11,6 @@ namespace Service.Services.OrderService
 {
 	public interface IOrderService : IGenericService<Order, OrderDto>
 	{
+		Task<OrderDto> CreateOrderAsync (OrderAddDto dto);
 	}
 }

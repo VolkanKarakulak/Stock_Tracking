@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Data.Entities;
 using Service.DTOs.CategoryDtos;
+using Service.DTOs.OrderDtos;
+using Service.DTOs.OrderItemDtos;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ProductStockDtos;
 
@@ -78,7 +80,17 @@ namespace Service.Mapping
 
             CreateMap<Category, ProductStockDto>().ReverseMap();
 
+            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<Order, OrderAddDto>().ReverseMap();
 
-        }
+            CreateMap<OrderAddDto, Order>()
+           .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
+           .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Pending")); 
+	
+
+			CreateMap<OrderDetail, OrderItemAddDTO>().ReverseMap();
+			CreateMap<OrderItemAddDTO, OrderDetail>()
+		   .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Quantity * src.UnitPrice)); // Toplam fiyat hesaplanıyor
+		}
     }
 }
