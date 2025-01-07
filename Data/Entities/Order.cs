@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,10 @@ namespace Data.Entities
 {
     public class Order : BaseEntity
     {
-        public DateTime OrderDate { get; set; }
-        public int CustomerId { get; set; }
+		[Column("OrderDate")]
+		public new DateTime? CreatedDate { get; set; } // BaseEntity'deki CreatedDate'i gizleyip özelleştiriyoruz.
+
+		public int CustomerId { get; set; }
         public Customer? Customer { get; set; } 
 		public bool IsApproved { get; set; }
 		public bool IsCancelled { get; set; }

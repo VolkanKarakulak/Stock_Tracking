@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Service.DTOs.OrderDtos
 {
-	public class OrderDto
+	public class OrderDto : BaseDto	
 	{
 		public DateTime OrderDate { get; set; }
 		public string Status { get; set; }

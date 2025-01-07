@@ -36,15 +36,15 @@ namespace Service.Services.ProductService
             _mapper = mapper;
         }
 
-        public async Task<ProductDto> CreateProductAsync(ProductAddDto entity)
+        public async Task<ProductDto> CreateProductAsync(ProductAddDto dto)
         {
-            var product = _mapper.Map<Product>(entity);
+            var product = _mapper.Map<Product>(dto);
             if (product == null)
             {
                 throw new ArgumentNullException(nameof(product), "Product nesnesi null olamaz.");
             }
 
-            var categories = await _categoryRepository.GetByIdsAsync(entity.CategoryIds);
+            var categories = await _categoryRepository.GetByIdsAsync(dto.CategoryIds);
             if (categories == null)
             {
                 throw new ArgumentNullException(nameof(categories), "Categories koleksiyonu null olamaz.");
@@ -81,18 +81,18 @@ namespace Service.Services.ProductService
             }
         }
 
-        public async Task<ProductDto> UpdateProductAsync(ProductUpdateDto entity)
+        public async Task<ProductDto> UpdateProductAsync(ProductUpdateDto dto)
         {
-            var isUpdateableProduct = await _productRepository.IsEntityUpdateableAsync(entity.Id);
+            var isUpdateableProduct = await _productRepository.IsEntityUpdateableAsync(dto.Id);
 
-            var product = await _productRepository.GetBy(p => p.Id == entity.Id)
+            var product = await _productRepository.GetBy(p => p.Id == dto.Id)
                .AsNoTracking()
                .FirstOrDefaultAsync();
 
             if (isUpdateableProduct || product != null)
             {
                
-                _mapper.Map(entity, product);
+                _mapper.Map(dto, product);
 
                 await _productRepository.UpdateAsync(product);
                 await _unitOfWork.CommitAsync();
@@ -109,7 +109,7 @@ namespace Service.Services.ProductService
                 }
                 else
                 {
-                    productStock = _mapper.Map<ProductStock>(entity);
+                    productStock = _mapper.Map<ProductStock>(dto);
                     await _productStockRepository.CreateAsync(productStock);
                     var productStockResult = await _productStockRepository.GetBy(p => p.ProductId == productStock.ProductId)
                         .AsNoTracking()
