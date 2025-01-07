@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public class OrderDetail : BaseEntity
+    public class OrderDetail 
     {      
+        public int Id { get; set; }
         public int ProductId { get; set; }
         public Product? Product { get; set; }
         public int OrderId { get; set; }

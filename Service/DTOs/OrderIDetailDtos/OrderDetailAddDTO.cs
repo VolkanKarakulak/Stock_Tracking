@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Service.DTOs.OrderItemDtos
 {
-    public class OrderItemAddDTO
+    public class OrderDetailAddDTO
     {
         public int ProductId { get; set; } // Ürün kimliği
         public int Quantity { get; set; } // Siparişteki ürün miktarı
