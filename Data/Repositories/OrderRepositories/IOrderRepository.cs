@@ -11,5 +11,6 @@ namespace Data.Repositories.OrderRepositories
 	public interface IOrderRepository : IGenericRepository<Order> 
 	{
 		//Task<Order?> CreateAsync(Order entity, List<OrderDetail> orderItems);
+		Task<Order> GetOrderWithDetailsAsync(int orderId);
 	}
 }

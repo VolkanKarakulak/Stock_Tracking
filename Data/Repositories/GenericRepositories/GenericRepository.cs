@@ -58,38 +58,50 @@ namespace Data.Repositories.GenericRepositories
         {
             return await _dbSet.AnyAsync(x => x.Id == id && !x.IsDeleted);
         }
-        public virtual async Task<T> UpdateAsync(T entity)
-        {
-            var entry = _context.Entry(entity);
+		public virtual async Task<T> UpdateAsync(T entity)
+		{
+			var entry = _context.Entry(entity);
 
-            // Eğer entity 'Detached' durumda ise, eski varlığı bul.
-            if (entry.State == EntityState.Detached)
-            {
-                var entityHelper = new EntityHelper<T>(_context);
+			// Eğer varlık 'Detached' durumundaysa
+			if (entry.State == EntityState.Detached)
+			{
+				var entityHelper = new EntityHelper<T>(_context);
 
-                var oldEntity = entityHelper.GetOldEntity(entity.Id);
-                if (oldEntity != null)
-                {
-                    var behavior = new ModifiedBehavior();
-                    behavior.ApplyBehavior(_context, entity);
-                    entry.Property("IsDeleted").CurrentValue = oldEntity.IsDeleted;
-                    entityHelper.UpdateEntityProperties(oldEntity, entity);
-                    //await _context.SaveChangesAsync(); // Kalkabilir
-                    return oldEntity; 
-                }
-            }
-            else
-            {
-                // Mevcut varlığı güncelle.
-                _dbSet.Add(entity);
-            }
+				// Eski varlığı bul
+				var oldEntity = entityHelper.GetOldEntity(entity.Id);
+				if (oldEntity != null)
+				{
+					var behavior = new ModifiedBehavior();
+					behavior.ApplyBehavior(_context, entity);
 
-            //await _context.SaveChangesAsync(); // kalkabilir 
-            return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
-        }
-       
+					// Eski varlıktaki 'IsDeleted' özelliğini koruyoruz
+					entry.Property("IsDeleted").CurrentValue = oldEntity.IsDeleted;
 
-        public bool Delete(int id)
+					// Eski varlığı güncelle
+					entityHelper.UpdateEntityProperties(oldEntity, entity);
+
+					return oldEntity; // Güncellenmiş eski varlığı döndür
+				}
+				else
+				{
+					throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
+				}
+			}
+			else
+			{
+				// Eğer varlık 'Attached' durumundaysa, durumunu güncelle
+				entry.State = EntityState.Modified;
+			}
+
+			// Değişiklikleri kaydet
+			await _context.SaveChangesAsync();
+
+			return entity; // Güncellenmiş varlığı döndür
+		}
+
+
+
+		public bool Delete(int id)
         {
             var entity = _dbSet.Find(id);
             if (entity != null && !entity.IsDeleted)
