@@ -121,37 +121,47 @@ namespace Data.Repositories.ProductRepositories
             return await _repository.IsEntityUpdateableAsync(id);
         }
 
-        public async Task<Product> UpdateAsync(Product entity)
-        {
-            {
-                var entry = _context.Entry(entity);
+		public async Task<Product> UpdateAsync(Product entity)
+		{
+			// Entity'nin durumu kontrol ediliyor
+			var entry = _context.Entry(entity);
 
-                // Eğer entity 'Detached' durumda ise, eski varlığı bul.
-                if (entry.State == EntityState.Detached || entry.State == EntityState.Modified)
-                {
-                    var entityHelper = new EntityHelper<Product>(_context);
+			if (entry.State == EntityState.Detached)
+			{
+				// Entity "detached" durumda ise, eski varlık bulunuyor
+				var entityHelper = new EntityHelper<Product>(_context);
+				var oldEntity = entityHelper.GetOldEntity(entity.Id);
 
-                    var oldEntity = entityHelper.GetOldEntity(entity.Id);
-                    if (oldEntity != null)
-                    {
-                        var behavior = new ModifiedBehavior();
-                        behavior.ApplyBehavior(_context, entity);
+				if (oldEntity != null)
+				{
+					// Değişiklik davranışı uygulanıyor
+					var behavior = new ModifiedBehavior();
+					behavior.ApplyBehavior(_context, entity);
 
-                        entityHelper.UpdateEntityProperties(oldEntity, entity);
-                        //await _context.SaveChangesAsync();
-                        return oldEntity;
-                    }
-                }
-                else
-                {
-                    // Mevcut varlığı güncelle.
-                    _dbSet.Add(entity);
-                }
+					// Eski varlık özellikleri güncelleniyor
+					entityHelper.UpdateEntityProperties(oldEntity, entity);
 
-                //await _context.SaveChangesAsync(); // kalkabilir 
-                return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
-            }
+					return oldEntity;
+				}
+				else
+				{
+					throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
+				}
+			}
+			else if (entry.State == EntityState.Modified)
+			{
+				// Eğer varlık "Modified" durumundaysa, doğrudan güncelleniyor
+				entry.State = EntityState.Modified;
+			}
+			else
+			{
+				throw new InvalidOperationException("Entity state is not valid for an update operation.");
+			}
 
-        }
-    }
+			// Değişiklikler kaydediliyor
+			await _context.SaveChangesAsync();
+			return entity; // Güncellenmiş varlık döndürülüyor
+		}
+
+	}
 }

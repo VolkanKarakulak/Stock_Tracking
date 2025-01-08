@@ -1,6 +1,7 @@
 ﻿using Data.Contexts;
 using Data.Entities;
 using Data.Repositories.GenericRepositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace Data.Repositories.OrderRepositories
 	{
 		private readonly IGenericRepository<Order> _repository;
 		private readonly Stock_TrackingDbContext _context;
+		protected readonly DbSet<Order> _dbSet;
 
 		public OrderRepository(IGenericRepository<Order> repository, Stock_TrackingDbContext appDbContext)
 		{
 			_repository = repository;
 			_context = appDbContext;
+			_dbSet = _context.Set<Order>();
 		}
 
 		public async Task<bool> AnyAsync(Expression<Func<Order, bool>> expression)
@@ -63,6 +66,14 @@ namespace Data.Repositories.OrderRepositories
 		public async Task<Order> GetByIdAsync(int id)
 		{
 			return await _repository.GetByIdAsync(id);
+		}
+
+		public async Task<Order> GetOrderWithDetailsAsync(int orderId)
+		{
+			return await _dbSet
+				.Include(o => o.OrderDetails)
+				.ThenInclude(od => od.Product)
+				.FirstOrDefaultAsync(o => o.Id == orderId);
 		}
 
 		public async Task<(int, int, IQueryable<Order>)> GetPagedAsync(int pageNumber, int pageSize)

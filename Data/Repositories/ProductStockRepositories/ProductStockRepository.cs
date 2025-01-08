@@ -54,40 +54,49 @@ namespace Data.Repositories.ProductStockRepositories
             return await _repository.IsEntityUpdateableAsync(id);
         }
 
-        public async Task<ProductStock> UpdateAsync(ProductStock entity)
-        {
-            {
-                var entry = _context.Entry(entity);
+		public async Task<ProductStock> UpdateAsync(ProductStock entity)
+		{
+			var entry = _context.Entry(entity);
 
-                // Eğer entity 'Detached' durumda ise, eski varlığı bul.
-                if (entry.State == EntityState.Detached)
-                {
-                    var entityHelper = new EntityHelper<ProductStock>(_context);
+			// Entity "Detached" durumunda ise, eski varlık bulunur ve güncellenir
+			if (entry.State == EntityState.Detached)
+			{
+				var entityHelper = new EntityHelper<ProductStock>(_context);
+				var oldEntity = entityHelper.GetOldEntity(entity.Id);
 
-                    var oldEntity = entityHelper.GetOldEntity(entity.Id);
-                    if (oldEntity != null)
-                    {
-                        var behavior = new UpdatedBehavior();
-                        behavior.ApplyBehavior(_context, entity);
+				if (oldEntity != null)
+				{
+					var behavior = new UpdatedBehavior();
+					behavior.ApplyBehavior(_context, entity);
 
-                        entityHelper.UpdateEntityProperties(oldEntity, entity);
-                        //await _context.SaveChangesAsync();
-                        return oldEntity;
-                    }
-                }
-                else
-                {
-                    // Mevcut varlığı güncelle.
-                    _dbSet.Add(entity);
-                }
+					entityHelper.UpdateEntityProperties(oldEntity, entity);
 
-                //await _context.SaveChangesAsync(); // kalkabilir 
-                return entity; // Eğer entity 'Attached' durumunda ise, kendi başına güncellenmiş varlığı döndür.
-            }
-        
-        }
+					return oldEntity; // Eski varlık döndürülür
+				}
+				else
+				{
+					// Eğer eski varlık bulunamazsa hata fırlatılır
+					throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
+				}
+			}
+			// Eğer entity "Modified" durumundaysa, doğrudan güncelleme işlemi yapılır
+			else if (entry.State == EntityState.Modified)
+			{
+				entry.State = EntityState.Modified; // Varlık güncellenir
+			}
+			else
+			{
+				// Eğer entity geçerli bir duruma sahip değilse hata fırlatılır
+				throw new InvalidOperationException("Entity state is not valid for an update operation.");
+			}
 
-        public Task<IEnumerable<ProductStock>> CreateRangeAsync(IEnumerable<ProductStock> entities)
+			// Değişiklikler veritabanına kaydedilir
+			await _context.SaveChangesAsync();
+			return entity; // Güncellenmiş varlık döndürülür
+		}
+
+
+		public Task<IEnumerable<ProductStock>> CreateRangeAsync(IEnumerable<ProductStock> entities)
         {
             throw new NotImplementedException();
         }
@@ -108,9 +117,9 @@ namespace Data.Repositories.ProductStockRepositories
         }
 
 
-        public Task<ProductStock> GetByIdAsync(int id)
+        public async Task<ProductStock> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+           return await _repository.GetByIdAsync(id);
         }
 
         public Task<(int, int, IQueryable<ProductStock>)> GetPagedAsync(int pageNumber, int pageSize)
@@ -118,6 +127,11 @@ namespace Data.Repositories.ProductStockRepositories
             throw new NotImplementedException();
         }
 
-        
-    }
+		public async Task<ProductStock> GetByColumnAsync(Expression<Func<ProductStock, bool>> predicate)
+		{
+			return await _dbSet.FirstOrDefaultAsync(predicate)
+				   ?? throw new Exception("Entity not found.");
+		}
+
+	}
 }
