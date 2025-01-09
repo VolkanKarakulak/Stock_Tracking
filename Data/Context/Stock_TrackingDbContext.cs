@@ -32,14 +32,19 @@ namespace Data.Contexts
                 .Ignore(ps => ps.IsDeleted)
                 .Ignore(ps => ps.CreatedDate);
 
-            //modelBuilder.Entity<ProductStock>()
-            //    .Property(p => p.UpdatedDate)
-            //    .HasColumnName("UpdatedDate");
+			modelBuilder.Entity<Order>()
+		        .Property(o => o.Status)
+		        .HasConversion<byte>(); // Enum'ı tinyint ile eşleştirir
 
-            //modelBuilder.Entity<ProductStock>()
-            //    .Property(p => p.IsActive)
-            //    .HasColumnName("IsActive");
-;
+
+			//modelBuilder.Entity<ProductStock>()
+			//    .Property(p => p.UpdatedDate)
+			//    .HasColumnName("UpdatedDate");
+
+			//modelBuilder.Entity<ProductStock>()
+			//    .Property(p => p.IsActive)
+			//    .HasColumnName("IsActive");
+			;
         }
     }
 }

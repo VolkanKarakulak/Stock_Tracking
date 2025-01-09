@@ -70,10 +70,17 @@ namespace Data.Repositories.OrderRepositories
 
 		public async Task<Order> GetOrderWithDetailsAsync(int orderId)
 		{
-			return await _dbSet
-				.Include(o => o.OrderDetails)
+			var order = await _dbSet
+				.Include(o => o.OrderDetails!)
 				.ThenInclude(od => od.Product)
 				.FirstOrDefaultAsync(o => o.Id == orderId);
+
+			if (order == null)
+			{
+				throw new InvalidOperationException($"Order with ID {orderId} not found.");
+			}
+
+			return order; // Null kontrolü sonrası güvenli şekilde döndürülür.
 		}
 
 		public async Task<(int, int, IQueryable<Order>)> GetPagedAsync(int pageNumber, int pageSize)
