@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Data.Entities
         public Customer? Customer { get; set; } 
 		public bool IsApproved { get; set; }
 		public bool IsCancelled { get; set; }
-		public string Status { get; set; } = "Pending"; // Varsayılan durum.
+		public OrderStatus Status { get; set; } = OrderStatus.Pending; // Varsayılan durum.
 		public bool IsPaid { get; set; }
 		public DateTime? PaymentDate { get; set; }
 		public string? PaymentMethod { get; set; }
