@@ -4,6 +4,7 @@ using Data.Repositories.GenericRepositories;
 using Data.Repositories.OrderRepositories;
 using Data.Repositories.ProductRepositories;
 using Data.Repositories.ProductStockRepositories;
+using Data.Repositories.TaxSettingRepositories;
 using Data.UnitOfWorks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -28,6 +29,7 @@ namespace Data.Extensions
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductStockRepository, ProductStockRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ITaxSettingRepository, TaxSettingRepository>();
         }
     }
 }
