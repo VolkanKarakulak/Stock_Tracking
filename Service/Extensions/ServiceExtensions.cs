@@ -5,6 +5,7 @@ using Service.Services.OrderAdminService;
 using Service.Services.OrderService;
 using Service.Services.ProductService;
 using Service.Services.ProductStockService;
+using Service.Services.TaxSettingService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Service.Extensions
             service.AddScoped<IProductStockService, ProductStockService>();
             service.AddScoped<IOrderService, OrderService>();
             service.AddScoped<IOrderAdminService, OrderAdminService>();
+            service.AddScoped<ITaxSettingService, TaxSettingService>();
 
         }
 
