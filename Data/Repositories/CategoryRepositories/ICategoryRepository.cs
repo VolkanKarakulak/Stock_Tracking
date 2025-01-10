@@ -10,6 +10,6 @@ namespace Data.Repositories.CategoryRepositories
 {
     public interface ICategoryRepository : IGenericRepository<Category>
     {
-        Task<IEnumerable<Category>> GetByIdsAsync(List<int> ids);
+        Task<IEnumerable<Category>> GetByIdsAsync(IEnumerable<int> ids);
     }
 }

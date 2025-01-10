@@ -6,6 +6,7 @@ using Service.DTOs.OrderIDetailDtos;
 using Service.DTOs.OrderItemDtos;
 using Service.DTOs.ProductDtos;
 using Service.DTOs.ProductStockDtos;
+using Service.DTOs.SupplierDtos;
 using Service.DTOs.TaxSettingDtos;
 
 namespace Service.Mapping
@@ -18,10 +19,13 @@ namespace Service.Mapping
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
             CreateMap<ProductAddDto, Product>().ReverseMap();
 
-            CreateMap<TaxSettingDto, TaxSetting>().ReverseMap();
-                 // Tarih alanını eşleştirmez;
-			CreateMap<TaxSettingUpdateDto, TaxSetting>()
-				.ReverseMap(); 
+			CreateMap<SupplierDto, Supplier>().ReverseMap();
+			CreateMap<SupplierUpdateDto, Supplier>().ReverseMap();
+			CreateMap<SupplierAddDto, Supplier>().ReverseMap();
+
+
+			CreateMap<TaxSettingDto, TaxSetting>().ReverseMap();
+			CreateMap<TaxSettingUpdateDto, TaxSetting>().ReverseMap(); 
 			CreateMap<TaxSettingAddDto, TaxSetting>().ReverseMap();
 			CreateMap<TaxSettingAddDto, TaxSettingDto>().ReverseMap();
             CreateMap<TaxSettingUpdateDto, TaxSettingDto>().ReverseMap();

@@ -10,8 +10,8 @@ namespace Service.DTOs.OrderDtos
     public class OrderAddDto
 	{
 		public int CustomerId { get; set; }
-		public List<OrderDetailAddDTO> Items { get; set; }
-		public string PaymentMethod { get; set; }
-		public string Address { get; set; }
+		public IEnumerable<OrderDetailAddDTO> Items { get; set; }
+		public string? PaymentMethod { get; set; }
+		public string? Address { get; set; }
 	}
 }

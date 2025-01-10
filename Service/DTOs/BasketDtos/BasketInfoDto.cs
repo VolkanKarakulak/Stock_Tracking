@@ -10,6 +10,6 @@ namespace Service.DTOs.BasketDtos
 	{
 		public int CustomerId { get; set; } 
 		public DateTime DateOfAddition { get; set; } = DateTime.UtcNow;
-		public List<BasketItemInfoDto> Items { get; set; } = new List<BasketItemInfoDto>(); // Sepetteki ürünler
+		public IEnumerable<BasketItemInfoDto> Items { get; set; } = new List<BasketItemInfoDto>(); // Sepetteki ürünler
 	}
 }

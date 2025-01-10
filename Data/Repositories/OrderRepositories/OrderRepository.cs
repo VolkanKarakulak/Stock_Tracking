@@ -48,9 +48,9 @@ namespace Data.Repositories.OrderRepositories
 			return await _repository.CreateRangeAsync(entities);
 		}
 
-		public bool Delete(int id)
+		public async Task<bool> DeleteAsync(int id)
 		{
-			return _repository.Delete(id);
+			return await _repository.DeleteAsync(id);
 		}
 
 		public async Task<IQueryable<Order>> GetAllAsync()

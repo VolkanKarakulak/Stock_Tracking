@@ -19,9 +19,7 @@ namespace Service.DTOs.OrderDtos
 		public decimal TotalAmount { get; set; }
 		public decimal TaxAmount { get; set; }
 		public string? TrackingNumber { get; set; }
-		public bool IsActive { get; set; }
-		public bool IsDeleted { get; set; }
-		public List<OrderDetailDto> Items { get; set; } = new();
+		public IEnumerable<OrderDetailDto> Items { get; set; } 
 
 	}
 }

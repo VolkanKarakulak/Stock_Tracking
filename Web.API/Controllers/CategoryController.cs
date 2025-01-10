@@ -5,7 +5,7 @@ using Service.DTOs.PaginationDto;
 using Service.DTOs.CategoryDtos;
 using Service.DTOs.ResponseDtos;
 using Service.Services.CategoryService;
-using Service.DTOs.ProductStockDtos;
+
 
 namespace Web.API.Controllers
 {
@@ -27,7 +27,7 @@ namespace Web.API.Controllers
         public async Task<ResponseDto> GetAll()
         {
             var category = await _service.GetAllAsync();
-            var categoryDtos = _mapper.Map<List<ProductStockDto>>(category.ToList());
+            var categoryDtos = _mapper.Map<List<CategoryDto>>(category.ToList());
             return ResponseBuilder.CreateResponse(categoryDtos, true, "Başarılı");
         }
 
@@ -35,7 +35,7 @@ namespace Web.API.Controllers
         public async Task<ResponseDto> GetById(int id)
         {
             var category = await _service.GetByIdAsync(id);
-            var categoryDto = _mapper.Map<ProductStockDto>(category);
+            var categoryDto = _mapper.Map<CategoryDto>(category);
             return ResponseBuilder.CreateResponse(categoryDto, true, "Başarılı");
         }
 
@@ -49,15 +49,15 @@ namespace Web.API.Controllers
 
         //[HttpPost]
         //[Route("CreateRange")]
-        //public async Task<ResponseDto> CreateRange(IEnumerable<ProductStockAddDto> categoryAddDtos)
+        //public async Task<ResponseDto> CreateRange(IEnumerable<CategoryAddDto> categoryAddDtos)
         //{
         //    var category = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<Category>>(categoryAddDtos));
-        //    var categoryDto = _mapper.Map<IEnumerable<ProductStockDto>>(category);
+        //    var categoryDto = _mapper.Map<IEnumerable<CategoryDto>>(category);
         //    return ResponseBuilder.CreateResponse(categoryDto, true, "Başarılı");
         //}
 
         //[HttpPut]
-        //public async Task<ResponseDto> Update(ProductStockUpdateDto categoryUpdateDto)
+        //public async Task<ResponseDto> Update(CategoryUpdateDto categoryUpdateDto)
         //{
         //    await _service.UpdateAsync(_mapper.Map<Category>(categoryUpdateDto));
         //    return ResponseBuilder.CreateResponse(categoryUpdateDto, true, "Başarılı");

@@ -42,9 +42,9 @@ namespace Data.Repositories.CategoryRepositories
            return entities;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _repository.Delete(id);
+            return await _repository.DeleteAsync(id);
         }
 
         public async Task<IQueryable<Category>> GetAllAsync()
@@ -72,7 +72,7 @@ namespace Data.Repositories.CategoryRepositories
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<Category>> GetByIdsAsync(List<int> ids)
+        public async Task<IEnumerable<Category>> GetByIdsAsync(IEnumerable<int> ids)
         {
             return await _context.Categories
                 .AsNoTracking()
