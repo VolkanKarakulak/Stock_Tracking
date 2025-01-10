@@ -3,6 +3,7 @@ using Data.Entities;
 using Data.Repositories.CategoryRepositories;
 using Data.Repositories.ProductRepositories;
 using Data.Repositories.ProductStockRepositories;
+using Data.Repositories.TaxSettingRepositories;
 using Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Service.DTOs.PaginationDto;
@@ -21,30 +22,38 @@ namespace Service.Services.ProductService
         
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IProductStockRepository _productStockRepository;      
+        private readonly IProductStockRepository _productStockRepository;   
+        private readonly ITaxSettingRepository _taxSettingRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
+		public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository, IMapper mapper, ITaxSettingRepository taxSettingRepository) : base(productRepository, unitOfWork, mapper)
+		{
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IProductStockRepository productStockRepository, IMapper mapper) : base(productRepository, unitOfWork, mapper)
+			_unitOfWork = unitOfWork;
+			_categoryRepository = categoryRepository;
+			_productStockRepository = productStockRepository;
+			_productRepository = productRepository;
+			_mapper = mapper;
+			_taxSettingRepository = taxSettingRepository;
+		}
+
+
+		public async Task<ProductDto> CreateProductAsync(ProductAddDto dto)
         {
+            var taxRate = await _taxSettingRepository.GetTaxRateAsync();
+            var productPrice = dto.Price * (1 + taxRate);
 
-            _unitOfWork = unitOfWork;
-            _categoryRepository = categoryRepository;
-            _productStockRepository = productStockRepository;
-            _productRepository = productRepository;
-            _mapper = mapper;
-        }
-
-        public async Task<ProductDto> CreateProductAsync(ProductAddDto dto)
-        {
             var product = _mapper.Map<Product>(dto);
             if (product == null)
             {
                 throw new ArgumentNullException(nameof(product), "Product nesnesi null olamaz.");
             }
 
-            var categories = await _categoryRepository.GetByIdsAsync(dto.CategoryIds);
+			// Fiyatı güncelle
+			product.Price = productPrice;
+
+			var categories = await _categoryRepository.GetByIdsAsync(dto.CategoryIds);
             if (categories == null)
             {
                 throw new ArgumentNullException(nameof(categories), "Categories koleksiyonu null olamaz.");
@@ -90,14 +99,14 @@ namespace Service.Services.ProductService
                .FirstOrDefaultAsync();
 
             if (isUpdateableProduct || product != null)
-            {
-               
+            {              
                 _mapper.Map(dto, product);
 
                 await _productRepository.UpdateAsync(product);
                 await _unitOfWork.CommitAsync();
 
-                var productStock = await _productStockRepository.GetBy(p => p.ProductId == product.Id)
+                var productStock = await _productStockRepository
+                    .GetBy(p => p.ProductId == product.Id)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
 
@@ -111,7 +120,8 @@ namespace Service.Services.ProductService
                 {
                     productStock = _mapper.Map<ProductStock>(dto);
                     await _productStockRepository.CreateAsync(productStock);
-                    var productStockResult = await _productStockRepository.GetBy(p => p.ProductId == productStock.ProductId)
+                    var productStockResult = await _productStockRepository
+                        .GetBy(p => p.ProductId == productStock.ProductId)
                         .AsNoTracking()
                         .FirstOrDefaultAsync();
 

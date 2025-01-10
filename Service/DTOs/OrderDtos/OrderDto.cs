@@ -17,7 +17,10 @@ namespace Service.DTOs.OrderDtos
 		public DateTime? PaymentDate { get; set; }
 		public string? PaymentMethod { get; set; }
 		public decimal TotalAmount { get; set; }
+		public decimal TaxAmount { get; set; }
 		public string? TrackingNumber { get; set; }
+		public bool IsActive { get; set; }
+		public bool IsDeleted { get; set; }
 		public List<OrderDetailDto> Items { get; set; } = new();
 
 	}

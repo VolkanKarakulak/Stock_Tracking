@@ -10,7 +10,9 @@ namespace Service.DTOs.ProductDtos
     {
         public required string Name { get; set; }
         public int Stock { get; set; }
-        public decimal Price { get; set; }
+		public bool IsActive { get; set; }
+		public bool IsDeleted { get; set; }
+		public decimal Price { get; set; }
         public List<int> CategoryIds { get; set; }
         public string? Color { get; set; }
         public string? Material { get; set; }

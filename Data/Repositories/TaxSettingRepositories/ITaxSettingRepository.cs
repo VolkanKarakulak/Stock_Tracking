@@ -10,5 +10,7 @@ namespace Data.Repositories.TaxSettingRepositories
 {
 	public interface ITaxSettingRepository : IGenericRepository<TaxSetting>
 	{
+		Task<decimal> GetTaxRateAsync();
+		Task<decimal> CalculateTaxAmount(decimal basePrice);
 	}
 }
