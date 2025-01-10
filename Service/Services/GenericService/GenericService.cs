@@ -78,7 +78,7 @@ namespace Service.Services.GenericService
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var entity = _repository.Delete(id);
+            var entity = await _repository.DeleteAsync(id);
 
             if (entity)
             {

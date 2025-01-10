@@ -43,9 +43,9 @@ namespace Data.Repositories.ProductRepositories
             return entities;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _repository.Delete(id);
+            return await _repository.DeleteAsync(id);
         }
 
         //public bool DeleteRange(IEnumerable<int> entityIds)
@@ -162,6 +162,7 @@ namespace Data.Repositories.ProductRepositories
 			await _context.SaveChangesAsync();
 			return entity; // Güncellenmiş varlık döndürülüyor
 		}
+
 
 	}
 }

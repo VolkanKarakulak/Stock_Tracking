@@ -28,9 +28,9 @@ namespace Data.Repositories.ProductStockRepositories
 
         }
 
-        public Task<bool> AnyAsync(Expression<Func<ProductStock, bool>> expression)
+        public async Task<bool> AnyAsync(Expression<Func<ProductStock, bool>> expression)
         {
-            throw new NotImplementedException();
+            return await _repository.AnyAsync(expression);
         }
 
         public async Task<ProductStock?> CreateAsync(ProductStock entity)
@@ -101,14 +101,36 @@ namespace Data.Repositories.ProductStockRepositories
             throw new NotImplementedException();
         }
 
-        public bool Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+		public async Task<bool> DeleteAsync(int id)
+		{
+			// İlişkili product ve productStock'u getir
+			var productStock = await _context.ProductStocks
+				.Include(ps => ps.Product) // İlişkili Product'u dahil et
+				.FirstOrDefaultAsync(ps => ps.Id == id);
 
-        public Task<IQueryable<ProductStock>> GetAllAsync()
+			if (productStock == null) throw new KeyNotFoundException($"ProductStock with id {id} not found.");
+
+			// ProductStock için soft delete
+			productStock.IsActive = false;
+			productStock.IsDeleted = true;
+
+			// İlişkili Product için soft delete
+			if (productStock.Product != null)
+			{
+				productStock.Product.IsActive = false;
+				productStock.Product.IsDeleted = true;
+			}
+
+			// Değişiklikleri kaydet
+			_context.ProductStocks.Update(productStock);
+			await _context.SaveChangesAsync();
+
+			return true;
+		}
+
+		public async Task<IQueryable<ProductStock>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _repository.GetAllAsync();
         }
 
         public IQueryable<ProductStock> GetBy(Expression<Func<ProductStock, bool>> expression)
@@ -133,5 +155,14 @@ namespace Data.Repositories.ProductStockRepositories
 				   ?? throw new Exception("Entity not found.");
 		}
 
+		public bool Delete(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<bool> DeleteWithProductAsync(int id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

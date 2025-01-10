@@ -101,9 +101,9 @@ namespace Data.Repositories.GenericRepositories
 
 
 
-		public bool Delete(int id)
+		public async Task<bool> DeleteAsync(int id)
         {
-            var entity = _dbSet.Find(id);
+            var entity = await _dbSet.FindAsync(id);
             if (entity != null && !entity.IsDeleted)
             {
                 entity.UpdatedDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));

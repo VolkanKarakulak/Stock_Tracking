@@ -11,7 +11,8 @@ namespace Data.Repositories.ProductStockRepositories
 {
     public interface IProductStockRepository : IGenericRepository<ProductStock>
     {
-        Task<ProductStock?> StateChangeAsync(ProductStock entity);
+		//Task<bool> DeleteWithProductAsync(int id);
+		Task<ProductStock?> StateChangeAsync(ProductStock entity);
         Task<ProductStock> GetByColumnAsync(Expression<Func<ProductStock, bool>> predicate);
 
 	}

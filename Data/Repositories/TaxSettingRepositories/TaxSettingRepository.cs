@@ -41,9 +41,9 @@ namespace Data.Repositories.TaxSettingRepositories
 			throw new NotImplementedException();
 		}
 
-		public bool Delete(int id)
+		public async Task<bool> DeleteAsync(int id)
 		{
-			return  _repository.Delete(id);
+			return await _repository.DeleteAsync(id);
 		}
 
 		public async Task<IQueryable<TaxSetting>> GetAllAsync()
