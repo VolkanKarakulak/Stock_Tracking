@@ -14,12 +14,15 @@ using Data.Contexts;
 using Data.Repositories.GenericRepositories;
 using Moq;
 using Service.Mapping;
+using Service.Services.TaxSettingService;
+using Data.Repositories.TaxSettingRepositories;
 
 public class ProductServiceIntegrationTests
 {
     private readonly Stock_TrackingDbContext _context; 
     private readonly IProductService _productService;
     private readonly IMapper _mapper;
+    private readonly ITaxSettingService _taxSettingService;
 
     public ProductServiceIntegrationTests()
     {
@@ -46,13 +49,11 @@ public class ProductServiceIntegrationTests
         // Mock yerine gerçek bir GenericRepository kullanýmý
         var productRepository = new ProductRepository(new GenericRepository<Product>(_context), _context);
 
-
-        // CategoryRepository'nin oluþturulmasý
         var categoryRepository = new CategoryRepository(new GenericRepository<Category>(_context), _context);
 
-        // ProductStockRepository'nin oluþturulmasý
         var productStockRepository = new ProductStockRepository(new GenericRepository<ProductStock>(_context), _context);
 
+        var taxSettingRepository = new TaxSettingRepository(new GenericRepository<TaxSetting>(_context), _context);
 
         var unitOfWork = new UnitOfWork(_context);
 
@@ -64,7 +65,8 @@ public class ProductServiceIntegrationTests
             categoryRepository,
             unitOfWork,
             productStockRepository,
-            _mapper
+            _mapper,
+            taxSettingRepository
         );
     }
 

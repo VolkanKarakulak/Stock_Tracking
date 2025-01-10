@@ -113,6 +113,22 @@ namespace Data.Repositories.TaxSettingRepositories
 			return entity; // Güncellenmiş varlık döndürülüyor
 		}
 
+		public async Task<decimal> GetTaxRateAsync()
+		{
+			var taxSetting = await _context.TaxSettings.FirstOrDefaultAsync(t => t.IsActive); // Örneğin, varsayılan vergi oranını al.
+			if (taxSetting == null)
+			{
+				throw new Exception("Vergi oranı ayarı bulunamadı!");
+			}
+			var taxRate = taxSetting.TaxRate/100;
+			return taxRate;
+		}
+
+		public async Task<decimal> CalculateTaxAmount(decimal basePrice)
+		{
+			var taxRate = await GetTaxRateAsync();
+			return basePrice * taxRate;
+		}
 	}
 
 }

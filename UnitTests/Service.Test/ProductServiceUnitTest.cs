@@ -12,6 +12,7 @@ using Data.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Service.Mapping;
+using Data.Repositories.TaxSettingRepositories;
 
 namespace Service.Test
 {
@@ -23,16 +24,18 @@ namespace Service.Test
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly IMapper _mapper;
         private readonly ProductService _productService;
+		private readonly Mock<ITaxSettingRepository> _taxSettingRepositoryMock;
 
-        public ProductServiceTests()
+		public ProductServiceTests()
         {
             _productRepositoryMock = new Mock<IProductRepository>();
             _categoryRepositoryMock = new Mock<ICategoryRepository>();
             _productStockRepositoryMock = new Mock<IProductStockRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+			_taxSettingRepositoryMock = new Mock<ITaxSettingRepository>();
 
-            // Gerçek Mapper Konfigürasyonu
-            var config = new MapperConfiguration(cfg =>
+			// Gerçek Mapper Konfigürasyonu
+			var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new MapProfile());
             });
@@ -43,7 +46,9 @@ namespace Service.Test
                 _categoryRepositoryMock.Object,
                 _unitOfWorkMock.Object,
                 _productStockRepositoryMock.Object,
-                _mapper
+                _mapper,
+                _taxSettingRepositoryMock.Object
+
             );
         }
 

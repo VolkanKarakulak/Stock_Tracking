@@ -11,6 +11,6 @@ namespace Service.Services.TaxSettingService
 {
 	public interface ITaxSettingService : IGenericService<TaxSetting, TaxSettingDto>
 	{
-
+		Task<decimal> GetTaxRateAsync();
 	}
 }
