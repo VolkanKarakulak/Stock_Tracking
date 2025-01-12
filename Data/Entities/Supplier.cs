@@ -18,6 +18,6 @@ namespace Data.Entities
         [Length(1, 30)]
         [Column(TypeName = "nvarchar(30)")]
         public string PhoneNumber { get; set; } = default!;
-        public ICollection<Product>? ProductsSupplied { get; set; } // Tedarik ettiği ürünler
+        public ICollection<ProductSupplier>? ProductSuppliers { get; set; } // Tedarik ettiği ürünler
     }
 }

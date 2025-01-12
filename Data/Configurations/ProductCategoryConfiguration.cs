@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace Kursis.Data.Configurations
 {
@@ -21,7 +22,8 @@ namespace Kursis.Data.Configurations
                    .WithMany(c => c.ProductCategories)
                    .HasForeignKey(cc => cc.ProductId);
 
-        }
+
+		}
 
 
 

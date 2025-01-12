@@ -21,6 +21,7 @@ namespace Data.Contexts
         public DbSet<StockMovement> StockMovements { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductSupplier> ProductSuppliers { get; set; }
         public DbSet<TaxSetting> TaxSettings { get; set; }
 
 

@@ -79,7 +79,7 @@ namespace Data.Repositories.SupplierRepositories
 		public async Task<IQueryable<Supplier>> GetAllWitProductAsync()
 		{
 			var supplierList = await _context.Suppliers
-				.Include(p => p.ProductsSupplied)
+				.Include(p => p.ProductSuppliers)
 				.ToListAsync();
 
 			return await Task.FromResult(supplierList.AsQueryable());

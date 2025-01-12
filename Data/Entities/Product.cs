@@ -29,6 +29,7 @@ namespace Data.Entities
     
         public ICollection<OrderDetail>? OrderItems { get; set; }
         public ICollection<ProductCategory>? ProductCategories { get; set; }
+        public ICollection<ProductSupplier>? ProductSuppliers { get; set; }
 
 
     }

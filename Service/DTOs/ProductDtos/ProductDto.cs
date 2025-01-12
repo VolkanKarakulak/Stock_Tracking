@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,13 @@ namespace Service.DTOs.ProductDtos
         public required string Name { get; set; }
         public int Stock { get; set; }
 		public decimal Price { get; set; }
-        public IEnumerable<int> CategoryIds { get; set; }
+        public IEnumerable<int>? CategoryIds { get; set; }
+        public IEnumerable<int>? SupplierIds { get; set; }
         public string? Color { get; set; }
         public string? Material { get; set; }
         public string? Description { get; set; } 
         public int? ProductStockId { get; set; }
-        public int? SupplierId { get; set; }
+       
 
     }
 }
