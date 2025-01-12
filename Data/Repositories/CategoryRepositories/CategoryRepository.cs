@@ -76,7 +76,8 @@ namespace Data.Repositories.CategoryRepositories
         {
             return await _context.Categories
                 .AsNoTracking()
-                .Where(category => ids.Contains(category.Id))
+                .Where(category => ids
+                .Contains(category.Id))
                 .ToListAsync();
         }
 

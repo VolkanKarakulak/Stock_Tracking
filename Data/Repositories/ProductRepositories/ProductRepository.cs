@@ -57,8 +57,16 @@ namespace Data.Repositories.ProductRepositories
 
         public async Task<IQueryable<Product>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
-        }
+			var products = await _context.Products
+                .AsNoTracking()
+		        .Include(p => p.ProductCategories!)
+                .ThenInclude(p => p.Category)// Product ile ilişkili CategoryIds
+		        .Include(p => p.ProductStock)
+				.Include(p => p.ProductSuppliers)
+				.ToListAsync(); // Product ile ilişkili ProductStockId
+
+			return await Task.FromResult(products.AsQueryable()); // IQueryable olarak döner
+		}
 
         public IQueryable<Product> GetBy(Expression<Func<Product, bool>> expression)
         {

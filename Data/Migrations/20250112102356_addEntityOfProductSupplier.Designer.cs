@@ -4,6 +4,7 @@ using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(Stock_TrackingDbContext))]
-    partial class Stock_TrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250112102356_addEntityOfProductSupplier")]
+    partial class addEntityOfProductSupplier
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,10 +255,15 @@ namespace Data.Migrations
                     b.Property<int?>("Stock")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Products");
 
@@ -539,6 +547,13 @@ namespace Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Data.Entities.Product", b =>
+                {
+                    b.HasOne("Data.Entities.Supplier", null)
+                        .WithMany("Products")
+                        .HasForeignKey("SupplierId");
+                });
+
             modelBuilder.Entity("Data.Entities.ProductCategory", b =>
                 {
                     b.HasOne("Data.Entities.Category", "Category")
@@ -578,7 +593,7 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Data.Entities.Supplier", "Supplier")
-                        .WithMany("ProductSuppliers")
+                        .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -627,7 +642,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Supplier", b =>
                 {
-                    b.Navigation("ProductSuppliers");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

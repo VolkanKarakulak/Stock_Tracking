@@ -101,7 +101,7 @@ namespace Data.Repositories.ProductStockRepositories
             throw new NotImplementedException();
         }
 
-		public async Task<bool> DeleteAsync(int id)
+		public async Task<bool> DeleteAsync(int id)  // Go to: Daha kısa ve esnek hale getirilebilir
 		{
 			// İlişkili product ve productStock'u getir
 			var productStock = await _context.ProductStocks
@@ -110,9 +110,9 @@ namespace Data.Repositories.ProductStockRepositories
 
 			if (productStock == null) throw new KeyNotFoundException($"ProductStock with id {id} not found.");
 
-			// ProductStock için soft delete
-			productStock.IsActive = false;
-			productStock.IsDeleted = true;
+				// ProductStock için soft delete
+				productStock.IsActive = false;
+				productStock.IsDeleted = true;
 
 			// İlişkili Product için soft delete
 			if (productStock.Product != null)

@@ -12,6 +12,7 @@ namespace Service.Services.ProductService
     {
         Task<ProductDto> CreateProductAsync(ProductAddDto entity);
         Task<ProductDto> UpdateProductAsync(ProductUpdateDto entity);
-        Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto);
+        Task<IEnumerable<ProductDto>> GetAllProductsAsync();
+		Task<PagedResponseDto<IEnumerable<ProductDto>>> GetProductsByCategoryIdPagedAsync(int categoryId, PaginationDto paginationDto);
     }
 }

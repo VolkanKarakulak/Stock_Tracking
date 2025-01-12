@@ -18,8 +18,14 @@ namespace Service.Mapping
             CreateMap<ProductDto, Product>().ReverseMap();
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
             CreateMap<ProductAddDto, Product>().ReverseMap();
+            CreateMap<Product, ProductDto>()
+                .ForMember(dest => dest.CategoryIds, opt => opt
+                .MapFrom(src => src.ProductCategories.Select(pc => pc.CategoryId)))
+                .ForMember(dest => dest.SupplierIds, opt => opt
+                .MapFrom(src => src.ProductSuppliers.Select(ps => ps.SupplierId)));
 
-			CreateMap<SupplierDto, Supplier>().ReverseMap();
+
+            CreateMap<SupplierDto, Supplier>().ReverseMap();
 			CreateMap<SupplierUpdateDto, Supplier>().ReverseMap();
 			CreateMap<SupplierAddDto, Supplier>().ReverseMap();
 
@@ -87,6 +93,7 @@ namespace Service.Mapping
 
 
             CreateMap<ProductStock, ProductDto>().ReverseMap();
+            CreateMap<ProductCategory, ProductDto>().ReverseMap();
               
             CreateMap<ProductStockDto, CategoryDto>().ReverseMap();
             CreateMap<CategoryAddDto, CategoryDto>();

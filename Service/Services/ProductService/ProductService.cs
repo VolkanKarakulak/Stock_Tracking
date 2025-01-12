@@ -180,6 +180,11 @@ namespace Service.Services.ProductService
             };
         }
 
-    }
+		public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+		{
+			var products = await _productRepository.GetAllAsync();
+			return _mapper.Map<IEnumerable<ProductDto>>(products);
+		}
+	}
 
 }

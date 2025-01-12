@@ -4,6 +4,7 @@ using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(Stock_TrackingDbContext))]
-    partial class Stock_TrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250111135030_ChangeCtegoryEntity")]
+    partial class ChangeCtegoryEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,10 +255,15 @@ namespace Data.Migrations
                     b.Property<int?>("Stock")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Products");
 
@@ -321,21 +329,6 @@ namespace Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductStocks");
-                });
-
-            modelBuilder.Entity("Data.Entities.ProductSupplier", b =>
-                {
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SupplierId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductSuppliers");
                 });
 
             modelBuilder.Entity("Data.Entities.StockMovement", b =>
@@ -539,6 +532,13 @@ namespace Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Data.Entities.Product", b =>
+                {
+                    b.HasOne("Data.Entities.Supplier", null)
+                        .WithMany("ProductsSupplied")
+                        .HasForeignKey("SupplierId");
+                });
+
             modelBuilder.Entity("Data.Entities.ProductCategory", b =>
                 {
                     b.HasOne("Data.Entities.Category", "Category")
@@ -567,25 +567,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Data.Entities.ProductSupplier", b =>
-                {
-                    b.HasOne("Data.Entities.Product", "Product")
-                        .WithMany("ProductSuppliers")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Entities.Supplier", "Supplier")
-                        .WithMany("ProductSuppliers")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Data.Entities.StockMovement", b =>
@@ -621,13 +602,11 @@ namespace Data.Migrations
                     b.Navigation("ProductCategories");
 
                     b.Navigation("ProductStock");
-
-                    b.Navigation("ProductSuppliers");
                 });
 
             modelBuilder.Entity("Data.Entities.Supplier", b =>
                 {
-                    b.Navigation("ProductSuppliers");
+                    b.Navigation("ProductsSupplied");
                 });
 #pragma warning restore 612, 618
         }
