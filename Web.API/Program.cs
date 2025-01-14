@@ -6,6 +6,7 @@ using Service.Mapping;
 using Service.Extensions;
 using Data.Extensions;
 using Web.API.MiddlewareHandlers;
+using Web.API.Hubs;
 
 namespace Web.API
 {
@@ -24,8 +25,9 @@ namespace Web.API
             builder.Services.AddAutoMapper(typeof(MapProfile));
             builder.Services.AddServiceExtensions();
             builder.Services.AddRepositoryExtensions();
+			builder.Services.AddSignalR();
 
-            builder.Services.AddDbContext<Stock_TrackingDbContext>(options =>
+			builder.Services.AddDbContext<Stock_TrackingDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), sqlOptions =>
                 {
@@ -34,7 +36,18 @@ namespace Web.API
 
             });
 
-            var app = builder.Build();
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAllOrigins", builder =>
+				{
+                      builder
+                             .AllowAnyOrigin()  // Bu, tüm kökenlerden gelen isteklere izin verir
+					         .AllowAnyMethod()
+					         .AllowAnyHeader();
+				});
+			});
+
+			var app = builder.Build();
 
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())
@@ -46,9 +59,10 @@ namespace Web.API
                 app.UseHttpsRedirection();
                 app.ConfigureExceptionHandling();
                 app.UseAuthorization();
+			    app.MapHub<OrderHub>("/orderHub");
+			    app.UseCors("AllowAllOrigins");
 
-
-                app.MapControllers();
+			app.MapControllers();
 
                 app.Run();
         }
