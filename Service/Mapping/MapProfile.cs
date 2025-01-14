@@ -20,9 +20,9 @@ namespace Service.Mapping
             CreateMap<ProductAddDto, Product>().ReverseMap();
             CreateMap<Product, ProductDto>()
                 .ForMember(dest => dest.CategoryIds, opt => opt
-                .MapFrom(src => src.ProductCategories.Select(pc => pc.CategoryId)))
+                .MapFrom(src => src.ProductCategories!.Select(pc => pc.CategoryId)))
                 .ForMember(dest => dest.SupplierIds, opt => opt
-                .MapFrom(src => src.ProductSuppliers.Select(ps => ps.SupplierId)));
+                .MapFrom(src => src.ProductSuppliers!.Select(ps => ps.SupplierId)));
 
 
             CreateMap<SupplierDto, Supplier>().ReverseMap();

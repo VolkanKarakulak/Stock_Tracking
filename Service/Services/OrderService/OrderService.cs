@@ -5,16 +5,11 @@ using Data.Repositories.OrderRepositories;
 using Data.Repositories.TaxSettingRepositories;
 using Data.UnitOfWorks;
 using Service.DTOs.OrderDtos;
-using Service.DTOs.PaginationDto;
-using Service.DTOs.ResponseDto;
 using Service.Helper;
 using Service.Services.GenericService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
+
+
 
 namespace Service.Services.OrderService
 {
@@ -24,6 +19,7 @@ namespace Service.Services.OrderService
 		private readonly IOrderRepository _orderRepository;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ITaxSettingRepository _taxSettingRepository;
+
 		public OrderService(IGenericRepository<Order> repository, IUnitOfWork unitOfWork, IMapper mapper, IOrderRepository orderRepository, ITaxSettingRepository taxSettingRepository) : base(repository, unitOfWork, mapper)
 		{
 			_mapper = mapper;
