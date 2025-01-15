@@ -53,12 +53,10 @@ namespace Data.Repositories.SupplierRepositories
 		public async Task<Supplier?> UpdateAsync(Supplier entity, List<int> productIds)
 		{
 			await _repository.UpdateAsync(entity);
-
-			
-
-	var existingSupplier = await _context.Suppliers
-		.Include(s => s.ProductSuppliers)
-		.FirstOrDefaultAsync(s => s.Id == entity.Id);
+		
+			var existingSupplier = await _context.Suppliers
+				.Include(s => s.ProductSuppliers)
+				.FirstOrDefaultAsync(s => s.Id == entity.Id);
 
 			// Mevcut productId listesi
 			var existingProductIds = existingSupplier.ProductSuppliers
@@ -103,7 +101,7 @@ namespace Data.Repositories.SupplierRepositories
 			await _context.SaveChangesAsync();
 
 			// Güncellenmiş Supplier'ı döndür
-			return entity;
+			return existingSupplier;
 		}
 
 		public async Task<bool> DeleteAsync(int id)
