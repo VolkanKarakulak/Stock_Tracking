@@ -31,11 +31,78 @@ namespace Data.Repositories.SupplierRepositories
 			return await _repository.AnyAsync(expression);
 		}
 
-		public async Task<Supplier?> CreateAsync(Supplier entity)
+		public async Task<Supplier?> CreateAsync(Supplier entity, List<int> productIds)
 		{
 			await _repository.CreateAsync(entity);
 			await _context.SaveChangesAsync();
 
+			var productSuppliers = productIds.Select(productId => new ProductSupplier
+			{
+				SupplierId = entity.Id,
+				ProductId = productId
+			}).ToList();
+
+			await _context.ProductSuppliers.AddRangeAsync(productSuppliers);
+
+			await _context.SaveChangesAsync();
+			entity.ProductSuppliers = productSuppliers;
+
+			return entity;
+		}
+
+		public async Task<Supplier?> UpdateAsync(Supplier entity, List<int> productIds)
+		{
+			await _repository.UpdateAsync(entity);
+
+			
+
+	var existingSupplier = await _context.Suppliers
+		.Include(s => s.ProductSuppliers)
+		.FirstOrDefaultAsync(s => s.Id == entity.Id);
+
+			// Mevcut productId listesi
+			var existingProductIds = existingSupplier.ProductSuppliers
+				.Select(c => c.ProductId)
+				.ToList();
+
+			// Silinecek ProductSupplier ilişkileri
+			var productIdsToRemove = existingProductIds
+				.Except(productIds)
+				.ToList();
+
+			// Yeni eklenecek ProductSupplier ilişkileri
+			var productIdsToAdd = productIds
+				.Except(existingProductIds)
+				.ToList();
+
+			// Silinecek ilişkileri veritabanından kaldır
+			if (productIdsToRemove.Any())
+			{
+				var productSuppliersToRemove = existingSupplier.ProductSuppliers
+					.Where(c => productIdsToRemove
+					.Contains(c.ProductId))
+					.ToList();
+
+				_context.ProductSuppliers.RemoveRange(productSuppliersToRemove);
+			}
+
+			// Eklenecek yeni ilişkileri oluştur ve ekle
+			if (productIdsToAdd.Any())
+			{
+				var productSuppliersToAdd = productIdsToAdd
+					.Select(productId => new ProductSupplier
+					{
+						SupplierId = entity.Id,
+						ProductId = productId
+					})
+					.ToList();
+
+				await _context.ProductSuppliers.AddRangeAsync(productSuppliersToAdd);
+			}
+
+			await _context.SaveChangesAsync();
+
+			// Güncellenmiş Supplier'ı döndür
 			return entity;
 		}
 
@@ -83,5 +150,11 @@ namespace Data.Repositories.SupplierRepositories
 			return await Task.FromResult(supplierList.AsQueryable());
 		}
 
+		public Task<Supplier?> CreateAsync(Supplier entity)
+		{
+			throw new NotImplementedException();
+		}
+
+		
 	}
 }

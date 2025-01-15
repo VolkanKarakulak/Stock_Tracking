@@ -26,6 +26,11 @@ namespace Service.Mapping
 
 
             CreateMap<SupplierDto, Supplier>().ReverseMap();
+			CreateMap<Supplier, SupplierDto>()
+			.ForMember(dest => dest.ProductIds, opt => opt
+            .MapFrom(src => src.ProductSuppliers
+            .Select(ps => ps.ProductId)));
+
 			CreateMap<SupplierUpdateDto, Supplier>().ReverseMap();
 			CreateMap<SupplierAddDto, Supplier>().ReverseMap();
 			CreateMap<SupplierDto, SupplierAddDto>().ReverseMap();

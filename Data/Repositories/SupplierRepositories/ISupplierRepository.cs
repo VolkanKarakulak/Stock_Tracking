@@ -12,5 +12,7 @@ namespace Data.Repositories.SupplierRepositories
 	public interface ISupplierRepository : IGenericRepository<Supplier>
 	{
 		Task<IQueryable<Supplier>> GetAllWitProductAsync();
+		Task<Supplier?> CreateAsync(Supplier entity, List<int> productIds);
+		Task<Supplier?> UpdateAsync(Supplier entity, List<int> productIds);
 	}
 }
