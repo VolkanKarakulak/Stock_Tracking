@@ -37,12 +37,6 @@ namespace Data.Repositories.ProductRepositories
            return await _repository.CreateAsync(entity);
         }
 
-        public async Task<IEnumerable<Product>> CreateRangeAsync(IEnumerable<Product> entities)
-        {
-            await _repository.CreateRangeAsync(entities);
-            return entities;
-        }
-
         public async Task<bool> DeleteAsync(int id)
         {
             return await _repository.DeleteAsync(id);

@@ -35,14 +35,7 @@ namespace Service.Services.GenericService
             await _unitOfWork.CommitAsync();
             return _mapper.Map<TDto>(entity);
         }
-
-        public async Task<IEnumerable<TDto>> CreateRangeAsync(IEnumerable<TDto> dtos)
-        {
-            var entities = _mapper.Map<IEnumerable<TEntity>>(dtos);
-            await _repository.CreateRangeAsync(entities);
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<IEnumerable<TDto>>(entities);
-        }
+      
 
         public virtual async Task<TDto> UpdateAsync(TDto dto)
         {

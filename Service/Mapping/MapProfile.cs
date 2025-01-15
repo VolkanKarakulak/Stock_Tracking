@@ -28,6 +28,7 @@ namespace Service.Mapping
             CreateMap<SupplierDto, Supplier>().ReverseMap();
 			CreateMap<SupplierUpdateDto, Supplier>().ReverseMap();
 			CreateMap<SupplierAddDto, Supplier>().ReverseMap();
+			CreateMap<SupplierDto, SupplierAddDto>().ReverseMap();
 
 
 			CreateMap<TaxSettingDto, TaxSetting>().ReverseMap();

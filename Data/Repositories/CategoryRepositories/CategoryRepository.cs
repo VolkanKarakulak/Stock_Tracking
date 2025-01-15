@@ -35,12 +35,7 @@ namespace Data.Repositories.CategoryRepositories
         {
             return await _repository.CreateAsync(entity);
         }
-
-        public async Task<IEnumerable<Category>> CreateRangeAsync(IEnumerable<Category> entities)
-        {
-           await _repository.CreateRangeAsync(entities);
-           return entities;
-        }
+       
 
         public async Task<bool> DeleteAsync(int id)
         {

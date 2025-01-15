@@ -12,7 +12,6 @@ namespace Service.Services.GenericService
         Task<IEnumerable<TDto>> GetAllAsync(); 
         IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> expression); 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression); 
-        Task<IEnumerable<TDto>> CreateRangeAsync(IEnumerable<TDto> dtos); 
         Task<TDto> CreateAsync(TDto dto); 
         Task<TDto> UpdateAsync(TDto dto); 
         Task<bool> DeleteAsync(int id); 
