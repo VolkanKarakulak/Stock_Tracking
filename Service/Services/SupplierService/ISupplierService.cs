@@ -12,5 +12,6 @@ namespace Service.Services.SupplierService
 	public interface ISupplierService : IGenericService<Supplier, SupplierDto>
 	{
 		Task<SupplierDto> CreateSupplierAsync(SupplierAddDto dto);
+		Task<SupplierDto> UpdateSupplierAsync(SupplierUpdateDto dto);
 	}
 }

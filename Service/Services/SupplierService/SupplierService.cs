@@ -52,23 +52,58 @@ namespace Service.Services.SupplierService
 				throw new BadRequestException();
 			}
 
-			// Geçerli ürünleri ProductSupplier nesnelerine dönüştürüyoruz
-
-			var productSuppliers = validProducts.Select(product => new ProductSupplier
-			{
-				ProductId = product.Id,
-				SupplierId = supplier.Id,  
-								 
-			}).ToList();
+			var createdSupplier = await _supplierRepository.CreateAsync(supplier, productIds);
 
 			// ProductSuppliers koleksiyonunu supplier'a ekliyoruz
-			supplier.ProductSuppliers = productSuppliers;
-
-			var createdSupplier = await _supplierRepository.CreateAsync(supplier);
+			
 
 			await _unitOfWork.CommitAsync();
 
 			return _mapper.Map<SupplierDto>(createdSupplier);
 		}
+
+		public async Task<SupplierDto> UpdateSupplierAsync(SupplierUpdateDto dto)
+		{
+			// DTO'dan Supplier entity'e dönüşüm
+			var supplier = _mapper.Map<Supplier>(dto);
+			if (supplier == null)
+			{
+				throw new BadRequestException();
+			}
+
+			// Geçerli ProductIds listesi
+			var productIds = dto.ProductIds?.ToList();
+			if (productIds == null || !productIds.Any())
+			{
+				throw new BadRequestException();
+			}
+
+			// Product IDs'nin doğruluğunu kontrol et
+			var validProducts = await _productRepository
+				.GetBy(x => productIds
+				.Contains(x.Id) && !x.IsDeleted && x.IsActive)
+				.AsNoTracking()
+				.ToListAsync();
+
+			if (validProducts.Count != productIds.Count)
+			{
+				throw new BadRequestException();
+			}
+
+			// Repository üzerinden Supplier güncelleme
+			var updatedSupplier = await _supplierRepository.UpdateAsync(supplier, productIds);
+
+			if (updatedSupplier == null)
+			{
+				throw new DataUpdateFailedException();
+			}
+
+			// Değişiklikleri kaydet
+			await _unitOfWork.CommitAsync();
+
+			// Güncellenmiş Supplier'ı DTO'ya dönüştür ve döndür
+			return _mapper.Map<SupplierDto>(updatedSupplier);
+		}
+
 	}
 }
