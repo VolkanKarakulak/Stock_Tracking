@@ -36,11 +36,6 @@ namespace Data.Repositories.TaxSettingRepositories
 			return await _repository.CreateAsync(entity);
 		}
 
-		public Task<IEnumerable<TaxSetting>> CreateRangeAsync(IEnumerable<TaxSetting> entities)
-		{
-			throw new NotImplementedException();
-		}
-
 		public async Task<bool> DeleteAsync(int id)
 		{
 			return await _repository.DeleteAsync(id);

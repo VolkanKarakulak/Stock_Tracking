@@ -16,6 +16,6 @@ namespace Service.DTOs.SupplierDtos
 		public DateTime? UpdatedDate { get; set; }
 		public bool IsDeleted { get; set; }
 		public bool IsActive { get; set; }
-		public IEnumerable<ProductDto> ProductsSupplied { get; set; }
+		public IEnumerable<int>? ProductIds { get; set; }
 	}
 }

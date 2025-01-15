@@ -42,12 +42,7 @@ namespace Data.Repositories.OrderRepositories
 		//{
 		//	throw new NotImplementedException();
 		//}
-
-		public async Task<IEnumerable<Order>> CreateRangeAsync(IEnumerable<Order> entities)
-		{
-			return await _repository.CreateRangeAsync(entities);
-		}
-
+		
 		public async Task<bool> DeleteAsync(int id)
 		{
 			return await _repository.DeleteAsync(id);

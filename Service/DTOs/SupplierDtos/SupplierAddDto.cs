@@ -8,10 +8,12 @@ namespace Service.DTOs.SupplierDtos
 {
 	public class SupplierAddDto
 	{
+		public string? Name { get; set; } 
+		public string? PhoneNumber { get; set; } 
 		public string? Description { get; set; }
 		public bool IsDeleted { get; set; }
 		public bool IsActive { get; set; }
-		public string Name { get; set; } = default!;
-		public string PhoneNumber { get; set; } = default!;
+		public IEnumerable<int>? ProductIds { get; set; } 
+
 	}
 }

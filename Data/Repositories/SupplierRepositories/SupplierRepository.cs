@@ -31,14 +31,12 @@ namespace Data.Repositories.SupplierRepositories
 			return await _repository.AnyAsync(expression);
 		}
 
-		public Task<Supplier?> CreateAsync(Supplier entity)
+		public async Task<Supplier?> CreateAsync(Supplier entity)
 		{
-			throw new NotImplementedException();
-		}
+			await _repository.CreateAsync(entity);
+			await _context.SaveChangesAsync();
 
-		public Task<IEnumerable<Supplier>> CreateRangeAsync(IEnumerable<Supplier> entities)
-		{
-			throw new NotImplementedException();
+			return entity;
 		}
 
 		public async Task<bool> DeleteAsync(int id)
@@ -61,9 +59,9 @@ namespace Data.Repositories.SupplierRepositories
 			return await _repository.GetByIdAsync(id);
 		}
 
-		public Task<(int, int, IQueryable<Supplier>)> GetPagedAsync(int pageNumber, int pageSize)
+		public async Task<(int, int, IQueryable<Supplier>)> GetPagedAsync(int pageNumber, int pageSize)
 		{
-			throw new NotImplementedException();
+			return await _repository.GetPagedAsync(pageNumber, pageSize);
 		}
 
 		public async Task<bool> IsEntityUpdateableAsync(int id)
@@ -84,5 +82,6 @@ namespace Data.Repositories.SupplierRepositories
 
 			return await Task.FromResult(supplierList.AsQueryable());
 		}
+
 	}
 }

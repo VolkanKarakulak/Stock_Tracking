@@ -15,6 +15,6 @@ namespace Service.DTOs.SupplierDtos
 		public string? Description { get; set; }
 		public string Name { get; set; } = default!;
 		public string PhoneNumber { get; set; } = default!;
-		public IEnumerable<ProductDto> ProductsSupplied { get; set; }
+		public IEnumerable<int>? ProductIds { get; set; }
 	}
 }

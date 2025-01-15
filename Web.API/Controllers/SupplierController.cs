@@ -4,6 +4,8 @@ using Service.DTOs.SupplierDtos;
 using Service.DTOs.PaginationDto;
 using Service.DTOs.ResponseDtos;
 using Service.Services.SupplierService;
+using Data.Entities;
+
 
 
 namespace Web.API.Controllers
@@ -42,25 +44,18 @@ namespace Web.API.Controllers
 		[HttpPost]
 		public async Task<ResponseDto> Create(SupplierAddDto supplierAddDto)
 		{
-			var supplier = await _service.CreateAsync(_mapper.Map<SupplierDto>(supplierAddDto));
+			var supplier = await _service.CreateSupplierAsync(_mapper.Map<SupplierAddDto>(supplierAddDto));
 			var supplierDto = _mapper.Map<SupplierDto>(supplier);
 			return ResponseBuilder.CreateResponse(supplierDto, true, "Başarılı");
 		}
 
-		//[HttpPost]
-		//[Route("CreateRange")]
-		//public async Task<ResponseDto> CreateRange(IEnumerable<SupplierAddDto> supplierAddDtos)
-		//{
-		//    var supplier = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<Supplier>>(supplierAddDtos));
-		//    var supplierDto = _mapper.Map<IEnumerable<SupplierDto>>(supplier);
-		//    return ResponseBuilder.CreateResponse(supplierDto, true, "Başarılı");
-		//}
 
 		//[HttpPut]
 		//public async Task<ResponseDto> Update(SupplierUpdateDto supplierUpdateDto)
 		//{
-		//    await _service.UpdateAsync(_mapper.Map<Supplier>(supplierUpdateDto));
-		//    return ResponseBuilder.CreateResponse(supplierUpdateDto, true, "Başarılı");
+		//	var supplier = await _service.UpdateAsync(_mapper.Map<SupplierUpdateDto>(supplierUpdateDto));
+		//	var supplierDto = _mapper.Map<SupplierDto>(supplier);
+		//	return ResponseBuilder.CreateResponse(supplierDto, true, "Başarılı");
 		//}
 
 		[HttpDelete("{id}")]

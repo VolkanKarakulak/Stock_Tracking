@@ -95,12 +95,7 @@ namespace Data.Repositories.ProductStockRepositories
 			return entity; // Güncellenmiş varlık döndürülür
 		}
 
-
-		public Task<IEnumerable<ProductStock>> CreateRangeAsync(IEnumerable<ProductStock> entities)
-        {
-            throw new NotImplementedException();
-        }
-
+		
 		public async Task<bool> DeleteAsync(int id)  // Go to: Daha kısa ve esnek hale getirilebilir
 		{
 			// İlişkili product ve productStock'u getir

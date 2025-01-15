@@ -40,20 +40,6 @@ namespace Data.Repositories.GenericRepositories
             return _context.Entry(entity).State == EntityState.Added ? entity : null;
         }
 
-        public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
-        {
-            var behavior = new AddedBehavior();
-
-            behavior.ApplyBehavior(_context, entities);
-            foreach (var item in entities)
-            {
-                item.IsActive = true;
-            }
-            await _context.AddRangeAsync(entities);
-
-            return entities;
-
-        }
         public async Task<bool> IsEntityUpdateableAsync(int id)
         {
             return await _dbSet.AnyAsync(x => x.Id == id && !x.IsDeleted);
