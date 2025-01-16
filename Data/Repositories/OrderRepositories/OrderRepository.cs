@@ -38,10 +38,6 @@ namespace Data.Repositories.OrderRepositories
 			return entity;
 		}
 
-		//public Task<Order?> CreateAsync(Order entity)
-		//{
-		//	throw new NotImplementedException();
-		//}
 		
 		public async Task<bool> DeleteAsync(int id)
 		{
