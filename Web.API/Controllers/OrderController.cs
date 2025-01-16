@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Service.DTOs.OrderDtos;
 using Service.DTOs.OrderAdminDtos;
-using Service.DTOs.OrderDtos;
-using Service.DTOs.ProductDtos;
 using Service.DTOs.ResponseDtos;
 using Service.Services.OrderAdminService;
 using Service.Services.OrderService;
-using Service.Services.ProductService;
 using Web.API.Hubs;
 using Service.DTOs.PaginationDto;
 
@@ -29,8 +26,6 @@ namespace Web.API.Controllers
 			_mapper = mapper;
 			_adminService = adminService;
 			_hubContext = hubContext;
-
-
 		}
 
 		[HttpPost]
@@ -101,6 +96,5 @@ namespace Web.API.Controllers
 			}
 			return Ok($"{deletedCount} öğe silindi.");
 		}
-
 	}
 }
