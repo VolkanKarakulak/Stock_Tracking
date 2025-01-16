@@ -104,6 +104,15 @@ namespace Data.Repositories.SupplierRepositories
 			return existingSupplier;
 		}
 
+		public async Task<IQueryable<Supplier>> GetAllWitProductAsync()
+		{
+			var supplierList = await _context.Suppliers
+				.Include(p => p.ProductSuppliers)
+				.ToListAsync();
+
+			return await Task.FromResult(supplierList.AsQueryable());
+		}
+
 		public async Task<bool> DeleteAsync(int id)
 		{
 			return await _repository.DeleteAsync(id);
@@ -137,15 +146,6 @@ namespace Data.Repositories.SupplierRepositories
 		public Task<Supplier> UpdateAsync(Supplier entity)
 		{
 			throw new NotImplementedException();
-		}
-
-		public async Task<IQueryable<Supplier>> GetAllWitProductAsync()
-		{
-			var supplierList = await _context.Suppliers
-				.Include(p => p.ProductSuppliers)
-				.ToListAsync();
-
-			return await Task.FromResult(supplierList.AsQueryable());
 		}
 
 		public Task<Supplier?> CreateAsync(Supplier entity)

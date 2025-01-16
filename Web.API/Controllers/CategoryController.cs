@@ -47,21 +47,7 @@ namespace Web.API.Controllers
             return ResponseBuilder.CreateResponse(categoryDto, true, "Başarılı");
         }
 
-        //[HttpPost]
-        //[Route("CreateRange")]
-        //public async Task<ResponseDto> CreateRange(IEnumerable<CategoryAddDto> categoryAddDtos)
-        //{
-        //    var category = await _service.CreateRangeAsync(_mapper.Map<IEnumerable<Category>>(categoryAddDtos));
-        //    var categoryDto = _mapper.Map<IEnumerable<CategoryDto>>(category);
-        //    return ResponseBuilder.CreateResponse(categoryDto, true, "Başarılı");
-        //}
-
-        //[HttpPut]
-        //public async Task<ResponseDto> Update(CategoryUpdateDto categoryUpdateDto)
-        //{
-        //    await _service.UpdateAsync(_mapper.Map<Category>(categoryUpdateDto));
-        //    return ResponseBuilder.CreateResponse(categoryUpdateDto, true, "Başarılı");
-        //}
+        
 
         [HttpDelete("{id}")]
         public async Task<ResponseDto> Delete(int id)
