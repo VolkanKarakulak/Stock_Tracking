@@ -1,3 +1,6 @@
+using MVC.Configuration;
+using MVC.Extensions;
+
 namespace MVC
 {
     public class Program
@@ -6,10 +9,16 @@ namespace MVC
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+			// Add services to the container.
+			builder.Services.Configure<UrlConfiguration>(builder.Configuration.GetSection("UrlConfiguration"));
+			builder.Services.AddControllersWithViews();			
+			builder.Services.AddServicesExtension();
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.AddHttpClient();
 
-            var app = builder.Build();
+
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -26,7 +35,11 @@ namespace MVC
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
+			app.MapControllerRoute(
+	            name: "areas",
+	            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+			app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 

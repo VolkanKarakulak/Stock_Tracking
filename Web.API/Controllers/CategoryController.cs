@@ -31,8 +31,9 @@ namespace Web.API.Controllers
             return ResponseBuilder.CreateResponse(categoryDtos, true, "Başarılı");
         }
 
-        [HttpGet("{id}")]
-        public async Task<ResponseDto> GetById(int id)
+        [HttpGet]
+		[Route("get/{id}")]
+		public async Task<ResponseDto> GetById(int id)
         {
             var category = await _service.GetByIdAsync(id);
             var categoryDto = _mapper.Map<CategoryDto>(category);
