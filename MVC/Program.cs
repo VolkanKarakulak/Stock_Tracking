@@ -35,11 +35,27 @@ namespace MVC
 
             app.UseAuthorization();
 
-			app.MapControllerRoute(
-	            name: "areas",
-	            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-			app.MapControllerRoute(
+            // Varsayýlan olarak Admin Paneline yönlendirme
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/")
+                {
+                    context.Response.Redirect("/admin/home");
+                }
+                else
+                {
+                    await next();
+                }
+            });
+
+            // Admin alaný için route
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+            // Default route
+            app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
