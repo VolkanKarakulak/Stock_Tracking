@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Data.Entities;
+using MVC.Models.CategoryModels;
+using MVC.Models.OrderModels;
 using Service.DTOs.CategoryDtos;
 
 namespace MVC.Mapping
@@ -9,9 +11,13 @@ namespace MVC.Mapping
 
 		public MapProfile()
 		{
-			CreateMap<CategoryDto, Category>().ReverseMap();
-			CreateMap<CategoryUpdateDto, Category>().ReverseMap();
-			CreateMap<CategoryAddDto, Category>().ReverseMap();
-		}
+			CreateMap<CategoryModel, Category>().ReverseMap();
+			CreateMap<CategoryUpdateModel, Category>().ReverseMap();
+			CreateMap<CategoryAddModel, Category>().ReverseMap();
+
+            CreateMap<OrderModel, Category>().ReverseMap();
+            CreateMap<OrderUpdateModel, Category>().ReverseMap();
+
+        }
 	}
 }

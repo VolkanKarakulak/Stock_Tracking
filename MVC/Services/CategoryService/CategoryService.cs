@@ -4,12 +4,9 @@ using MVC.Models.CategoryModels;
 using MVC.Models.PagedResponseModel;
 using MVC.Models.PaginationModel;
 using MVC.Models.ResponseModels;
-using Service.DTOs.CategoryDtos;
-using Service.DTOs.PaginationDto;
-using Service.DTOs.ResponseDto;
 using System.Text.Json;
 
-namespace MVC.Services.CategoryServices
+namespace MVC.Services.CategoryService
 {
 	public class CategoryService : ICategoryService
 	{
@@ -41,7 +38,7 @@ namespace MVC.Services.CategoryServices
 			return category;
 		}
 
-		public async  Task<ResponseModel<NoDataModel>> DeleteAsync(int id)
+		public async Task<ResponseModel<NoDataModel>> DeleteAsync(int id)
 		{
 			var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/{id}");
 			response.EnsureSuccessStatusCode();

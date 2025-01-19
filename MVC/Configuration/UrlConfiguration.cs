@@ -4,5 +4,6 @@
 	{
 		public string BaseUrl { get; set; }
 		public string CategoryUrl { get; set; }
+		public string OrderUrl { get; set; }
 	}
 }

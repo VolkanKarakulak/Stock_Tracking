@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Service.Services.OrderService
 {
-	public interface IOrderService : IGenericService<Order, OrderDto>
+    public interface IOrderService : IGenericService<Order, OrderDto>
 	{
 		Task<OrderDto> CreateOrderAsync (OrderAddDto dto);
-	}
+		Task<OrderDto> UpdateOrderAsync(OrderUpdateDto dto);
+
+    }
 }
