@@ -4,7 +4,7 @@ using MVC.Models.PaginationModel;
 using MVC.Models.ResponseModels;
 using System.Linq.Expressions;
 
-namespace MVC.Services.CategoryServices
+namespace MVC.Services.CategoryService
 {
     public interface ICategoryService
 	{

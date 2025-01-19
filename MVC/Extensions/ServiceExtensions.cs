@@ -1,4 +1,6 @@
-﻿using MVC.Services.CategoryServices;
+﻿using MVC.Services.CategoryService;
+using MVC.Services.OrderService;
+
 
 namespace MVC.Extensions
 {
@@ -7,6 +9,7 @@ namespace MVC.Extensions
 		public static void AddServicesExtension(this IServiceCollection services)
 		{
 			services.AddScoped<ICategoryService, CategoryService>();
+			services.AddScoped<IOrderService, OrderService>();
 		}
 	}
 }

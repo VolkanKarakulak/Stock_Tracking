@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Service.Services.CategoryService;
 using Service.Services.GenericService;
-using Service.Services.OrderAdminService;
 using Service.Services.OrderService;
 using Service.Services.ProductService;
 using Service.Services.ProductStockService;
@@ -26,7 +25,6 @@ namespace Service.Extensions
             service.AddScoped<ICategoryService, CategoryService>();
             service.AddScoped<IProductStockService, ProductStockService>();
             service.AddScoped<IOrderService, OrderService>();
-            service.AddScoped<IOrderAdminService, OrderAdminService>();
             service.AddScoped<ITaxSettingService, TaxSettingService>();
             service.AddScoped<ISupplierService, SupplierService>();
 

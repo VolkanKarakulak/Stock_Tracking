@@ -2,29 +2,25 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Service.DTOs.OrderDtos;
-using Service.DTOs.OrderAdminDtos;
 using Service.DTOs.ResponseDtos;
-using Service.Services.OrderAdminService;
 using Service.Services.OrderService;
 using Web.API.Hubs;
 using Service.DTOs.PaginationDto;
 
 namespace Web.API.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class OrderController : ControllerBase
 	{
 		private readonly IMapper _mapper;
 		private readonly IOrderService _service;
-		private readonly IOrderAdminService _adminService;
 		private readonly IHubContext<OrderHub> _hubContext;
 
-		public OrderController(IOrderService service, IMapper mapper, IOrderAdminService adminService, IHubContext<OrderHub> hubContext)
+		public OrderController(IOrderService service, IMapper mapper, IHubContext<OrderHub> hubContext)
 		{
 			_service = service;
 			_mapper = mapper;
-			_adminService = adminService;
 			_hubContext = hubContext;
 		}
 
@@ -40,10 +36,9 @@ namespace Web.API.Controllers
 		}
 
 		[HttpPut]
-		[Route("Admin")]
-		public async Task<ResponseDto> Update(OrderUpdateByAdminDto dto)
+		public async Task<ResponseDto> Update(OrderUpdateDto dto)
 		{
-			var orderDto = await _adminService.UpdateOrderAsync(dto);
+			var orderDto = await _service.UpdateOrderAsync(dto);
 			return ResponseBuilder.CreateResponse(orderDto, true, "Başarılı");
 		}
 

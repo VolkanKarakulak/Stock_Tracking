@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Service.DTOs.CategoryDtos;
-using Service.DTOs.OrderAdminDtos;
 using Service.DTOs.PaginationDto;
 using Service.DTOs.ProductStockDtos;
 using Service.DTOs.ResponseDtos;

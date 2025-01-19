@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MVC.Areas.Admin.PageViewModels.CategoryPageViewModels;
 using MVC.Models.PaginationModel;
-using MVC.Services.CategoryServices;
+using MVC.Services.CategoryService;
 using Service.DTOs.PaginationDto;
 
 namespace MVC.Areas.Admin.Controllers
