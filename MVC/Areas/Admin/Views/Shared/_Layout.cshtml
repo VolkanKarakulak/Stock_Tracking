@@ -30,7 +30,6 @@
     <link href="~/admin/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Related styles of various icon packs and plugins -->
     <link href="~/admin/css/plugins.css" rel="stylesheet" />
-
     <!-- The main stylesheet of this template. All Bootstrap overwrites are defined in here -->
     <link href="~/admin/css/main.css" rel="stylesheet" />
     <!-- Include a specific file here from css/themes/ folder to alter the default theme of the template -->
@@ -356,7 +355,7 @@
                                         <a asp-area="Admin" asp-controller="Home" asp-action="Index">Dashboard</a>
                                     </li>
                                     <li>
-                                        <a href="page_ecom_orders.html">Orders</a>
+                                        <a asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
                                     </li>
                                     <li>
                                         <a href="page_ecom_order_view.html">Order View</a>
@@ -372,135 +371,8 @@
                                     </li>
                                 </ul>
                             </li>
+                       </ul>
                            
-                            <li class="sidebar-header">
-                                <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
-                                <span class="sidebar-header-title">Design Kit</span>
-                            </li>
-                            <li>
-                                <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-certificate sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">User Interface</span></a>
-                                <ul>
-                                    <li>
-                                        <a href="page_ui_grid_blocks.html">Grid &amp; Blocks</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_draggable_blocks.html">Draggable Blocks</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_typography.html">Typography</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_buttons_dropdowns.html">Buttons &amp; Dropdowns</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_navigation_more.html">Navigation &amp; More</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_horizontal_menu.html">Horizontal Menu</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_progress_loading.html">Progress &amp; Loading</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_preloader.html">Page Preloader</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_ui_color_themes.html">Color Themes</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-notes_2 sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Forms</span></a>
-                                <ul>
-                                    <li>
-                                        <a href="page_forms_general.html">General</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_forms_components.html">Components</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_forms_validation.html">Validation</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_forms_wizard.html">Wizard</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-table sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Tables</span></a>
-                                <ul>
-                                    <li>
-                                        <a href="page_tables_general.html">General</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_tables_responsive.html">Responsive</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_tables_datatables.html">Datatables</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-cup sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Icon Sets</span></a>
-                                <ul>
-                                    <li>
-                                        <a href="page_icons_fontawesome.html">Font Awesome</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_icons_glyphicons_pro.html">Glyphicons Pro</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="active">
-                                <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Page Layouts</span></a>
-                                <ul>
-                                    <li>
-                                        <a href="page_layout_static.html" class=" active">Static</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_fixed_footer.html">Static + Fixed Footer</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_fixed_top.html">Fixed Top Header</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_fixed_top_footer.html">Fixed Top Header + Footer</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_fixed_bottom.html">Fixed Bottom Header</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_fixed_bottom_footer.html">Fixed Bottom Header + Footer</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_main_sidebar_mini.html">Mini Main Sidebar</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_main_sidebar_partial.html">Partial Main Sidebar</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_main_sidebar_visible.html">Visible Main Sidebar</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_alternative_sidebar_partial.html">Partial Alternative Sidebar</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_alternative_sidebar_visible.html">Visible Alternative Sidebar</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_no_sidebars.html">No Sidebars</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_both_partial.html">Both Sidebars Partial</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_layout_static_animated.html">Animated Sidebar Transitions</a>
-                                    </li>
-                                </ul>
-                            </li>
-                           
-                        </ul>
-                        <!-- END Sidebar Navigation -->
                         <!-- Sidebar Notifications -->
                         <div class="sidebar-header sidebar-nav-mini-hide">
                             <span class="sidebar-header-options clearfix">
@@ -534,7 +406,9 @@
             </div>
             <!-- END Main Sidebar -->
             <!-- Main Container -->
-     @RenderBody()
+
+                @RenderBody() <!-- 
+
             <!-- END Main Container -->
         </div>
         <!-- END Page Container -->
@@ -608,13 +482,15 @@
     </div>
     <!-- END User Settings -->
     <!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
-    <script src="js/vendor/jquery.min.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/plugins.js"></script>
-    <script src="js/app.js"></script>
-
+    <script src="~/admin/js/vendor/jquery.min.js"></script>
+    <script src="~/admin/js/vendor/bootstrap.min.js"></script>
+    <script src="~/admin/js/plugins.js"></script>
+    <script src="~/admin/js/app.js"></script>
     <!-- Load and execute javascript code used only in this page -->
     <script src="~/admin/js/pages/ecomdashboard.js"></script>
     <script>$(function () { EcomDashboard.init(); });</script>
+
+    @await RenderSectionAsync("Scripts", required: false);
 </body>
+
 </html>
