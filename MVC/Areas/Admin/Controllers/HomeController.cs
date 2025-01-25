@@ -5,7 +5,7 @@ namespace MVC.Areas.Admin.Controllers
 	[Area("Admin")]
 	public class HomeController : Controller
 	{
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
 			return View();
 		}
