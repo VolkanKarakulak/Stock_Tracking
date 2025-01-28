@@ -12,5 +12,7 @@ namespace Data.Repositories.OrderRepositories
 	{
 		//Task<Order?> CreateAsync(Order entity, List<OrderDetail> orderItems);
 		Task<Order> GetOrderWithDetailsAsync(int orderId);
-	}
+		Task<int> GetPendingOrdersCountAsync();
+
+    }
 }

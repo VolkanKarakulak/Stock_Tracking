@@ -101,6 +101,22 @@ namespace MVC.Services.OrderService
             order.Data.PageNumber = paginationModel.PageNumber;
             return order;
         }
-        
+
+        public async Task<int> GetPendingOrdersCountAsync()
+        {
+            var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/pending-orders-count");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            // Eğer JSON yanıtı bir sayı içeriyorsa, onu direkt integer olarak döndürüyoruz
+            if (int.TryParse(content, out var pendingOrdersCount))
+            {
+                return pendingOrdersCount;
+            }
+
+            // Hata durumunda 0 döndürülür
+            return 0;
+        }
     }
 }
