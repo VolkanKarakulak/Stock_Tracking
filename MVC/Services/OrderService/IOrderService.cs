@@ -12,5 +12,6 @@ namespace MVC.Services.OrderService
         Task<ResponseModel<OrderModel>> UpdateAsync(OrderUpdateModel model);
         Task<ResponseModel<NoDataModel>> DeleteAsync(int id);
         Task<ResponseModel<PagedResponseModel<IEnumerable<OrderModel>>>> GetPagedAsync(PaginationModel paginationModel);
+        Task<int> GetPendingOrdersCountAsync();
     }
 }

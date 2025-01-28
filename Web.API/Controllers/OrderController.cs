@@ -91,5 +91,12 @@ namespace Web.API.Controllers
 			}
 			return Ok($"{deletedCount} öğe silindi.");
 		}
-	}
+
+        [HttpGet("pending-orders-count")]
+        public async Task<IActionResult> GetPendingOrdersCount()
+        {
+            var count = await _service.GetPendingOrdersCountAsync();
+            return Ok(count);
+        }
+    }
 }

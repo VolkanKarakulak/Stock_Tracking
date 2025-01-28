@@ -88,5 +88,14 @@ namespace Data.Repositories.OrderRepositories
 		{
 			return await _repository.UpdateAsync(entity);
 		}
-	}
+
+        public async Task<int> GetPendingOrdersCountAsync()
+        {
+			var pendingOrders = await _context.Orders
+				.Where(order => order.Status == Enums.OrderStatus.Pending )
+				.CountAsync();
+
+			return pendingOrders;
+        }
+    }
 }

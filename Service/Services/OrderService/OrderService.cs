@@ -61,6 +61,11 @@ namespace Service.Services.OrderService
 
 		}
 
+        public async Task<int> GetPendingOrdersCountAsync()
+        {
+            return await _orderRepository.GetPendingOrdersCountAsync();
+        }
+
         public async Task<OrderDto> UpdateOrderAsync(OrderUpdateDto dto)
         {
             var order = await _orderRepository.GetOrderWithDetailsAsync(dto.OrderId);
