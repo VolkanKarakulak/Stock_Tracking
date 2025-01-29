@@ -115,7 +115,22 @@ namespace MVC.Services.OrderService
                 return pendingOrdersCount;
             }
 
-            // Hata durumunda 0 döndürülür
+            return 0;
+        }
+
+        public async Task<int> GetTodayOrdersCountAsync()
+        {
+            var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/today-orders-count");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            // Eğer JSON yanıtı bir sayı içeriyorsa, onu direkt integer olarak döndürüyoruz
+            if (int.TryParse(content, out var pendingOrdersCount))
+            {
+                return pendingOrdersCount;
+            }
+
             return 0;
         }
     }

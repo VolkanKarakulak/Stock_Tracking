@@ -16,9 +16,11 @@ namespace MVC.Areas.Admin.Controllers
 		{
             // Pending sipariş sayısını alıyoruz
             var pendingOrdersCount = await _orderService.GetPendingOrdersCountAsync();
+            var todayOrdersCount = await _orderService.GetTodayOrdersCountAsync();
 
             // Pending sipariş sayısını View'a gönderiyoruz
             ViewBag.PendingOrdersCount = pendingOrdersCount;
+            ViewBag.TodayOrdersCount = todayOrdersCount;
             return View();
 		}
 	}

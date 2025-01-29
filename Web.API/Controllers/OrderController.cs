@@ -98,5 +98,12 @@ namespace Web.API.Controllers
             var count = await _service.GetPendingOrdersCountAsync();
             return Ok(count);
         }
+
+        [HttpGet("today-orders-count")]
+        public async Task<IActionResult> GetTodayOrdersCount()
+        {
+            var count = await _service.GetTodayOrdersCountAsync();
+            return Ok(count);
+        }
     }
 }
