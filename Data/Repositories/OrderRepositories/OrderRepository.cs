@@ -97,5 +97,17 @@ namespace Data.Repositories.OrderRepositories
 
 			return pendingOrders;
         }
+
+        public async Task<int> GetTodayOrdersCountAsync()
+        {
+			var today  = DateTime.Today;
+            var tomorrow = today.AddDays(1);
+
+            var todayOrders = await _context.Orders
+                .Where(order => order.CreatedDate >= today && order.CreatedDate < tomorrow)
+                .CountAsync();
+
+            return todayOrders;
+        }
     }
 }

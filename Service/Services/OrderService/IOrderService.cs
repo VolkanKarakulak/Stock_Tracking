@@ -14,6 +14,7 @@ namespace Service.Services.OrderService
 		Task<OrderDto> CreateOrderAsync (OrderAddDto dto);
 		Task<OrderDto> UpdateOrderAsync(OrderUpdateDto dto);
         Task<int> GetPendingOrdersCountAsync();
+        Task<int> GetTodayOrdersCountAsync();
 
     }
 }
