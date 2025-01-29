@@ -126,9 +126,25 @@ namespace MVC.Services.OrderService
             var content = await response.Content.ReadAsStringAsync();
 
             // Eğer JSON yanıtı bir sayı içeriyorsa, onu direkt integer olarak döndürüyoruz
-            if (int.TryParse(content, out var pendingOrdersCount))
+            if (int.TryParse(content, out var todayOrdersCount))
             {
-                return pendingOrdersCount;
+                return todayOrdersCount;
+            }
+
+            return 0;
+        }
+
+        public async Task<decimal> GetDailyEarningsAsync()
+        {
+            var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/daily-earnings");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            // Eğer JSON yanıtı decimal içeriyorsa, onu decimal olarak döndürüyoruz
+            if (decimal.TryParse(content, out var dailyEarnings))
+            {
+                return dailyEarnings;
             }
 
             return 0;

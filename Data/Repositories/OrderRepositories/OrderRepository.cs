@@ -109,5 +109,18 @@ namespace Data.Repositories.OrderRepositories
 
             return todayOrders;
         }
+
+        public async Task<decimal> GetDailyEarningsAsync()
+        {
+			var today = DateTime.Today;
+			var tomorrow = today.AddDays(1);
+
+            var dailyEarnings = await _context.Orders
+				.Where(order => order.CreatedDate >= today && order.CreatedDate < tomorrow)
+				.SumAsync(order => order.TotalAmount);
+
+            return dailyEarnings;
+
+        }
     }
 }

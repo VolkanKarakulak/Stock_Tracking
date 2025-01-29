@@ -61,6 +61,11 @@ namespace Service.Services.OrderService
 
 		}
 
+        public async Task<decimal> GetDailyEarningsAsync()
+        {
+            return await _orderRepository.GetDailyEarningsAsync();
+        }
+
         public async Task<int> GetPendingOrdersCountAsync()
         {
             return await _orderRepository.GetPendingOrdersCountAsync();

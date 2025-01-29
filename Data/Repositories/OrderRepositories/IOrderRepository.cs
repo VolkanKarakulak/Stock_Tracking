@@ -14,6 +14,7 @@ namespace Data.Repositories.OrderRepositories
 		Task<Order> GetOrderWithDetailsAsync(int orderId);
 		Task<int> GetPendingOrdersCountAsync();
 		Task<int> GetTodayOrdersCountAsync();
+		Task<decimal> GetDailyEarningsAsync();
 
     }
 }
