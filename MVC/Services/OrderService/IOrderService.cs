@@ -14,5 +14,6 @@ namespace MVC.Services.OrderService
         Task<ResponseModel<PagedResponseModel<IEnumerable<OrderModel>>>> GetPagedAsync(PaginationModel paginationModel);
         Task<int> GetPendingOrdersCountAsync();
         Task<int> GetTodayOrdersCountAsync();
+        Task<decimal> GetDailyEarningsAsync();
     }
 }

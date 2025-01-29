@@ -105,5 +105,12 @@ namespace Web.API.Controllers
             var count = await _service.GetTodayOrdersCountAsync();
             return Ok(count);
         }
+
+        [HttpGet("daily-earnings")]
+        public async Task<IActionResult> GetDailyEarnings()
+        {
+            var count = await _service.GetDailyEarningsAsync();
+            return Ok(count);
+        }
     }
 }
