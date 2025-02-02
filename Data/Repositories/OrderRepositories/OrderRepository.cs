@@ -112,15 +112,15 @@ namespace Data.Repositories.OrderRepositories
 
         public async Task<decimal> GetDailyEarningsAsync()
         {
-			var today = DateTime.Today;
-			var tomorrow = today.AddDays(1);
+            var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
 
             var dailyEarnings = await _context.Orders
-				.Where(order => order.CreatedDate >= today && order.CreatedDate < tomorrow)
-				.SumAsync(order => order.TotalAmount);
+                .Where(order => order.PaymentDate >= today && order.PaymentDate < tomorrow && order.IsPaid == true)
+                .SumAsync(order => order.TotalAmount);
 
-            return dailyEarnings;
-
+            return dailyEarnings /100 ;
         }
+
     }
 }

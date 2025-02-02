@@ -18,11 +18,11 @@ namespace MVC.Areas.Admin.Controllers
             var pendingOrdersCount = await _orderService.GetPendingOrdersCountAsync();
             var todayOrdersCount = await _orderService.GetTodayOrdersCountAsync();
             var dailyEarnings = await _orderService.GetDailyEarningsAsync();
-
+            var dailyEarningsResult = @dailyEarnings.ToString("N2");
             // Pending sipariş sayısını View'a gönderiyoruz
             ViewBag.PendingOrdersCount = pendingOrdersCount;
             ViewBag.TodayOrdersCount = todayOrdersCount;
-            ViewBag.DailyEarnings = dailyEarnings;
+            ViewBag.DailyEarnings = dailyEarningsResult;
             return View();
 		}
 	}
