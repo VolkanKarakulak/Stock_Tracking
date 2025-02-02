@@ -52,10 +52,22 @@ namespace Service.Services.OrderService
 
 			// OrderDetails oluşturma
 			var orderDetails = dto.Items.Select(item => _mapper.Map<OrderDetail>(item)).ToList();
-			var createdOrder = await _orderRepository.CreateAsync(order);
+
+            //// Sipariş objesini veritabanına kaydediyoruz, ödeme yapılmadı olarak işaretliyoruz
+            //order.IsPaid = false;  // Ödeme yapılmamış olarak varsayıyoruz
+            //order.PaymentDate = null;
+            //order.PaymentMethod = null;
+
+            var createdOrder = await _orderRepository.CreateAsync(order);
 			await _unitOfWork.CommitAsync();
 
-			var result = _mapper.Map<OrderDto>(createdOrder);
+            //// Eğer ödeme yapılmışsa, ödeme işlemini gerçekleştiriyoruz
+            //if (dto.IsPaid)
+            //{
+            //    await _paymentService.PayForOrderAsync(createdOrder.Id, dto.PaymentMethod ?? "Unknown");
+            //}
+
+            var result = _mapper.Map<OrderDto>(createdOrder);
 
 			return result;
 
