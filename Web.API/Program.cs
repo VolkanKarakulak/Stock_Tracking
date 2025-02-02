@@ -27,7 +27,7 @@ namespace Web.API
             builder.Services.AddRepositoryExtensions();
 			builder.Services.AddSignalR();
 
-			builder.Services.AddDbContext<Stock_TrackingDbContext>(options =>
+            builder.Services.AddDbContext<Stock_TrackingDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), sqlOptions =>
                 {
@@ -36,18 +36,19 @@ namespace Web.API
 
             });
 
-			builder.Services.AddCors(options =>
-			{
-				options.AddPolicy("AllowAllOrigins", builder =>
-				{
-                      builder
-                             .AllowAnyOrigin()  // Bu, tüm kökenlerden gelen isteklere izin verir
-					         .AllowAnyMethod()
-					         .AllowAnyHeader();
-				});
-			});
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .SetIsOriginAllowed((host) => true)
+                           .AllowCredentials();
+                });
+            });
 
-			var app = builder.Build();
+            var app = builder.Build();
 
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())
@@ -59,10 +60,10 @@ namespace Web.API
                 app.UseHttpsRedirection();
                 app.ConfigureExceptionHandling();
                 app.UseAuthorization();
-			    app.MapHub<OrderHub>("/orderHub");
-			    app.UseCors("AllowAllOrigins");
+                app.UseCors("CorsPolicy");
+                app.MapHub<OrderHub>("/orderHub");
 
-			app.MapControllers();
+            app.MapControllers();
 
                 app.Run();
         }

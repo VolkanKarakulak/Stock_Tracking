@@ -167,14 +167,18 @@
                     <!-- END eCommerce Dashboard Header -->
                     <!-- Quick Stats -->
                     <div class="row text-center">
-                        <div class="col-sm-6 col-lg-3">
-                            <a href="javascript:void(0)" class="widget widget-hover-effect2">
-                                <div class="widget-extra themed-background">
-                                    <h4 class="widget-content-light"><strong>Pending</strong> Orders</h4>
-                                </div>
-                    <div class="widget-extra-full"><span class="h2 animation-expandOpen">@ViewBag.PendingOrdersCount</span></div>
-                            </a>
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="javascript:void(0)" class="widget widget-hover-effect2">
+                        <div class="widget-extra themed-background">
+                            <h4 class="widget-content-light"><strong>Pending</strong> Orders</h4>
                         </div>
+                            <div class="widget-extra-full">
+                                <span id="pendingOrdersCount" class="h2 animation-expandOpen">
+                                    @ViewBag.PendingOrdersCount
+                                </span>
+                        </div>
+                        </a>
+                    </div>
                         <div class="col-sm-6 col-lg-3">
                             <a href="javascript:void(0)" class="widget widget-hover-effect2">
                                 <div class="widget-extra themed-background-dark">
@@ -188,7 +192,11 @@
                                 <div class="widget-extra themed-background-dark">
                                     <h4 class="widget-content-light"><strong>Orders</strong> Today</h4>
                                 </div>
-                    <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">@ViewBag.TodayOrdersCount</span></div>
+                    <div class="widget-extra-full">
+                        <span id="todayOrdersCount" class="h2 themed-color-dark animation-expandOpen">
+                            @ViewBag.TodayOrdersCount
+                        </span>
+                        </div>
                             </a>
                         </div>
                         <div class="col-sm-6 col-lg-3">
@@ -609,3 +617,5 @@
     <script src="~/admin/js/pages/ecomdashboard.js"></script>
     <script>$(function () { EcomDashboard.init(); });</script>
 </main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>

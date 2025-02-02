@@ -29,8 +29,12 @@ namespace Web.API.Controllers
 		{
 			var orderDto = await _service.CreateOrderAsync(orderAddDto);
 
-			// SignalR ile bildirim gönder
-			await _hubContext.Clients.All.SendAsync("ReceiveOrder", orderDto.TrackingNumber, "Yeni bir sipariş alındı!");
+            // Güncellenmiş sipariş sayısını al
+            var pendingOrdersCount = await _service.GetPendingOrdersCountAsync();
+			var todayOrdersCount = await _service.GetTodayOrdersCountAsync();
+
+            // SignalR ile bildirim gönder
+            await _hubContext.Clients.All.SendAsync("ReceiveOrder", orderDto, pendingOrdersCount, todayOrdersCount);
 
 			return ResponseBuilder.CreateResponse(orderDto, true, "Başarılı");
 		}

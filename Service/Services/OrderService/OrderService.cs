@@ -11,6 +11,7 @@ using Service.Helper;
 using Service.Services.GenericService;
 
 
+
 namespace Service.Services.OrderService
 {
     public class OrderService : GenericService<Order, OrderDto>, IOrderService
@@ -21,6 +22,7 @@ namespace Service.Services.OrderService
 		private readonly ITaxSettingRepository _taxSettingRepository;
         private readonly IProductStockRepository _productStockRepository;
         private readonly IProductRepository _productRepository;
+
 
         public OrderService(IGenericRepository<Order> repository, IUnitOfWork unitOfWork, IMapper mapper, IOrderRepository orderRepository, ITaxSettingRepository taxSettingRepository, IProductStockRepository productStockRepository, IProductRepository productRepository) : base(repository, unitOfWork, mapper)
         {
@@ -66,6 +68,7 @@ namespace Service.Services.OrderService
             //{
             //    await _paymentService.PayForOrderAsync(createdOrder.Id, dto.PaymentMethod ?? "Unknown");
             //}
+
 
             var result = _mapper.Map<OrderDto>(createdOrder);
 
