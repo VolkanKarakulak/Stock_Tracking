@@ -14,11 +14,11 @@ namespace Web.API.Hubs
         }
 
         // Yeni sipariş bildirimi gönderme metodu
-        public async Task SendMessage(OrderDto order)
+        public async Task SendOrderUpdate(OrderDto order)
 		{
 			var pendingOrdersCount = await _orderService.GetPendingOrdersCountAsync();
-			var todayOrdersCountount = await _orderService.GetTodayOrdersCountAsync();
-			await Clients.All.SendAsync("ReceiveOrder", order, pendingOrdersCount, todayOrdersCountount);
+			var todayOrdersCount = await _orderService.GetTodayOrdersCountAsync();
+			await Clients.All.SendAsync("ReceiveOrder", order, pendingOrdersCount, todayOrdersCount);
 		}
 	}
 }
