@@ -17,8 +17,9 @@ namespace Data.Repositories.OrderRepositories
 		private readonly IGenericRepository<Order> _repository;
 		private readonly Stock_TrackingDbContext _context;
 		protected readonly DbSet<Order> _dbSet;
+        private const decimal CurrencyConversionRate = 100m; // Kuruştan TL'ye çevirme oranı
 
-		public OrderRepository(IGenericRepository<Order> repository, Stock_TrackingDbContext appDbContext)
+        public OrderRepository(IGenericRepository<Order> repository, Stock_TrackingDbContext appDbContext)
 		{
 			_repository = repository;
 			_context = appDbContext;
@@ -110,16 +111,21 @@ namespace Data.Repositories.OrderRepositories
             return todayOrders;
         }
 
+        private decimal ConvertToCurrency(decimal amount)
+        {
+            return amount / CurrencyConversionRate;
+        }
+
         public async Task<decimal> GetDailyEarningsAsync()
         {
             var today = DateTime.Today;
             var tomorrow = today.AddDays(1);
 
             var dailyEarnings = await _context.Orders
-                .Where(order => order.PaymentDate >= today && order.PaymentDate < tomorrow && order.IsPaid == true)
+                .Where(order => order.PaymentDate >= today && order.PaymentDate < tomorrow && order.IsPaid == true && order.IsCancelled == false)
                 .SumAsync(order => order.TotalAmount);
 
-            return dailyEarnings /100 ;
+            return ConvertToCurrency(dailyEarnings);
         }
 
     }
