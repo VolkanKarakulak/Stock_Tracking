@@ -116,5 +116,13 @@ namespace Web.API.Controllers
             var count = await _service.GetDailyEarningsAsync();
             return Ok(count);
         }
+
+        [HttpGet("calculate-monthly-earnings")]
+        public async Task<IActionResult> CalculateMonthlyEarnings()
+        {
+            var earnings = await _service.CalculateMonthlyEarningsAsync();
+
+			return Ok(earnings);
+        }
     }
 }

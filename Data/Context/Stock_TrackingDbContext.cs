@@ -23,6 +23,7 @@ namespace Data.Contexts
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductSupplier> ProductSuppliers { get; set; }
         public DbSet<TaxSetting> TaxSettings { get; set; }
+        public DbSet<Earning> Earnings { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

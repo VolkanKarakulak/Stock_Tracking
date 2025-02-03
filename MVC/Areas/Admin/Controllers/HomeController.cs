@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Services.OrderService;
+using Newtonsoft.Json;
 
 namespace MVC.Areas.Admin.Controllers
 {
@@ -19,10 +20,18 @@ namespace MVC.Areas.Admin.Controllers
             var todayOrdersCount = await _orderService.GetTodayOrdersCountAsync();
             var dailyEarnings = await _orderService.GetDailyEarningsAsync();
             var dailyEarningsResult = @dailyEarnings.ToString("N2");
+
+            // Aylık kazançları alıyoruz
+            var monthlyEarnings = await _orderService.CalculateMonthlyEarningsAsync();
+
             // Pending sipariş sayısını View'a gönderiyoruz
             ViewBag.PendingOrdersCount = pendingOrdersCount;
             ViewBag.TodayOrdersCount = todayOrdersCount;
             ViewBag.DailyEarnings = dailyEarningsResult;
+
+            // Aylık kazançları JSON formatında View'a gönderiyoruz
+            ViewBag.MonthlyEarnings = JsonConvert.SerializeObject(monthlyEarnings);
+
             return View();
 		}
 	}

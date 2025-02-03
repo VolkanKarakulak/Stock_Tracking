@@ -1,4 +1,5 @@
-﻿using MVC.Models.OrderModels;
+﻿using Data.Entities;
+using MVC.Models.OrderModels;
 using MVC.Models.PagedResponseModel;
 using MVC.Models.PaginationModel;
 using MVC.Models.ResponseModels;
@@ -15,5 +16,6 @@ namespace MVC.Services.OrderService
         Task<int> GetPendingOrdersCountAsync();
         Task<int> GetTodayOrdersCountAsync();
         Task<decimal> GetDailyEarningsAsync();
+        Task<List<Earning>> CalculateMonthlyEarningsAsync();
     }
 }
