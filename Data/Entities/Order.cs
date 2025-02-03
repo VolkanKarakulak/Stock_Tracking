@@ -11,7 +11,7 @@ namespace Data.Entities
     public class Order : BaseEntity
     {
 		[Column("OrderDate")]
-		public new DateTime? CreatedDate { get; set; } // BaseEntity'deki CreatedDate'i gizleyip özelleştiriyoruz.
+		public DateTime CreatedDate { get; set; } // BaseEntity'deki CreatedDate'i gizleyip özelleştiriyoruz.
 
 		public int CustomerId { get; set; }
         public Customer? Customer { get; set; } 

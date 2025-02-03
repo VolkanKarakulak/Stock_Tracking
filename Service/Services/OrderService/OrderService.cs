@@ -10,8 +10,6 @@ using Service.DTOs.OrderDtos;
 using Service.Helper;
 using Service.Services.GenericService;
 
-
-
 namespace Service.Services.OrderService
 {
     public class OrderService : GenericService<Order, OrderDto>, IOrderService
@@ -32,6 +30,23 @@ namespace Service.Services.OrderService
             _taxSettingRepository = taxSettingRepository;
             _productStockRepository = productStockRepository;
             _productRepository = productRepository;
+        }
+
+        public async Task<List<Earning>> CalculateMonthlyEarningsAsync()
+        {
+            var orders = await _orderRepository.GetAllAsync();
+
+            var earnings = orders
+                .GroupBy(o => new { o.CreatedDate.Year, o.CreatedDate.Month })
+                .Select(g => new Earning
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Amount = g.Sum(o => o.TotalAmount) // Örnek hesaplama
+                })
+                .ToList();
+
+            return earnings;
         }
 
         public async Task<OrderDto> CreateOrderAsync(OrderAddDto dto)

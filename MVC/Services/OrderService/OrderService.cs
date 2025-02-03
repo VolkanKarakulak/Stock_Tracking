@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Data.Entities;
+using Microsoft.Extensions.Options;
 using MVC.Configuration;
 using MVC.Models.OrderModels;
 using MVC.Models.PagedResponseModel;
 using MVC.Models.PaginationModel;
 using MVC.Models.ResponseModels;
+using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace MVC.Services.OrderService
@@ -49,7 +51,7 @@ namespace MVC.Services.OrderService
                 PropertyNameCaseInsensitive = true
             };
 
-            var order = JsonSerializer.Deserialize<ResponseModel<IEnumerable<OrderModel>>>(content, options);
+            var order = System.Text.Json.JsonSerializer.Deserialize<ResponseModel<IEnumerable<OrderModel>>>(content, options);
             return order;
         }
 
@@ -65,7 +67,7 @@ namespace MVC.Services.OrderService
                 PropertyNameCaseInsensitive = true
             };
 
-            var order = JsonSerializer.Deserialize<ResponseModel<OrderModel>>(content, options);
+            var order = System.Text.Json.JsonSerializer.Deserialize<ResponseModel<OrderModel>>(content, options);
             return order;
         }
 
@@ -81,7 +83,7 @@ namespace MVC.Services.OrderService
                 PropertyNameCaseInsensitive = true
             };
 
-            var order = JsonSerializer.Deserialize<ResponseModel<OrderModel>>(content, options);
+            var order = System.Text.Json.JsonSerializer.Deserialize<ResponseModel<OrderModel>>(content, options);
             return order;
         }
 
@@ -97,7 +99,7 @@ namespace MVC.Services.OrderService
                 PropertyNameCaseInsensitive = true
             };
 
-            var order = JsonSerializer.Deserialize<ResponseModel<PagedResponseModel<IEnumerable<OrderModel>>>>(content, options);
+            var order = System.Text.Json.JsonSerializer.Deserialize<ResponseModel<PagedResponseModel<IEnumerable<OrderModel>>>>(content, options);
             order.Data.PageNumber = paginationModel.PageNumber;
             return order;
         }
@@ -149,5 +151,18 @@ namespace MVC.Services.OrderService
 
             return 0;
         }
+
+        public async Task<List<Earning>> CalculateMonthlyEarningsAsync()
+        {
+            var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/calculate-monthly-earnings");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            // JSON'u List<Earning> olarak deserialize ediyoruz
+            var earnings = JsonConvert.DeserializeObject<List<Earning>>(content);
+            return earnings;
+        }           
+            
     }
 }

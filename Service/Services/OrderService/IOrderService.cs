@@ -16,6 +16,7 @@ namespace Service.Services.OrderService
         Task<int> GetPendingOrdersCountAsync();
         Task<int> GetTodayOrdersCountAsync();
         Task<decimal> GetDailyEarningsAsync();
+        Task<List<Earning>> CalculateMonthlyEarningsAsync();
 
     }
 }
