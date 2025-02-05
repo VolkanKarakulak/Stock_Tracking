@@ -20,6 +20,7 @@ namespace MVC.Areas.Admin.Controllers
             var todayOrdersCount = await _orderService.GetTodayOrdersCountAsync();
             var dailyEarnings = await _orderService.GetDailyEarningsAsync();
             var dailyEarningsResult = @dailyEarnings.ToString("N2");
+            var totalOrdersCount = await _orderService.GetTotalOrdersAsync();
 
             // Aylık kazançları alıyoruz
             var monthlyEarnings = await _orderService.CalculateMonthlyEarningsAsync();
@@ -28,6 +29,7 @@ namespace MVC.Areas.Admin.Controllers
             ViewBag.PendingOrdersCount = pendingOrdersCount;
             ViewBag.TodayOrdersCount = todayOrdersCount;
             ViewBag.DailyEarnings = dailyEarningsResult;
+            ViewBag.TotalOrdersCount = totalOrdersCount;
 
             // Aylık kazançları JSON formatında View'a gönderiyoruz
             ViewBag.MonthlyEarnings = JsonConvert.SerializeObject(monthlyEarnings);

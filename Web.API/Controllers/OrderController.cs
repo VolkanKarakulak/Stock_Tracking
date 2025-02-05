@@ -124,5 +124,13 @@ namespace Web.API.Controllers
 
 			return Ok(earnings);
         }
+
+        [HttpGet("get-total-orders")]
+        public async Task<IActionResult> GetTotalOrders()
+        {
+            var totalOrders = await _service.GetTotalOrdersAsync();
+
+            return Ok(totalOrders);
+        }
     }
 }

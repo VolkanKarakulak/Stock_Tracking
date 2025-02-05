@@ -128,5 +128,10 @@ namespace Data.Repositories.OrderRepositories
             return ConvertToCurrency(dailyEarnings);
         }
 
+        public async  Task<int> GetTotalOrdersAsync()
+        {
+            var orderCount = await _context.Orders.CountAsync(order => !order.IsCancelled);
+            return orderCount;
+        }
     }
 }
