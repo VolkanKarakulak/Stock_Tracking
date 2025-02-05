@@ -162,7 +162,22 @@ namespace MVC.Services.OrderService
             // JSON'u List<Earning> olarak deserialize ediyoruz
             var earnings = JsonConvert.DeserializeObject<List<Earning>>(content);
             return earnings;
-        }           
-            
+        }
+
+        public async Task<int> GetTotalOrdersAsync()
+        {
+            var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/get-total-orders");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            // Eğer JSON yanıtı decimal içeriyorsa, onu decimal olarak döndürüyoruz
+            if (int.TryParse(content, out var totalOrders))
+            {
+                return totalOrders;
+            }
+
+            return 0;
+        }
     }
 }

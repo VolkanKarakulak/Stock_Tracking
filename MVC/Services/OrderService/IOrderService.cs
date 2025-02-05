@@ -17,5 +17,6 @@ namespace MVC.Services.OrderService
         Task<int> GetTodayOrdersCountAsync();
         Task<decimal> GetDailyEarningsAsync();
         Task<List<Earning>> CalculateMonthlyEarningsAsync();
+        Task<int> GetTotalOrdersAsync();
     }
 }
