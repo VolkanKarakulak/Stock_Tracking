@@ -137,6 +137,8 @@ namespace Data.Repositories.OrderRepositories
         public async Task<IQueryable<Order>> GetLastTenOrdersAsync()
         {
 			var lastOrders = await _context.Orders
+				.AsNoTracking()
+				.Include(o => o.Customer)
                 .OrderByDescending(o => o.CreatedDate)
                 .Take(10).ToListAsync();
 

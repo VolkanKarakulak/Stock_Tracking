@@ -3,6 +3,7 @@ using Data.Entities;
 using MVC.Models.CategoryModels;
 using MVC.Models.OrderModels;
 using Service.DTOs.CategoryDtos;
+using Service.DTOs.OrderDtos;
 
 namespace MVC.Mapping
 {
@@ -17,7 +18,11 @@ namespace MVC.Mapping
 
             CreateMap<OrderModel, Category>().ReverseMap();
             CreateMap<OrderUpdateModel, Category>().ReverseMap();
-      
+            CreateMap<Order, LastTenOrdersModel>()
+                .ForMember(dest => dest.CustomerName, opt => opt
+                .MapFrom(src => src.Customer != null ? src.Customer.Name : "Unknown"))
+                .ReverseMap();
+
 
         }
 	}

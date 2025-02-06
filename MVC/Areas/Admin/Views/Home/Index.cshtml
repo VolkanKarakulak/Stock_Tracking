@@ -300,10 +300,10 @@
                                         <a href="javascript:void(0)"><strong>@order.TrackingNumber</strong></a>
                                     </td>
                                     <td class="hidden-xs">
-                                        <a href="javascript:void(0)">@order.CustomerId</a>
+                                        <a href="javascript:void(0)">@order.CustomerName</a>
                                     </td>
                                     <td class="hidden-xs">@order.PaymentMethod</td>
-                                    <td class="text-right"><strong>$@order.TotalAmount.ToString("N2")</strong></td>
+                                    <td class="text-right"><strong>₺@order.TotalAmount.ToString("N2")</strong></td>
                                     <td class="text-right">
                                         <span class="label @(order.Status == OrderStatus.Approved ? "label-success" :
                       order.Status == OrderStatus.Cancelled ? "label-danger" :

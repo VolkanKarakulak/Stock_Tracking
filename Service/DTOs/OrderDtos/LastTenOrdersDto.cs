@@ -13,7 +13,7 @@ namespace Service.DTOs.OrderDtos
         public decimal TotalAmount { get; set; }
         public string? TrackingNumber { get; set; }
         public string? PaymentMethod { get; set; }
-        public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
 
     }
 }
