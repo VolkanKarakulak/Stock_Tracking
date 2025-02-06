@@ -16,6 +16,7 @@ namespace Data.Repositories.OrderRepositories
 		Task<int> GetTodayOrdersCountAsync();
 		Task<decimal> GetDailyEarningsAsync();
 		Task<int> GetTotalOrdersAsync();
+		Task<IQueryable<Order>> GetLastTenOrdersAsync();
 
     }
 }

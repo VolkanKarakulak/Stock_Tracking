@@ -18,6 +18,7 @@ namespace Service.Services.OrderService
         Task<decimal> GetDailyEarningsAsync();
         Task<List<Earning>> CalculateMonthlyEarningsAsync();
         Task<int> GetTotalOrdersAsync();
+        Task<IEnumerable<LastTenOrdersDto>> GetLastTenOrdersAsync();
 
     }
 }

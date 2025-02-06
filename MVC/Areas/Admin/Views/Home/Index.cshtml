@@ -1,4 +1,6 @@
-﻿
+﻿@using Data.Enums
+@model HomePageViewModel
+
     <main 
             div id="main-container">
                 <!-- Header -->
@@ -174,7 +176,7 @@
                         </div>
                             <div class="widget-extra-full">
                                 <span id="pendingOrdersCount" class="h2 animation-expandOpen">
-                                    @ViewBag.PendingOrdersCount
+                                    @Model.PendingOrdersCount
                                 </span>
                         </div>
                         </a>
@@ -194,7 +196,7 @@
                                 </div>
                     <div class="widget-extra-full">
                         <span id="todayOrdersCount" class="h2 themed-color-dark animation-expandOpen">
-                            @ViewBag.TodayOrdersCount
+                            @Model.TodayOrdersCount
                         </span>
                         </div>
                             </a>
@@ -204,7 +206,7 @@
                                 <div class="widget-extra themed-background-dark">
                                     <h4 class="widget-content-light"><strong>Earnings</strong> Today</h4>
                                 </div>
-                                <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">₺ @ViewBag.DailyEarnings</span></div>
+                                <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">₺ @Model.DailyEarnings</span></div>
                             </a>
                         </div>
                     </div>
@@ -241,7 +243,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <div class="row push">
                                     <div class="col-xs-6">
-                                    <h3><strong class="animation-fadeInQuick">@ViewBag.TotalOrdersCount</strong><br><small class="text-uppercase animation-fadeInQuickInv"><a href="javascript:void(0)">Total Orders</a></small></h3>
+                                    <h3><strong class="animation-fadeInQuick">@Model.TotalOrdersCount</strong><br><small class="text-uppercase animation-fadeInQuickInv"><a href="javascript:void(0)">Total Orders</a></small></h3>
                                     </div>
                                     <div class="col-xs-6">
                                         <h3><strong class="animation-fadeInQuick">$ 1.200,00</strong><br><small class="text-uppercase animation-fadeInQuickInv"><a href="javascript:void(0)">Cart Value</a></small></h3>
@@ -289,80 +291,30 @@
                                 </div>
                                 <!-- END Latest Orders Title -->
                                 <!-- Latest Orders Content -->
-                                <table class="table table-borderless table-striped table-vcenter table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center" style="width: 100px;"><a href="javascript:void(0)"><strong>ORD.685116</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Gerald Berry</a></td>
-                                            <td class="hidden-xs">Paypal</td>
-                                            <td class="text-right"><strong>$65,00</strong></td>
-                                            <td class="text-right"><span class="label label-success">Delivered</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685115</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Patrick Bates</a></td>
-                                            <td class="hidden-xs">Bank wire</td>
-                                            <td class="text-right"><strong>$268,00</strong></td>
-                                            <td class="text-right"><span class="label label-danger">Canceled</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685114</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Ethan Greene</a></td>
-                                            <td class="hidden-xs">Paypal</td>
-                                            <td class="text-right"><strong>$362,00</strong></td>
-                                            <td class="text-right"><span class="label label-success">Delivered</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685113</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Bruce Hicks</a></td>
-                                            <td class="hidden-xs">Paypal</td>
-                                            <td class="text-right"><strong>$23,00</strong></td>
-                                            <td class="text-right"><span class="label label-warning">Processing</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685112</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Harry Burke</a></td>
-                                            <td class="hidden-xs">Bank wire</td>
-                                            <td class="text-right"><strong>$1360,00</strong></td>
-                                            <td class="text-right"><span class="label label-success">Delivered</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685111</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Nancy Rose</a></td>
-                                            <td class="hidden-xs">Bank wire</td>
-                                            <td class="text-right"><strong>$2685,00</strong></td>
-                                            <td class="text-right"><span class="label label-warning">Processing</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685110</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Helen Jensen</a></td>
-                                            <td class="hidden-xs">Paypal</td>
-                                            <td class="text-right"><strong>$128,00</strong></td>
-                                            <td class="text-right"><span class="label label-success">Delivered</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685109</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Harry Medina</a></td>
-                                            <td class="hidden-xs">Check</td>
-                                            <td class="text-right"><strong>$3150,00</strong></td>
-                                            <td class="text-right"><span class="label label-warning">Processing</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685108</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Ryan Hopkins</a></td>
-                                            <td class="hidden-xs">Check</td>
-                                            <td class="text-right"><strong>$750,00</strong></td>
-                                            <td class="text-right"><span class="label label-success">Delivered</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center"><a href="javascript:void(0)"><strong>ORD.685107</strong></a></td>
-                                            <td class="hidden-xs"><a href="javascript:void(0)">Anthony Franklin</a></td>
-                                            <td class="hidden-xs">Paypal</td>
-                                            <td class="text-right"><strong>$630,00</strong></td>
-                                            <td class="text-right"><span class="label label-danger">Canceled</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <table class="table table-borderless table-striped table-vcenter table-bordered">
+                        <tbody>
+                            @foreach (var order in Model.LastTenOrders)
+                            {
+                                <tr>
+                                    <td class="text-center" style="width: 150px;">
+                                        <a href="javascript:void(0)"><strong>@order.TrackingNumber</strong></a>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <a href="javascript:void(0)">@order.CustomerId</a>
+                                    </td>
+                                    <td class="hidden-xs">@order.PaymentMethod</td>
+                                    <td class="text-right"><strong>$@order.TotalAmount.ToString("N2")</strong></td>
+                                    <td class="text-right">
+                                        <span class="label @(order.Status == OrderStatus.Approved ? "label-success" :
+                      order.Status == OrderStatus.Cancelled ? "label-danger" :
+                      "label-warning")">
+                                            @order.Status.ToString()
+                                        </span> 
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                                 <!-- END Latest Orders Content -->
                             </div>
                             <!-- END Latest Orders Block -->

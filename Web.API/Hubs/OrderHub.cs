@@ -20,5 +20,6 @@ namespace Web.API.Hubs
 			var todayOrdersCount = await _orderService.GetTodayOrdersCountAsync();
 			await Clients.All.SendAsync("ReceiveOrder", order, pendingOrdersCount, todayOrdersCount);
 		}
+
 	}
 }

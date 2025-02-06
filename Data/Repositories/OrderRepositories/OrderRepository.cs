@@ -133,5 +133,14 @@ namespace Data.Repositories.OrderRepositories
             var orderCount = await _context.Orders.CountAsync(order => !order.IsCancelled);
             return orderCount;
         }
+
+        public async Task<IQueryable<Order>> GetLastTenOrdersAsync()
+        {
+			var lastOrders = await _context.Orders
+                .OrderByDescending(o => o.CreatedDate)
+                .Take(10).ToListAsync();
+
+            return await Task.FromResult(lastOrders.AsQueryable());
+        }
     }
 }
