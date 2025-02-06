@@ -40,10 +40,18 @@ namespace Web.API.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ResponseDto> Update(OrderUpdateDto dto)
+		public async Task<ResponseDto> Update(OrderUpdateDto orderUpdateDto)
 		{
-			var orderDto = await _service.UpdateOrderAsync(dto);
-			return ResponseBuilder.CreateResponse(orderDto, true, "Başarılı");
+            // Güncellenmiş sipariş sayısını al        
+            var orderDto = await _service.UpdateOrderAsync(orderUpdateDto);
+            var pendingOrdersCount = await _service.GetPendingOrdersCountAsync();
+            var todayOrdersCount = await _service.GetTodayOrdersCountAsync();
+
+            // SignalR ile bildirim gönder
+            await _hubContext.Clients.All.SendAsync("ReceiveOrder", orderUpdateDto, pendingOrdersCount, todayOrdersCount);
+
+            return ResponseBuilder.CreateResponse(orderDto, true, "Başarılı");
+
 		}
 
 		[HttpGet]
@@ -132,5 +140,14 @@ namespace Web.API.Controllers
 
             return Ok(totalOrders);
         }
+
+        [HttpGet("get-last-ten-orders")]
+        public async Task<IActionResult> GetLastTenOrders()
+        {
+            var lastTenOrders = await _service.GetLastTenOrdersAsync();
+
+            return Ok(lastTenOrders);
+        }
+
     }
 }

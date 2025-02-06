@@ -17,6 +17,7 @@ namespace MVC.Mapping
 
             CreateMap<OrderModel, Category>().ReverseMap();
             CreateMap<OrderUpdateModel, Category>().ReverseMap();
+      
 
         }
 	}

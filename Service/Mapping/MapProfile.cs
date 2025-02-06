@@ -109,6 +109,7 @@ namespace Service.Mapping
 			CreateMap<Order, OrderDto>()
 	        .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderDetails));
 			CreateMap<Order, OrderAddDto>().ReverseMap();
+			CreateMap<Order, LastTenOrdersDto>().ReverseMap();
 
             CreateMap<OrderAddDto, Order>()
            .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))

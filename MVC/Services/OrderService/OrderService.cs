@@ -179,5 +179,17 @@ namespace MVC.Services.OrderService
 
             return 0;
         }
+
+        
+        public async Task<IEnumerable<LastTenOrdersModel>> GetLastTenOrdersAsync()
+        {
+            var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/get-last-ten-orders");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var orders = JsonConvert.DeserializeObject <IEnumerable <LastTenOrdersModel>>(content);
+            return orders;
+        }
     }
 }

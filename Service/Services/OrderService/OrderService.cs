@@ -84,7 +84,6 @@ namespace Service.Services.OrderService
             //    await _paymentService.PayForOrderAsync(createdOrder.Id, dto.PaymentMethod ?? "Unknown");
             //}
 
-
             var result = _mapper.Map<OrderDto>(createdOrder);
 
 			return result;
@@ -94,6 +93,18 @@ namespace Service.Services.OrderService
         public async Task<decimal> GetDailyEarningsAsync()
         {
             return await _orderRepository.GetDailyEarningsAsync();
+        }
+
+        public async Task<IEnumerable<LastTenOrdersDto>> GetLastTenOrdersAsync()
+        {
+            // Repository'den siparişleri al
+            var orders = await _orderRepository.GetLastTenOrdersAsync();
+
+            // Siparişin güncellenmiş haliyle dönüş yapıyoruz
+            var result = _mapper.Map<IEnumerable<LastTenOrdersDto>>(orders);
+
+            return result;
+
         }
 
         public async Task<int> GetPendingOrdersCountAsync()
@@ -130,7 +141,6 @@ namespace Service.Services.OrderService
                 {
                     var product = await _productRepository.GetByIdAsync(orderDetail.ProductId);
 
-
                     if (product == null)
                     {
                         throw new InvalidOperationException($"Product with ID {orderDetail.ProductId} not found.");
@@ -140,7 +150,6 @@ namespace Service.Services.OrderService
                     {
                         throw new InvalidOperationException($"Not enough stock for product {product.Name}. Available: {product.Stock}, Requested: {orderDetail.Quantity}");
                     }
-
 
                     var productStock = await _productStockRepository.GetByColumnAsync(ps => ps.ProductId == orderDetail.ProductId);
 
