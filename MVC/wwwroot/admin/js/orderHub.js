@@ -13,8 +13,23 @@
         console.log("Updated Pending Orders Count:", pendingOrdersCount);
         console.log("Today's Orders Count:", todayOrdersCount);
 
-        // HTML içinde bekleyen sipariþ sayýsýný güncelle
-        document.getElementById("pendingOrdersCount").innerText = pendingOrdersCount;
-        document.getElementById("todayOrdersCount").innerText = todayOrdersCount;
+            const pendingOrdersElement = document.getElementById("pendingOrdersCount");
+            const todayOrdersElement = document.getElementById("todayOrdersCount");
+            const orderWidget = document.getElementById("orderWidget");
 
-    });
+            // Sayýyý güncelle
+            pendingOrdersElement.innerText = pendingOrdersCount;
+            todayOrdersElement.innerText = todayOrdersCount;
+
+            // Efekti ekle
+            pendingOrdersElement.classList.add("glow");
+            todayOrdersElement.classList.add("glow");
+            orderWidget.classList.add("highlight");
+
+            // Belirli bir süre sonra efekti kaldýr
+            setTimeout(() => {
+                pendingOrdersElement.classList.remove("glow");
+                todayOrdersElement.classList.remove("glow");
+                orderWidget.classList.remove("highlight");
+            }, 1200);
+        });
