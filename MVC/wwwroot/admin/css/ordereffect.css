@@ -1,35 +1,77 @@
-﻿/* Bekleyen sipariş sayısı için animasyon */
-.h2.animation-expandOpen {
+﻿@keyframes intenseGlow {
+    0% {
+        transform: scale(1); /* Sayı normal büyüklükte */
+        color: #2c3e50;
+        text-shadow: 0 0 5px rgba(44, 62, 80, 0.7);
+    }
+
+    25% {
+        transform: scale(1.5); /* Sayıyı büyüt */
+        color: #ffffff;
+        text-shadow: 0 0 15px rgba(255, 94, 0, 1);
+    }
+
+    50% {
+        transform: scale(1.2); /* Sayıyı tekrar küçült */
+        color: #f8c291;
+        text-shadow: 0 0 10px rgba(255, 94, 0, 0.9);
+    }
+
+    75% {
+        transform: scale(1.4); /* Sayıyı büyüt */
+        color: #ffffff;
+        text-shadow: 0 0 20px rgba(255, 94, 0, 1);
+    }
+
+    100% {
+        transform: scale(1); /* Sayıyı tekrar normale getir */
+        color: #2c3e50;
+        text-shadow: 0 0 5px rgba(44, 62, 80, 0.7);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0); /* Başlangıç pozisyonu */
+    }
+
+    25% {
+        transform: translateX(-5px) rotate(-2deg); /* Sol kaydırma */
+    }
+
+    50% {
+        transform: translateX(5px) rotate(2deg); /* Sağ kaydırma */
+    }
+
+    75% {
+        transform: translateX(-5px) rotate(-2deg); /* Sol kaydırma */
+    }
+
+    100% {
+        transform: translateX(0); /* Sonra tekrar başlangıç */
+    }
+}
+
+/* Efektleri sadece sayıya uygulamak için */
+.glow {
+    animation: intenseGlow 1.2s ease-in-out, shake 0.6s ease-in-out;
+    font-weight: bold;
+    display: inline-block;
     position: relative;
-    transition: all 0.3s ease-in-out;
+    z-index: 1; /* Sayı dışındaki öğelerin üzerindeymiş gibi görünsün */
 }
 
-/* Animasyonu ekleyelim */
-.h2.show {
-    color: #3498db; /* Renk değişimi */
-    transform: scale(1.1); /* Hafif büyütme efekti */
-    font-weight: bold;
+/* Kutunun boyutunu sabit tutmak için */
+.widget-extra-full {
+    display: inline-block;
+    padding: 10px; /* İstenilen padding değeri */
+    min-width: 100px; /* Kutucuğun genişliği */
+    text-align: center;
+    overflow: hidden; /* Sayı büyüdüğünde kutunun dışına taşmasını engeller */
 }
 
-/* Bildirim mesajı için stil */
-#orderNotification {
-    position: absolute;
-    top: -20px; /* Pending sayısının hemen üzerinde olacak şekilde */
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 5px 10px;
-    background-color: #3498db;
-    color: white;
-    font-weight: bold;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    opacity: 0; /* Başlangıçta saydam */
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-    font-size: 14px;
-}
-
-    /* Show sınıfı eklenince görünür hale gelir */
-    #orderNotification.show {
-        opacity: 1; /* Görünürlük sağlanır */
-        transform: translateX(-50%) translateY(0); /* Yukarıya kaydır */
+    /* Kutunun içeriğini sabit tutmak için */
+    .widget-extra-full span {
+        display: inline-block;
+        transition: none; /* Geçiş efektlerini devre dışı bırak */
     }
