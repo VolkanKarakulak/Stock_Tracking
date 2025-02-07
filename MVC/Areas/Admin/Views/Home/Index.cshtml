@@ -1,6 +1,7 @@
 ﻿@using Data.Enums
 @model HomePageViewModel
 
+
     <main 
             div id="main-container">
                 <!-- Header -->
@@ -173,12 +174,12 @@
                         <a href="javascript:void(0)" class="widget widget-hover-effect2">
                         <div class="widget-extra themed-background">
                             <h4 class="widget-content-light"><strong>Pending</strong> Orders</h4>
-                        </div>
-                            <div class="widget-extra-full">
-                                <span id="pendingOrdersCount" class="h2 animation-expandOpen">
-                                    @Model.PendingOrdersCount
-                                </span>
-                        </div>
+                    </div>
+                    <div class="widget-extra-full">
+                        <span id="pendingOrdersCount" class="h2 animation-expandOpen">
+                            @Model.PendingOrdersCount
+                        </span>
+                    </div>         
                         </a>
                     </div>
                         <div class="col-sm-6 col-lg-3">
@@ -302,7 +303,7 @@
                                     <td class="hidden-xs">
                                         <a href="javascript:void(0)">@order.CustomerName</a>
                                     </td>
-                                    <td class="hidden-xs">@order.PaymentMethod</td>
+                                    <td class="hidden-xs">@order.CreatedDate</td>
                                     <td class="text-right"><strong>₺@order.TotalAmount.ToString("N2")</strong></td>
                                     <td class="text-right">
                                         <span class="label @(order.Status == OrderStatus.Approved ? "label-success" :

@@ -16,4 +16,5 @@
         // HTML içinde bekleyen sipariþ sayýsýný güncelle
         document.getElementById("pendingOrdersCount").innerText = pendingOrdersCount;
         document.getElementById("todayOrdersCount").innerText = todayOrdersCount;
+
     });

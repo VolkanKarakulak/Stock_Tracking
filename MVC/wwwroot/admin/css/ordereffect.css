@@ -1,0 +1,35 @@
+﻿/* Bekleyen sipariş sayısı için animasyon */
+.h2.animation-expandOpen {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Animasyonu ekleyelim */
+.h2.show {
+    color: #3498db; /* Renk değişimi */
+    transform: scale(1.1); /* Hafif büyütme efekti */
+    font-weight: bold;
+}
+
+/* Bildirim mesajı için stil */
+#orderNotification {
+    position: absolute;
+    top: -20px; /* Pending sayısının hemen üzerinde olacak şekilde */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Başlangıçta saydam */
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    font-size: 14px;
+}
+
+    /* Show sınıfı eklenince görünür hale gelir */
+    #orderNotification.show {
+        opacity: 1; /* Görünürlük sağlanır */
+        transform: translateX(-50%) translateY(0); /* Yukarıya kaydır */
+    }
