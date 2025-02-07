@@ -66,49 +66,41 @@ namespace Data.Repositories.TaxSettingRepositories
 			return await _repository.IsEntityUpdateableAsync(id);
 		}
 
-		public async Task<TaxSetting> UpdateAsync(TaxSetting entity)
-		{
-			// Entity'nin durumu kontrol ediliyor
-			var entry = _context.Entry(entity);
+        public async Task<TaxSetting> UpdateAsync(TaxSetting entity)
+        {
+            var entry = _context.Entry(entity);
 
-			if (entry.State == EntityState.Detached)
-			{
-				// Entity "detached" durumda ise, eski varlık bulunuyor
-				var entityHelper = new EntityHelper<TaxSetting>(_context);
-				var oldEntity = entityHelper.GetOldEntity(entity.Id);
+            if (entry.State == EntityState.Detached)
+                return await HandleDetachedEntity(entity); // 🚀 Erken çıkış, gereksiz işlemleri engelle
 
-				if (oldEntity != null)
-				{
-					// Değişiklik davranışı uygulanıyor
-					var behavior = new ModifiedBehavior();
-					behavior.ApplyBehavior(_context, entity);
+            if (entry.State != EntityState.Modified)
+                throw new InvalidOperationException("Entity state is not valid for an update operation."); // 🚀 Hatalı durumu hemen yakala
 
-					// Eski varlık özellikleri güncelleniyor
-					entityHelper.UpdateEntityProperties(oldEntity, entity);
+            entry.State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return entity;
+        }
 
-					return oldEntity;
-				}
-				else
-				{
-					throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
-				}
-			}
-			else if (entry.State == EntityState.Modified)
-			{
-				// Eğer varlık "Modified" durumundaysa, doğrudan güncelleniyor
-				entry.State = EntityState.Modified;
-			}
-			else
-			{
-				throw new InvalidOperationException("Entity state is not valid for an update operation.");
-			}
+        // Detached durumda olan entity'yi işleyip güncelleyen yardımcı metod
+        private async Task<TaxSetting> HandleDetachedEntity(TaxSetting entity)
+        {
+            var entityHelper = new EntityHelper<TaxSetting>(_context);
+            var oldEntity = entityHelper.GetOldEntity(entity.Id);
 
-			// Değişiklikler kaydediliyor
-			await _context.SaveChangesAsync();
-			return entity; // Güncellenmiş varlık döndürülüyor
-		}
+            if (oldEntity == null)
+                throw new InvalidOperationException("Entity with the specified ID does not exist in the context."); // 🚀 Hatalı durumu hemen yakala
 
-		public async Task<decimal> GetTaxRateAsync()
+            var behavior = new ModifiedBehavior();
+            behavior.ApplyBehavior(_context, entity);
+
+            entityHelper.UpdateEntityProperties(oldEntity, entity);
+            await _context.SaveChangesAsync(); // Güncellenmiş eski varlığı kaydet
+
+            return oldEntity; // Güncellenmiş varlık döndürülüyor
+        }
+
+
+        public async Task<decimal> GetTaxRateAsync()
 		{
 			var taxSetting = await _context.TaxSettings.FirstOrDefaultAsync(t => t.IsActive); // Örneğin, varsayılan vergi oranını al.
 			if (taxSetting == null)
