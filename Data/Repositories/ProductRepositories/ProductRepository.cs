@@ -125,46 +125,43 @@ namespace Data.Repositories.ProductRepositories
 
 		public async Task<Product> UpdateAsync(Product entity)
 		{
-			// Entity'nin durumu kontrol ediliyor
-			var entry = _context.Entry(entity);
+            // Entity'nin durumu kontrol ediliyor
+            var entry = _context.Entry(entity);
 
-			if (entry.State == EntityState.Detached)
-			{
-				// Entity "detached" durumda ise, eski varlık bulunuyor
-				var entityHelper = new EntityHelper<Product>(_context);
-				var oldEntity = entityHelper.GetOldEntity(entity.Id);
+            switch (entry.State)
+            {
+                case EntityState.Detached:
+                    return await HandleDetachedEntity(entity);
 
-				if (oldEntity != null)
-				{
-					// Değişiklik davranışı uygulanıyor
-					var behavior = new ModifiedBehavior();
-					behavior.ApplyBehavior(_context, entity);
+                case EntityState.Modified:
+                    entry.State = EntityState.Modified;
+                    break;
 
-					// Eski varlık özellikleri güncelleniyor
-					entityHelper.UpdateEntityProperties(oldEntity, entity);
+                default:
+                    throw new InvalidOperationException("Entity state is not valid for an update operation.");
+            }
 
-					return oldEntity;
-				}
-				else
-				{
-					throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
-				}
-			}
-			else if (entry.State == EntityState.Modified)
-			{
-				// Eğer varlık "Modified" durumundaysa, doğrudan güncelleniyor
-				entry.State = EntityState.Modified;
-			}
-			else
-			{
-				throw new InvalidOperationException("Entity state is not valid for an update operation.");
-			}
+            await _context.SaveChangesAsync();
+            return entity;
+        }
 
-			// Değişiklikler kaydediliyor
-			await _context.SaveChangesAsync();
-			return entity; // Güncellenmiş varlık döndürülüyor
-		}
+        private async Task<Product> HandleDetachedEntity(Product entity)
+        {
+            var entityHelper = new EntityHelper<Product>(_context);
+            var oldEntity = entityHelper.GetOldEntity(entity.Id);
+
+            if (oldEntity == null)
+                throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
+
+            var behavior = new ModifiedBehavior();
+            behavior.ApplyBehavior(_context, entity);
+            entityHelper.UpdateEntityProperties(oldEntity, entity);
+
+            await _context.SaveChangesAsync();
+            return oldEntity;
+        }
 
 
-	}
+
+    }
 }

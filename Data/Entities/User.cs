@@ -34,6 +34,6 @@ namespace Data.Entities
         public string SaltPassword { get; set; }
         //public UserRefreshToken UserRefreshToken { get; set; }
         public int? RoleId { get; set; }
-        //public Role Role { get; set; }
+        public Role? Role { get; set; }
     }
 }

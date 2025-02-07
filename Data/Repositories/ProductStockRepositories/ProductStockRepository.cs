@@ -54,49 +54,46 @@ namespace Data.Repositories.ProductStockRepositories
             return await _repository.IsEntityUpdateableAsync(id);
         }
 
-		public async Task<ProductStock> UpdateAsync(ProductStock entity)
-		{
-			var entry = _context.Entry(entity);
+        public async Task<ProductStock> UpdateAsync(ProductStock entity)
+        {
+            var entry = _context.Entry(entity);
 
-			// Entity "Detached" durumunda ise, eski varlık bulunur ve güncellenir
-			if (entry.State == EntityState.Detached)
-			{
-				var entityHelper = new EntityHelper<ProductStock>(_context);
-				var oldEntity = entityHelper.GetOldEntity(entity.Id);
+            switch (entry.State)
+            {
+                case EntityState.Detached:
+                    return await HandleDetachedEntity(entity);
 
-				if (oldEntity != null)
-				{
-					var behavior = new UpdatedBehavior();
-					behavior.ApplyBehavior(_context, entity);
+                case EntityState.Modified:
+                    entry.State = EntityState.Modified;
+                    break;
 
-					entityHelper.UpdateEntityProperties(oldEntity, entity);
+                default:
+                    throw new InvalidOperationException("Entity state is not valid for an update operation.");
+            }
 
-					return oldEntity; // Eski varlık döndürülür
-				}
-				else
-				{
-					// Eğer eski varlık bulunamazsa hata fırlatılır
-					throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
-				}
-			}
-			// Eğer entity "Modified" durumundaysa, doğrudan güncelleme işlemi yapılır
-			else if (entry.State == EntityState.Modified)
-			{
-				entry.State = EntityState.Modified; // Varlık güncellenir
-			}
-			else
-			{
-				// Eğer entity geçerli bir duruma sahip değilse hata fırlatılır
-				throw new InvalidOperationException("Entity state is not valid for an update operation.");
-			}
+            await _context.SaveChangesAsync();
+            return entity;
+        }
 
-			// Değişiklikler veritabanına kaydedilir
-			await _context.SaveChangesAsync();
-			return entity; // Güncellenmiş varlık döndürülür
-		}
+        private async Task<ProductStock> HandleDetachedEntity(ProductStock entity)
+        {
+            var entityHelper = new EntityHelper<ProductStock>(_context);
+            var oldEntity = entityHelper.GetOldEntity(entity.Id);
 
-		
-		public async Task<bool> DeleteAsync(int id)  // Go to: Daha kısa ve esnek hale getirilebilir
+            if (oldEntity == null)
+                throw new InvalidOperationException("Entity with the specified ID does not exist in the context.");
+
+            var behavior = new UpdatedBehavior();
+            behavior.ApplyBehavior(_context, entity);
+
+            entityHelper.UpdateEntityProperties(oldEntity, entity);
+
+            await _context.SaveChangesAsync();
+            return oldEntity;
+        }
+
+
+        public async Task<bool> DeleteAsync(int id)  // Go to: Daha kısa ve esnek hale getirilebilir
 		{
 			// İlişkili product ve productStock'u getir
 			var productStock = await _context.ProductStocks

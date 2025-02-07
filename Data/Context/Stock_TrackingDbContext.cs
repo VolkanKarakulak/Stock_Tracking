@@ -24,6 +24,7 @@ namespace Data.Contexts
         public DbSet<ProductSupplier> ProductSuppliers { get; set; }
         public DbSet<TaxSetting> TaxSettings { get; set; }
         public DbSet<Earning> Earnings { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
