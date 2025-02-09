@@ -120,11 +120,10 @@ namespace Service.Mapping
            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Pending")); 
 	
 
-			CreateMap<OrderDetail, OrderDetailAddDTO>().ReverseMap();
+			CreateMap<OrderDetail, OrderDetailAddDto>().ReverseMap();
 			CreateMap<OrderDetail, OrderDetailDto>().ReverseMap();
-			CreateMap<OrderDetailAddDTO, OrderDetail>()
-		        .ForMember(dest => dest.UnitPrice, opt => opt
-                .MapFrom(src => src.Quantity * src.UnitPrice)); // Toplam fiyat hesaplanıyor
+            CreateMap<OrderDetailAddDto, OrderDetail>().ReverseMap();
+		        
 		}
     }
 }

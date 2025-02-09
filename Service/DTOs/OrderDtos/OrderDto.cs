@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace Service.DTOs.OrderDtos
 {
-	public class OrderDto : BaseDto	
+	public class OrderDto : BaseDto
 	{
-		public DateTime OrderDate { get; set; }
+
+   
 		public OrderStatus Status { get; set; }
 		public bool IsPaid { get; set; }
 		public DateTime? PaymentDate { get; set; }

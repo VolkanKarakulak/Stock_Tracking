@@ -51,7 +51,11 @@ namespace Service.Services.OrderService
 
         public async Task<OrderDto> CreateOrderAsync(OrderAddDto dto)
 		{
-			var taxRate = await _taxSettingRepository.GetTaxRateAsync();
+            //var customer = await _customerRepository.GetByIdAsync(orderRequest.CustomerId);
+            //if (customer == null)
+            //    return ServiceResponse<OrderResponseDto>.Fail("Customer not found");
+
+            var taxRate = await _taxSettingRepository.GetTaxRateAsync();
 
 			var order = _mapper.Map<Order>(dto);
 
