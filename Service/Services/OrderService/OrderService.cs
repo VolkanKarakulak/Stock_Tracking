@@ -55,9 +55,10 @@ namespace Service.Services.OrderService
             //if (customer == null)
             //    return ServiceResponse<OrderResponseDto>.Fail("Customer not found");
 
+            decimal totalAmount = 0;
             var taxRate = await _taxSettingRepository.GetTaxRateAsync();
 
-			var order = _mapper.Map<Order>(dto);
+            var order = _mapper.Map<Order>(dto);
 
 			if (order == null)
 			{
@@ -68,16 +69,26 @@ namespace Service.Services.OrderService
 			order.TrackingNumber = GenerateOrderNumber.CreateOrderNumber();
 
 			// 'TotalAmount' hesaplamasını burada yapıyoruz.
-			var totalAmount = order.TotalAmount = dto.Items.Sum(item => item.Quantity * item.UnitPrice);
-			order.TaxAmount = totalAmount * taxRate;
+			
+            foreach (var item in dto.Items)
+            {
+                
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
 
-			// OrderDetails oluşturma
-			var orderDetails = dto.Items.Select(item => _mapper.Map<OrderDetail>(item)).ToList();
+                totalAmount += item.Quantity * product.Price;
 
-            //// Sipariş objesini veritabanına kaydediyoruz, ödeme yapılmadı olarak işaretliyoruz
-            //order.IsPaid = false;  // Ödeme yapılmamış olarak varsayıyoruz
-            //order.PaymentDate = null;
-            //order.PaymentMethod = null;
+
+                // OrderDetails oluşturma
+                var orderDetails = dto.Items.Select(item => _mapper.Map<OrderDetail>(item)).ToList();
+            
+                //// Sipariş objesini veritabanına kaydediyoruz, ödeme yapılmadı olarak işaretliyoruz
+                //order.IsPaid = false;  // Ödeme yapılmamış olarak varsayıyoruz
+                //order.PaymentDate = null;
+                //order.PaymentMethod = null;
+            }
+
+            order.TotalAmount = totalAmount;
+            order.TaxAmount = totalAmount * taxRate;
 
             var createdOrder = await _orderRepository.CreateAsync(order);
 			await _unitOfWork.CommitAsync();
