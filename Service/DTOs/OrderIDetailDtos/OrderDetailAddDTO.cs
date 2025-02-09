@@ -10,6 +10,6 @@ namespace Service.DTOs.OrderItemDtos
     {
         public int ProductId { get; set; } // Ürün kimliği
         public int Quantity { get; set; } // Siparişteki ürün miktarı
-        public decimal UnitPrice { get; set; }
+        
     }
 }

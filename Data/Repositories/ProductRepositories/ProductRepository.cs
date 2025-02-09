@@ -161,7 +161,19 @@ namespace Data.Repositories.ProductRepositories
             return oldEntity;
         }
 
+        public async Task<IEnumerable<Product>> GetProductsByIdsAsync(List<int> productIds)
+        {
+            if (productIds == null || !productIds.Any())
+            {
+                return new List<Product>(); // Eğer ürün ID'leri boşsa, boş liste döndür.
+            }
 
+            var products = await _context.Products
+                                          .Where(p => productIds.Contains(p.Id)) // Ürün ID'lerine göre filtreleme
+                                          .ToListAsync(); // Veritabanından asenkron şekilde al
 
+            return products;
+        }
     }
+    
 }
