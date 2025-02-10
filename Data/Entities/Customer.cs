@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
+    // Misafirler sisteme giriş yapmadıkları için, token yenileme veya benzeri süreçlere girmeleri gerekmez.
     public class Customer : BaseEntity
     {
         [Length(1, 50)]
@@ -23,6 +24,8 @@ namespace Data.Entities
         [Length(1, 100)]
         [Column(TypeName = "nvarchar(100)")]
         public string Email { get; set; } = default!;
-        public ICollection<Order>? Orders { get; set; } 
+        public ICollection<Order>? Orders { get; set; }
+        public int? UserId { get; set; } // Sisteme giriş yapan müşteri için
+        public User? User { get; set; }  // User ile ilişki
     }
 }

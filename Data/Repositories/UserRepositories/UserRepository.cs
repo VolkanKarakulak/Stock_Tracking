@@ -33,7 +33,7 @@ namespace Data.Repositories.UserRepositories
         {
             var users = await _context.Users
                 .AsNoTracking()
-                .Include(p => p.Role)
+                .Include(p => p.UserRoles)
                 .ToListAsync(); 
 
             return await Task.FromResult(users.AsQueryable());

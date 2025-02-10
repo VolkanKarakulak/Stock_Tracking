@@ -4,6 +4,7 @@ using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(Stock_TrackingDbContext))]
-    partial class Stock_TrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250210110711_addPropertyinCustomer")]
+    partial class addPropertyinCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -541,6 +544,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nText");
 
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SaltPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -550,69 +556,9 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Data.Entities.UserRefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserRefreshToken");
-                });
-
-            modelBuilder.Entity("Data.Entities.UserRole", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.HasKey("UserId", "RoleId");
-
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Data.Entities.Customer", b =>
@@ -714,34 +660,13 @@ namespace Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Data.Entities.UserRefreshToken", b =>
-                {
-                    b.HasOne("Data.Entities.User", "User")
-                        .WithOne("UserRefreshToken")
-                        .HasForeignKey("Data.Entities.UserRefreshToken", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Data.Entities.UserRole", b =>
+            modelBuilder.Entity("Data.Entities.User", b =>
                 {
                     b.HasOne("Data.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Entities.Category", b =>
@@ -772,20 +697,12 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Role", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Data.Entities.Supplier", b =>
                 {
                     b.Navigation("ProductSuppliers");
-                });
-
-            modelBuilder.Entity("Data.Entities.User", b =>
-                {
-                    b.Navigation("UserRefreshToken")
-                        .IsRequired();
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

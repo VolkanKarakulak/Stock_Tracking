@@ -9,6 +9,6 @@ namespace Data.Entities
     public class Role : BaseEntity
     {
         public string Name { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }
