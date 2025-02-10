@@ -32,8 +32,8 @@ namespace Data.Entities
         public string LastIPAddress { get; set; } = default!;
 
         public string SaltPassword { get; set; }
-        //public UserRefreshToken UserRefreshToken { get; set; }
-        public int? RoleId { get; set; }
-        public Role? Role { get; set; }
+        public UserRefreshToken UserRefreshToken { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
+
     }
 }

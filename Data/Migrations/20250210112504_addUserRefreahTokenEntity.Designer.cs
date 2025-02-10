@@ -4,6 +4,7 @@ using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(Stock_TrackingDbContext))]
-    partial class Stock_TrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250210112504_addUserRefreahTokenEntity")]
+    partial class addUserRefreahTokenEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -541,6 +544,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nText");
 
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SaltPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -549,6 +555,8 @@ namespace Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -592,27 +600,6 @@ namespace Data.Migrations
                         .IsUnique();
 
                     b.ToTable("UserRefreshToken");
-                });
-
-            modelBuilder.Entity("Data.Entities.UserRole", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Data.Entities.Customer", b =>
@@ -714,6 +701,15 @@ namespace Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Data.Entities.User", b =>
+                {
+                    b.HasOne("Data.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Data.Entities.UserRefreshToken", b =>
                 {
                     b.HasOne("Data.Entities.User", "User")
@@ -721,25 +717,6 @@ namespace Data.Migrations
                         .HasForeignKey("Data.Entities.UserRefreshToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Data.Entities.UserRole", b =>
-                {
-                    b.HasOne("Data.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
 
                     b.Navigation("User");
                 });
@@ -772,7 +749,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Role", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Data.Entities.Supplier", b =>
@@ -784,8 +761,6 @@ namespace Data.Migrations
                 {
                     b.Navigation("UserRefreshToken")
                         .IsRequired();
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
